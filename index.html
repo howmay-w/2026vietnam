@@ -1,0 +1,998 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<title>越南河內・下龍灣 2026 ✈️</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700;900&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #EBE0CE;
+    --card: #FFFCF6;
+    --primary: #65735A;
+    --primary-light: #E3E5E1;
+    --coral: #AF6E52;
+    --coral-light: #F0E4DF;
+    --green: #712B29;
+    --green-light: #E5D8D8;
+    --yt: #5A2220;
+    --yt-light: #EADCD9;
+    --shop: #904C3D;
+    --shop-light: #ECDEDC;
+    --ink: #2E2A22;
+    --muted: #8A8275;
+    --border: #D9CDB8;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+  body { font-family: 'Noto Sans TC', sans-serif; background: var(--bg); color: var(--ink); min-height: 100vh; overflow-x: hidden; }
+
+  /* HERO */
+  .hero { background: #65735A; padding: 1.2rem 1.5rem 1.6rem; text-align: center; position: relative; }
+  .hero h1 { font-size: 1.45rem; font-weight: 700; color: #F3ECDD; line-height: 1.2; margin-bottom: 0.5rem; letter-spacing: 0.04em; }
+  .hero-pill { font-size: 0.72rem; color: rgba(243,236,221,0.75); font-weight: 400; margin-top: 0.3rem; }
+
+  /* TAB BAR */
+  .tab-bar-wrap { background: var(--bg); padding: 1rem 0 0; position: sticky; top: 0; z-index: 50; box-shadow: 0 2px 10px rgba(101,115,90,0.18); }
+  .tab-bar { display: flex; overflow-x: auto; scrollbar-width: none; padding: 0 1rem 0.8rem; gap: 0.5rem; }
+  .tab-bar::-webkit-scrollbar { display: none; }
+  .tab-btn { flex-shrink: 0; display: flex; flex-direction: column; align-items: center; gap: 0.12rem; padding: 0.5rem 0.75rem; border-radius: 12px; border: 1.5px solid var(--border); background: var(--card); cursor: pointer; transition: all 0.18s; min-width: 52px; }
+  .tab-btn .dn { font-size: 0.58rem; font-weight: 700; color: var(--muted); letter-spacing: 0.05em; }
+  .tab-btn .de { font-size: 1.1rem; line-height: 1.2; }
+  .tab-btn .dd { font-size: 0.56rem; color: var(--muted); }
+  .tab-btn.active { background: var(--primary); border-color: var(--primary); box-shadow: 0 4px 12px rgba(101,115,90,0.35); }
+  .tab-btn.active .dn, .tab-btn.active .dd { color: rgba(255,255,255,0.8); }
+  .tab-btn.ct.active { background: var(--coral); border-color: var(--coral); box-shadow: 0 4px 12px rgba(175,110,82,0.4); }
+  .tab-btn.gt.active { background: var(--green); border-color: var(--green); box-shadow: 0 4px 12px rgba(113,43,41,0.4); }
+  .tab-btn.st.active { background: var(--shop); border-color: var(--shop); box-shadow: 0 4px 12px rgba(144,76,61,0.4); }
+  .tab-btn .st-label { color: var(--shop); }
+  .tab-btn.st.active .dn, .tab-btn.st.active .dd, .tab-btn.st.active .st-label { color: rgba(255,255,255,0.9); }
+  .tab-btn.ty.active { background: var(--yt); border-color: var(--yt); box-shadow: 0 4px 12px rgba(90,34,32,0.4); }
+  .tab-btn .ty-label { color: var(--yt); }
+  .tab-btn.ty.active .dn, .tab-btn.ty.active .dd, .tab-btn.ty.active .ty-label { color: rgba(255,255,255,0.9); }
+
+  /* PAGES */
+  .pages { padding: 1rem 1rem 9rem; background: var(--bg); }
+  .page { display: none; background: var(--bg); }
+  .page.active { display: block; animation: fadeIn 0.2s ease; }
+  @keyframes fadeIn { from { opacity:0; transform:translateY(6px); } to { opacity:1; transform:translateY(0); } }
+
+  /* DAY HERO */
+  .day-hero { border: 1.5px solid var(--border); border-radius: 16px; padding: 1.2rem 1.3rem 1rem; margin-bottom: 0.8rem; background: var(--primary-light); }
+  .day-hero.ct { background: var(--coral-light); border-color: #d9b89a; }
+  .day-hero.gt { background: var(--green-light); border-color: #c2a09e; }
+  .day-hero.st { background: var(--shop-light); border-color: #c9a294; }
+  .day-hero.yt { background: var(--yt-light); border-color: #c79a92; }
+  .day-tag { display: inline-flex; align-items: center; background: var(--primary); color: white; font-size: 0.62rem; font-weight: 700; letter-spacing: 0.08em; padding: 0.2rem 0.6rem; border-radius: 6px; margin-bottom: 0.55rem; }
+  .day-tag.ct { background: var(--coral); }
+  .day-tag.gt { background: var(--green); }
+  .day-tag.st { background: var(--shop); }
+  .day-tag.yt { background: var(--yt); }
+  .day-title { font-size: 1.2rem; font-weight: 700; line-height: 1.3; margin-bottom: 0.15rem; }
+  .day-sub { font-size: 0.75rem; color: var(--muted); }
+
+  /* DAY PHOTO */
+  .day-photo-wrap { margin-bottom: 0.85rem; }
+  .day-photo-img { width: 100%; height: 168px; object-fit: cover; border-radius: 14px; display: block; background: #e3ddcf; }
+  .photo-credit { font-size: 0.58rem; color: var(--muted); text-align: right; margin-top: 0.3rem; }
+  .photo-credit a { font-size: 0.58rem; font-weight: 400; border-bottom: none; color: var(--muted); }
+
+  /* ABSTRACT */
+  .abstract { background: var(--card); border: 1.5px solid var(--border); border-left: 3px solid var(--primary); border-radius: 0 10px 10px 0; padding: 0.8rem 1rem; margin-bottom: 0.8rem; font-size: 0.82rem; line-height: 1.7; color: #3a4d4a; }
+  .abstract.ct { border-left-color: var(--coral); }
+  .abstract.gt { border-left-color: var(--green); }
+
+  /* CARD */
+  .card { background: var(--card); border: 1.5px solid var(--border); border-radius: 14px; padding: 1rem 1.1rem; margin-bottom: 0.7rem; width: 100%; box-sizing: border-box; }
+  .card-title { font-size: 0.6rem; font-weight: 700; letter-spacing: 0.15em; text-transform: uppercase; color: var(--muted); margin-bottom: 0.7rem; }
+
+  /* TIMELINE */
+  .timeline { display: flex; flex-direction: column; }
+  .tl-item { display: flex; gap: 0.75rem; align-items: flex-start; padding-bottom: 0.75rem; }
+  .tl-item:last-child { padding-bottom: 0; }
+  .tl-left { display: flex; flex-direction: column; align-items: center; width: 42px; flex-shrink: 0; }
+  .tl-time { font-size: 0.63rem; font-weight: 700; color: var(--primary); white-space: nowrap; text-align: center; }
+  .tl-time.ct { color: var(--coral); }
+  .tl-time.gt { color: var(--green); }
+  .tl-line { width: 1.5px; flex: 1; min-height: 14px; background: var(--border); margin-top: 3px; }
+  .tl-item:last-child .tl-line { display: none; }
+  .tl-text { font-size: 0.83rem; line-height: 1.5; padding-top: 1px; flex: 1; min-width: 0; }
+  .tl-sub { font-size: 0.72rem; color: var(--muted); margin-top: 0.18rem; }
+  .tl-sub a { font-size: 0.72rem; }
+  .tl-note { font-size: 0.7rem; color: var(--muted); margin-top: 0.15rem; padding: 0.22rem 0.5rem; background: var(--bg); border-radius: 5px; display: inline-block; }
+
+  /* INFO ROWS */
+  .info-row { display: flex; gap: 0.7rem; align-items: flex-start; padding: 0.6rem 0; border-bottom: 1px solid var(--border); font-size: 0.83rem; line-height: 1.5; }
+  .info-row:last-child { border-bottom: none; padding-bottom: 0; }
+  .info-row:first-child { padding-top: 0; }
+  .info-icon { font-size: 1rem; flex-shrink: 0; width: 22px; text-align: center; margin-top: 1px; }
+  .info-label { font-size: 0.67rem; color: var(--muted); font-weight: 500; margin-bottom: 0.15rem; }
+  a { color: var(--primary); text-decoration: none; font-weight: 500; border-bottom: 1px solid rgba(101,115,90,0.3); }
+  a:active { opacity: 0.7; }
+
+  /* NOTE */
+  .note { font-size: 0.72rem; color: var(--muted); margin-top: 0.22rem; padding: 0.28rem 0.6rem; background: var(--bg); border-radius: 6px; }
+  .note.warn { color: #6e2a1c; background: var(--coral-light); }
+
+  /* UNIFIED CARD VARIANTS (x-card) */
+  .x-card { border-radius: 14px; padding: 0; margin-bottom: 0.7rem; width: 100%; box-sizing: border-box; overflow: hidden; border: 1.5px solid; }
+  .x-card-head { display: flex; align-items: center; gap: 0.5rem; padding: 0.75rem 1rem; cursor: pointer; user-select: none; list-style: none; }
+  .x-card-head::-webkit-details-marker { display: none; }
+  .x-card-title { font-size: 0.6rem; font-weight: 700; letter-spacing: 0.13em; text-transform: uppercase; flex: 1; }
+  .x-card-arrow { font-size: 0.75rem; color: inherit; opacity: 0.5; transition: transform 0.2s; }
+  details.x-card[open] .x-card-arrow { transform: rotate(90deg); }
+  .x-card-body { padding: 0.8rem 1rem 0.85rem; }
+
+  /* spot card (photo + text items) */
+  .xc-spot { background: #dde7e3; border-color: #7aab9e; }
+  .xc-spot .x-card-head { background: #cfddd7; }
+  .xc-spot .x-card-title { color: #1F5C5A; }
+  .xc-spot .x-card-title::before { content: '📍 '; }
+  .xc-spot .pi { border-color: #b7ccc4; }
+  .xc-spot .xi { border-color: #b7ccc4; }
+
+  /* warn card (notices) */
+  .xc-warn { background: var(--coral-light); border-color: #c98a5e; }
+  .xc-warn .x-card-head { background: #ecd0bb; }
+  .xc-warn .x-card-title { color: #6e2a1c; }
+  .xc-warn .x-card-title::before { content: '⚠️ '; }
+  .xc-warn .xi { border-color: #e0bfa0; }
+
+  /* shop card (買買推薦) */
+  .xc-shop { background: #efe6d6; border-color: var(--shop); }
+  .xc-shop .x-card-head { background: #e7dac4; }
+  .xc-shop .x-card-title { color: var(--shop); }
+  .xc-shop .x-card-title::before { content: '🛍️ '; }
+  .xc-shop .xi { border-color: #ddcba9; }
+  .xi-tag { font-size: 0.6rem; font-weight: 700; color: #fff; border-radius: 4px; padding: 0.1rem 0.38rem; display: inline-block; margin-bottom: 0.18rem; }
+  .xt-food  { background: var(--shop); }
+  .xt-drink { background: var(--primary); }
+  .xt-life  { background: var(--green); }
+  .xt-warn  { background: #a04020; }
+
+  /* item row (icon + text, no photo) */
+  .xi { display: flex; gap: 0.7rem; align-items: flex-start; padding: 0.55rem 0; border-top: 1px solid; font-size: 0.82rem; line-height: 1.5; }
+  .xi:first-child { border-top: none; padding-top: 0; }
+  .xi-icon { font-size: 1.05rem; flex-shrink: 0; width: 22px; text-align: center; margin-top: 2px; }
+  .xi-body { flex: 1; min-width: 0; }
+  .xi-name { font-weight: 700; color: var(--ink); font-size: 0.84rem; margin-bottom: 0.1rem; }
+  .xi-desc { font-size: 0.76rem; color: #5c5546; line-height: 1.55; margin-top: 0.1rem; }
+  .xi-links { margin-top: 0.25rem; display: flex; flex-wrap: wrap; gap: 0.4rem; }
+  a.xi-link { font-size: 0.68rem; margin-top: 0.2rem; display: inline-block; margin-right: 0.4rem; }
+
+  /* item row with photo (spot intro) */
+  .pi { padding: 0.7rem 0; border-top: 1px solid; }
+  .pi:first-child { border-top: none; padding-top: 0; }
+  .pi-photo-wrap { margin-bottom: 0.5rem; }
+  .pi-photo { width: 100%; height: 132px; object-fit: cover; border-radius: 10px; display: block; background: #e3ddcf; }
+  .pi-name { font-weight: 700; font-size: 0.86rem; color: var(--ink); margin-bottom: 0.2rem; }
+  .pi-desc { font-size: 0.78rem; color: #5c5546; line-height: 1.6; }
+
+  /* WEATHER WIDGET */
+  .wx-body { min-height: 24px; }
+  .wx-row { display: flex; align-items: center; gap: 0.9rem; }
+  .wx-icon { font-size: 2rem; line-height: 1; }
+  .wx-info { flex: 1; min-width: 0; }
+  .wx-temp { font-size: 1.05rem; font-weight: 700; color: var(--ink); }
+  .wx-desc { font-size: 0.78rem; color: var(--muted); margin-top: 0.15rem; }
+  .wx-tag { font-size: 0.6rem; color: var(--muted); margin-top: 0.55rem; text-align: right; }
+  .wx-note { font-size: 0.78rem; color: var(--muted); line-height: 1.65; }
+
+  /* PACK LIST CARD */
+  .xc-pack { background: var(--primary-light); border-color: var(--primary); }
+  .xc-pack .x-card-head { background: #d7dbd0; }
+  .xc-pack .x-card-title { color: var(--primary); }
+  .xc-pack .x-card-title::before { content: '🧳 '; }
+  .xc-pack .xi { border-color: #cbd0c4; }
+
+  /* BOTTOM NAV */
+  .bottom-nav { position: fixed; bottom: 0; left: 0; right: 0; background: rgba(235,224,206,0.96); backdrop-filter: blur(16px); border-top: 1px solid var(--border); padding: 0.5rem 1rem env(safe-area-inset-bottom); display: flex; justify-content: space-around; z-index: 100; }
+  .nav-btn { display: flex; flex-direction: column; align-items: center; gap: 0.15rem; font-size: 0.58rem; color: var(--muted); font-weight: 500; cursor: pointer; padding: 0.3rem 0.8rem; border-radius: 8px; border: none; background: none; transition: color 0.15s; font-family: 'Noto Sans TC', sans-serif; }
+  .nav-btn span { font-size: 1.15rem; }
+  .nav-btn.active { color: var(--primary); }
+</style>
+</head>
+<body>
+
+<div class="hero">
+  <h1>🇻🇳 越南河內・下龍灣 2026</h1>
+  <div class="hero-pill">✈️ 6月22日—6月26日・5天4夜・長榮航空 BR385 / BR386</div>
+</div>
+
+<div class="tab-bar-wrap">
+  <div class="tab-bar">
+    <button class="tab-btn active" onclick="showPage(0)" id="tab0"><div class="dn">DAY1</div><div class="de">✈️</div><div class="dd">6/22</div></button>
+    <button class="tab-btn ct" onclick="showPage(1)" id="tab1"><div class="dn">DAY2</div><div class="de">⛵</div><div class="dd">6/23</div></button>
+    <button class="tab-btn gt" onclick="showPage(2)" id="tab2"><div class="dn">DAY3</div><div class="de">🚢</div><div class="dd">6/24</div></button>
+    <button class="tab-btn ct" onclick="showPage(3)" id="tab3"><div class="dn">DAY4</div><div class="de">🏛️</div><div class="dd">6/25</div></button>
+    <button class="tab-btn gt" onclick="showPage(4)" id="tab4"><div class="dn">DAY5</div><div class="de">🏠</div><div class="dd">6/26</div></button>
+    <button class="tab-btn st" onclick="showPage(5)" id="tab5"><div class="dn">🛍️</div><div class="de st-label" style="font-size:0.75rem;font-weight:700;">買買</div><div class="dd">推薦</div></button>
+    <button class="tab-btn" onclick="showPage(6)" id="tab6"><div class="dn">🧳</div><div class="de" style="font-size:0.75rem;font-weight:700;">行李</div><div class="dd">清單</div></button>
+    <button class="tab-btn ty" onclick="showPage(7)" id="tab7"><div class="dn">📋</div><div class="de ty-label" style="font-size:0.75rem;font-weight:700;">集合</div><div class="dd">資訊</div></button>
+  </div>
+</div>
+
+<div class="pages">
+
+  <!-- DAY 1 -->
+  <div class="page active" id="page0">
+    <div class="day-hero">
+      <div class="day-tag">DAY 1 · 6月22日（一）</div>
+      <div class="day-title">✈️ 桃園 → 河內</div>
+      <div class="day-sub">河內大世界 Mega Grand World</div>
+    </div>
+    <div class="card weather-card" data-lat="21.0285" data-lon="105.8542" data-date="2026-06-22">
+      <div class="card-title">當地天氣・河內</div>
+      <div class="wx-body">載入中…</div>
+    </div>
+    <div class="abstract">河內位於紅河三角洲，是一座有千年歷史的古城，曾為越南李、陳、後黎等封建王朝的京城，被譽為「千年文物之地」；境內樹木終年常青、鮮花四季盛開、湖泊星羅棋布，又有「百花春城」之稱。法國殖民時期屬法屬印度支那聯邦，古城內保留大量法式建築，與越南傳統風格交融，呈現法、越、中三種文化混合的調性。</div>
+    <div class="card">
+      <div class="card-title">行程時刻</div>
+      <div class="timeline">
+        <div class="tl-item"><div class="tl-left"><div class="tl-time">12:10</div><div class="tl-line"></div></div><div class="tl-text">🛫 集合｜桃園國際機場第二航廈長榮航空櫃台</div></div>
+        <div class="tl-item"><div class="tl-left"><div class="tl-time">14:40</div><div class="tl-line"></div></div><div class="tl-text">✈️ BR385 桃園起飛<div class="tl-sub">台灣時間</div></div></div>
+        <div class="tl-item"><div class="tl-left"><div class="tl-time">16:50</div><div class="tl-line"></div></div><div class="tl-text">🛬 抵達河內內排國際機場<div class="tl-sub">當地時間・越南時間比台灣慢1小時</div></div></div>
+        <div class="tl-item"><div class="tl-left"><div class="tl-time">下午</div><div class="tl-line"></div></div><div class="tl-text">🏙️ 河內大世界 Mega Grand World Ha Noi<div class="tl-note">🛒 園區內也有零食、咖啡等小店，可順手選購（詳見「買買推薦」分頁）</div></div></div>
+        <div class="tl-item"><div class="tl-left"><div class="tl-time">午餐</div><div class="tl-line"></div></div><div class="tl-text">🍱 機上餐食</div></div>
+        <div class="tl-item"><div class="tl-left"><div class="tl-time">晚餐</div><div class="tl-line"></div></div><div class="tl-text">🍽️ 英豪餐廳越式料理（8USD）</div></div>
+        <div class="tl-item"><div class="tl-left"><div class="tl-time">住宿</div><div class="tl-line"></div></div><div class="tl-text">🛏️ <a href="https://grandviewhotel.com.vn" target="_blank">GrandView Hotel & Residence</a><div class="tl-sub">+84 24 3383 3368</div></div></div>
+      </div>
+    </div>
+    <details class="x-card xc-spot">
+      <summary class="x-card-head">
+        <span class="x-card-title">景點介紹</span>
+        <span class="x-card-arrow">▶</span>
+      </summary>
+      <div class="x-card-body">
+        <div class="pi">
+          <div class="pi-name">河內大世界 Mega Grand World Ha Noi</div>
+          <div class="pi-desc">越南河內最新的指標性綜合娛樂城，位於河內東邊的海洋城（Ocean City），融合歐亞風格，分為色彩斑斕的「威尼斯區」（小威尼斯）與充滿潮流活力的「K-Town韓國區」，匯集超過800家商店、餐廳與娛樂設施。</div>
+        </div>
+      </div>
+    </details>
+  </div>
+
+  <!-- DAY 2 -->
+  <div class="page ct" id="page1">
+    <div class="day-hero ct">
+      <div class="day-tag ct">DAY 2 · 6月23日（二）</div>
+      <div class="day-title">⛵ 寧平陸龍灣 → 下龍灣</div>
+      <div class="day-sub">長安生態保護區・華閭古鎮</div>
+    </div>
+    <div class="card weather-card" data-lat="20.9101" data-lon="107.1839" data-date="2026-06-23">
+      <div class="card-title">當地天氣・下龍灣</div>
+      <div class="wx-body">載入中…</div>
+    </div>
+    <div class="day-photo-wrap">
+      <img class="day-photo-img" src="https://commons.wikimedia.org/wiki/Special:FilePath/Halong_bay_vietnam.JPG?width=900" loading="lazy" alt="下龍灣" onerror="this.parentElement.style.display='none'">
+      <div class="photo-credit">圖片來源：<a href="https://commons.wikimedia.org/wiki/File:Halong_bay_vietnam.JPG" target="_blank">Wikimedia Commons</a></div>
+    </div>
+    <div class="abstract ct">寧平地處喀斯特地形，竹筏遊河風光可與桂林、九寨溝相提並論，當地人稱之為「陸龍灣」；下龍灣素有「海上桂林」、「世界八大奇景」之稱，1994年獲聯合國教科文組織列入世界遺產，奇山怪嶼更勝泰國普吉攀牙灣。相傳很久以前有一條母龍降落此地擋住洶湧波濤，讓沿岸人民安居樂業，因此得名「下龍灣」。</div>
+    <div class="card">
+      <div class="card-title">行程時刻</div>
+      <div class="timeline">
+        <div class="tl-item"><div class="tl-left"><div class="tl-time ct">早餐</div><div class="tl-line"></div></div><div class="tl-text">🍳 飯店內自助餐</div></div>
+        <div class="tl-item"><div class="tl-left"><div class="tl-time ct">上午</div><div class="tl-line"></div></div><div class="tl-text">🛶 長安生態保護區｜竹筏遊河<div class="tl-sub">佔地2.168公頃，石灰岩奇峰與山洞地形，乘小舟穿行其中</div><div class="tl-note">⚠️ 務必穿著救生衣；滿水位或人潮過多時當地可能改走寧平三谷湖小舟遊船</div></div></div>
+        <div class="tl-item"><div class="tl-left"><div class="tl-time ct">午餐</div><div class="tl-line"></div></div><div class="tl-text">🐑 寧平鄉村羊肉風味（8USD）</div></div>
+        <div class="tl-item"><div class="tl-left"><div class="tl-time ct">下午</div><div class="tl-line"></div></div><div class="tl-text">🏯 華閭古鎮<div class="tl-sub">仿古建築、燈籠夜景，十五世紀傳統商街風貌</div></div></div>
+        <div class="tl-item"><div class="tl-left"><div class="tl-time ct">傍晚</div><div class="tl-line"></div></div><div class="tl-text">🚢 抵達下龍灣</div></div>
+        <div class="tl-item"><div class="tl-left"><div class="tl-time ct">晚餐</div><div class="tl-line"></div></div><div class="tl-text">🦐 GREEN餐廳蒸蒸日上九層海鮮鍋套餐（15USD）</div></div>
+        <div class="tl-item"><div class="tl-left"><div class="tl-time ct">住宿</div><div class="tl-line"></div></div><div class="tl-text">🛏️ <a href="https://peacehotelhalong.vn" target="_blank">PEACE HẠ LONG HOTEL</a><div class="tl-sub">+84 20 3384 5555</div></div></div>
+      </div>
+    </div>
+    <details class="x-card xc-spot">
+      <summary class="x-card-head">
+        <span class="x-card-title">景點介紹</span>
+        <span class="x-card-arrow">▶</span>
+      </summary>
+      <div class="x-card-body">
+        <div class="pi">
+          <div class="pi-name">長安生態保護區</div>
+          <div class="pi-desc">從最具皇家氣質的長安碼頭乘竹筏遊河，佔地2.168公頃，融合洞穴、山澗與河川地形。河水清澈平靜，兩岸石灰岩奇峰與原始叢林倒映水面，景致可與九寨溝相提並論，全程穿越多座天然石灰岩山洞，寧靜的鄉村風光宛如世外桃源。</div>
+        </div>
+        <div class="pi">
+          <div class="pi-name">華閭古鎮</div>
+          <div class="pi-desc">位於寧平省，融合越南古都文化、傳統建築與現代旅遊體驗，仿古建築、璀璨燈籠與熱鬧文化活動重現昔日京城繁華風貌，可品嚐寧平特色美食、欣賞傳統藝術表演，夜晚燈火輝映下別具古街魅力。</div>
+        </div>
+      </div>
+    </details>
+    <details class="x-card xc-warn">
+      <summary class="x-card-head">
+        <span class="x-card-title">乘船須知</span>
+        <span class="x-card-arrow">▶</span>
+      </summary>
+      <div class="x-card-body">
+        <div class="xi">
+          <div class="xi-icon">🚣</div>
+          <div class="xi-body">
+            <div class="xi-name">船上小販</div>
+            <div class="xi-desc">遊船途中當地船家及水上小販可能兜售土特產或拍照服務，建議避免議價，以免造成糾纏。</div>
+          </div>
+        </div>
+        <div class="xi">
+          <div class="xi-icon">💵</div>
+          <div class="xi-body">
+            <div class="xi-name">船伕小費</div>
+            <div class="xi-desc">建議每位給予越盾20,000元或美金1元，請於返回碼頭後再給予，勿於遊船途中提早支付。</div>
+          </div>
+        </div>
+      </div>
+    </details>
+  </div>
+
+  <!-- DAY 3 -->
+  <div class="page gt" id="page2">
+    <div class="day-hero gt">
+      <div class="day-tag gt">DAY 3 · 6月24日（三）</div>
+      <div class="day-title">🚢 海洋阿特普斯號郵輪</div>
+      <div class="day-sub">驚訝洞・TITOP英雄島・水上木偶戲</div>
+    </div>
+    <div class="card weather-card" data-lat="20.9101" data-lon="107.1839" data-date="2026-06-24">
+      <div class="card-title">當地天氣・下龍灣</div>
+      <div class="wx-body">載入中…</div>
+    </div>
+    <div class="day-photo-wrap">
+      <img class="day-photo-img" src="https://commons.wikimedia.org/wiki/Special:FilePath/Asia_cruise_in_Halong_bay_Vietnam.JPG?width=900" loading="lazy" alt="下龍灣遊船示意" onerror="this.parentElement.style.display='none'">
+      <div class="photo-credit">下龍灣遊船示意圖（非阿特普斯號實照）・來源：<a href="https://commons.wikimedia.org/wiki/File:Asia_cruise_in_Halong_bay_Vietnam.JPG" target="_blank">Wikimedia Commons</a></div>
+    </div>
+    <div class="card">
+      <div class="card-title">郵輪行程時刻</div>
+      <div class="timeline">
+        <div class="tl-item"><div class="tl-left"><div class="tl-time gt">早餐</div><div class="tl-line"></div></div><div class="tl-text">🍳 飯店內自助餐</div></div>
+        <div class="tl-item"><div class="tl-left"><div class="tl-time gt">09:00</div><div class="tl-line"></div></div><div class="tl-text">🚢 登船</div></div>
+        <div class="tl-item"><div class="tl-left"><div class="tl-time gt">09:30</div><div class="tl-line"></div></div><div class="tl-text">📋 船上安全設備簡報</div></div>
+        <div class="tl-item"><div class="tl-left"><div class="tl-time gt">09:30–11:00</div><div class="tl-line"></div></div><div class="tl-text">⛵ 開航巡遊下龍灣<div class="tl-sub">鬥雞島、小狗石、風帆石、香爐山、天宮洞等奇岩怪石盡收眼底</div></div></div>
+        <div class="tl-item"><div class="tl-left"><div class="tl-time gt">11:00–12:00</div><div class="tl-line"></div></div><div class="tl-text">🕳️ 驚訝洞<div class="tl-sub">面積逾10萬平方公尺，可容納三千餘人，世界前十大洞穴之一</div><div class="tl-note">⚠️ 洞內地面濕滑，行走請注意安全</div></div></div>
+        <div class="tl-item"><div class="tl-left"><div class="tl-time gt">12:20–13:30</div><div class="tl-line"></div></div><div class="tl-text">🏖️ TITOP 英雄島<div class="tl-sub">月牙狀沙灘戲水，登高眺望下龍灣群島風光</div></div></div>
+        <div class="tl-item"><div class="tl-left"><div class="tl-time gt">13:45–15:00</div><div class="tl-line"></div></div><div class="tl-text">🍽️ 船上五星酒店級自助餐（樂隊表演）（38USD）</div></div>
+        <div class="tl-item"><div class="tl-left"><div class="tl-time gt">15:00–15:30</div><div class="tl-line"></div></div><div class="tl-text">🚢 返回碼頭，結束郵輪行程</div></div>
+        <div class="tl-item"><div class="tl-left"><div class="tl-time gt">下午</div><div class="tl-line"></div></div><div class="tl-text">🏨 返回飯店，自由活動</div></div>
+        <div class="tl-item"><div class="tl-left"><div class="tl-time gt">晚餐</div><div class="tl-line"></div></div><div class="tl-text">🐟 漁夫餐廳海鮮風味餐（10USD）</div></div>
+        <div class="tl-item"><div class="tl-left"><div class="tl-time gt">晚上</div><div class="tl-line"></div></div><div class="tl-text">🎭 水上木偶戲表演</div></div>
+        <div class="tl-item"><div class="tl-left"><div class="tl-time gt">住宿</div><div class="tl-line"></div></div><div class="tl-text">🛏️ <a href="https://peacehotelhalong.vn" target="_blank">PEACE HẠ LONG HOTEL</a></div></div>
+      </div>
+    </div>
+    <details class="x-card xc-spot" open>
+      <summary class="x-card-head">
+        <span class="x-card-title">景點圖文介紹</span>
+        <span class="x-card-arrow">▶</span>
+      </summary>
+      <div class="x-card-body">
+        <div class="pi">
+          <div class="pi-photo-wrap">
+            <img class="pi-photo" src="https://commons.wikimedia.org/wiki/Special:FilePath/Sung_Sot_Cave_-_Halong_Bay_-_Vietnam.JPG?width=480" loading="lazy" alt="驚訝洞 Sửng Sốt Cave" onerror="this.parentElement.style.display='none'">
+          </div>
+          <div class="pi-name">驚訝洞（Sửng Sốt Cave）</div>
+          <div class="pi-desc">下龍灣最具代表性的鐘乳石洞之一，名列世界前十大洞穴，面積超過10萬平方公尺，可容納三千餘人，洞內鐘乳石與石筍形態萬千，景象令人嘆為觀止。</div>
+        </div>
+        <div class="pi">
+          <div class="pi-photo-wrap">
+            <img class="pi-photo" src="https://commons.wikimedia.org/wiki/Special:FilePath/Titop_Island.jpg?width=480" loading="lazy" alt="TITOP英雄島" onerror="this.parentElement.style.display='none'">
+          </div>
+          <div class="pi-name">TITOP 英雄島</div>
+          <div class="pi-desc">下船後可於月牙狀沙灘戲水，沿階登上島上制高點涼亭，俯瞰下龍灣群島層疊山海全景，是郵輪行程中最熱門的取景點。</div>
+        </div>
+        <div class="pi">
+          <div class="pi-photo-wrap">
+            <img class="pi-photo" src="https://commons.wikimedia.org/wiki/Special:FilePath/Thang_Long_Water_Puppet_Theatre7.JPG?width=480" loading="lazy" alt="水上木偶戲" onerror="this.parentElement.style.display='none'">
+          </div>
+          <div class="pi-name">水上木偶戲</div>
+          <div class="pi-desc">越南最具特色的傳統民間舞台戲，偶師長時間浸泡水中，運用臂力與控縄技巧操演各式民間傳說與鄉村生活故事，是當晚的餘興節目。</div>
+        </div>
+      </div>
+    </details>
+    <details class="x-card xc-warn">
+      <summary class="x-card-head">
+        <span class="x-card-title">郵輪重要須知</span>
+        <span class="x-card-arrow">▶</span>
+      </summary>
+      <div class="x-card-body">
+        <div class="xi">
+          <div class="xi-icon">👥</div>
+          <div class="xi-body">
+            <div class="xi-name">最低出航人數</div>
+            <div class="xi-desc">海洋阿特普斯號可容納280人，若當日整船收客低於36人將不出海，改搭一般日間遊船，每人退費NT$1,000。</div>
+          </div>
+        </div>
+        <div class="xi">
+          <div class="xi-icon">🌪️</div>
+          <div class="xi-body">
+            <div class="xi-name">天候因素</div>
+            <div class="xi-desc">若遇颱風、大霧等不可抗力因素導致碼頭管制無法出海，將改安排前往鴻基島參觀傳統市集，午餐改於岸上餐廳。</div>
+          </div>
+        </div>
+      </div>
+    </details>
+  </div>
+
+  <!-- DAY 4 -->
+  <div class="page ct" id="page3">
+    <div class="day-hero ct">
+      <div class="day-tag ct">DAY 4 · 6月25日（四）</div>
+      <div class="day-title">🏛️ 河內市區巡禮</div>
+      <div class="day-sub">巴亭廣場・還劍湖・三十六古街</div>
+    </div>
+    <div class="card weather-card" data-lat="21.0285" data-lon="105.8542" data-date="2026-06-25">
+      <div class="card-title">當地天氣・河內</div>
+      <div class="wx-body">載入中…</div>
+    </div>
+    <div class="day-photo-wrap">
+      <img class="day-photo-img" src="https://commons.wikimedia.org/wiki/Special:FilePath/2012.01.25_Hanoi,_Ho_Chi_Minh-Mausoleum.jpg?width=900" loading="lazy" alt="胡志明陵寢" onerror="this.parentElement.style.display='none'">
+      <div class="photo-credit">圖片來源：<a href="https://commons.wikimedia.org/wiki/File:2012.01.25_Hanoi,_Ho_Chi_Minh-Mausoleum.jpg" target="_blank">Wikimedia Commons</a></div>
+    </div>
+    <div class="abstract ct">巴亭廣場是河內的政治心臟，1945年胡志明在此宣讀獨立宣言、建立越南民主共和國；周邊的還劍湖與三十六古街，則承載著更久遠的市井生活與傳說記憶。</div>
+    <div class="card">
+      <div class="card-title">行程時刻</div>
+      <div class="timeline">
+        <div class="tl-item"><div class="tl-left"><div class="tl-time ct">早餐</div><div class="tl-line"></div></div><div class="tl-text">🍳 飯店內自助餐</div></div>
+        <div class="tl-item"><div class="tl-left"><div class="tl-time ct">上午</div><div class="tl-line"></div></div><div class="tl-text">🚌 下龍灣出發，返回河內</div></div>
+        <div class="tl-item"><div class="tl-left"><div class="tl-time ct">　</div><div class="tl-line"></div></div><div class="tl-text">🏛️ 巴亭廣場<div class="tl-sub">車遊／步行參觀廣場周邊</div></div></div>
+        <div class="tl-item"><div class="tl-left"><div class="tl-time ct">　</div><div class="tl-line"></div></div><div class="tl-text">🏯 胡志明陵寢、總督府<div class="tl-sub">僅外觀欣賞，不入內參觀</div></div></div>
+        <div class="tl-item"><div class="tl-left"><div class="tl-time ct">　</div><div class="tl-line"></div></div><div class="tl-text">🪷 一柱廟<div class="tl-sub">1049年創建，建於蓮花池中單柱之上</div></div></div>
+        <div class="tl-item"><div class="tl-left"><div class="tl-time ct">午餐</div><div class="tl-line"></div></div><div class="tl-text">🍽️ Vui Garden 越式風味（10USD）</div></div>
+        <div class="tl-item"><div class="tl-left"><div class="tl-time ct">下午</div><div class="tl-line"></div></div><div class="tl-text">🏞️ 還劍湖<div class="tl-sub">黎太祖還劍傳說，車上導覽介紹</div></div></div>
+        <div class="tl-item"><div class="tl-left"><div class="tl-time ct">　</div><div class="tl-line"></div></div><div class="tl-text">🛍️ 三十六古街（含電瓶車）<div class="tl-sub">十五世紀傳統商街，36條街依當時交易商品命名</div><div class="tl-note">🛒 步行可達同春市場，咖啡、零食、生活用品選擇豐富（詳見「買買推薦」分頁）</div></div></div>
+        <div class="tl-item"><div class="tl-left"><div class="tl-time ct">晚餐</div><div class="tl-line"></div></div><div class="tl-text">🍽️ 經典風味餐（10USD）</div></div>
+        <div class="tl-item"><div class="tl-left"><div class="tl-time ct">住宿</div><div class="tl-line"></div></div><div class="tl-text">🛏️ <a href="https://grandviewhotel.com.vn" target="_blank">GrandView Hotel & Residence</a></div></div>
+      </div>
+    </div>
+    <details class="x-card xc-spot">
+      <summary class="x-card-head">
+        <span class="x-card-title">景點圖文介紹</span>
+        <span class="x-card-arrow">▶</span>
+      </summary>
+      <div class="x-card-body">
+        <div class="pi">
+          <div class="pi-name">巴亭廣場</div>
+          <div class="pi-desc">河內的政治心臟，廣場中央有莊嚴的胡志明主席陵墓、胡志明博物館與故居，數條林蔭大道由此向市區輻射，1945年胡志明在此宣讀獨立宣言，建立越南民主共和國。</div>
+        </div>
+        <div class="pi">
+          <div class="pi-name">胡志明陵寢</div>
+          <div class="pi-desc">以灰色大理石建造的四方型建築，帶有濃厚蘇聯時期色彩，外觀與莫斯科紅場的列寧墓相似。胡志明終身未娶、生活儉樸，陵寢僅供外觀參觀，不開放入內。</div>
+        </div>
+        <div class="pi">
+          <div class="pi-name">總督府</div>
+          <div class="pi-desc">又稱主席府，建於1906年的黃色法式建築，原為殖民時期印度支那總督府，後為胡志明主席處理國政之處，僅供外觀欣賞，不入內參觀。</div>
+        </div>
+        <div class="pi">
+          <div class="pi-photo-wrap">
+            <img class="pi-photo" src="https://commons.wikimedia.org/wiki/Special:FilePath/One_Pillar_Pagoda_0324.JPG?width=480" loading="lazy" alt="一柱廟" onerror="this.parentElement.style.display='none'">
+          </div>
+          <div class="pi-name">一柱廟</div>
+          <div class="pi-desc">1049年創建，祠廟建在一根石柱之上，造型獨特、外型雖小，卻是越南代表古剎；寺廟立於蓮花池中的姿態，已成為河內的象徵之一。</div>
+        </div>
+        <div class="pi">
+          <div class="pi-photo-wrap">
+            <img class="pi-photo" src="https://commons.wikimedia.org/wiki/Special:FilePath/Hoan_Kiem_Lake_-_Hanoi,_Vietnam_-_DSC03695.JPG?width=480" loading="lazy" alt="還劍湖" onerror="this.parentElement.style.display='none'">
+          </div>
+          <div class="pi-name">還劍湖</div>
+          <div class="pi-desc">位於河內鬧區中心，傳說十五世紀中葉黎太祖曾獲神劍之助擊退外侵，戰後遊湖時忽見一隻大龜浮出水面向他索劍，因此得名「還劍湖」；湖中至今仍有一座三層樓的龜塔，紀念這段傳說。</div>
+        </div>
+        <div class="pi">
+          <div class="pi-photo-wrap">
+            <img class="pi-photo" src="https://commons.wikimedia.org/wiki/Special:FilePath/Old_Quarter_Hanoi_Street_View.JPG?width=480" loading="lazy" alt="三十六古街" onerror="this.parentElement.style.display='none'">
+          </div>
+          <div class="pi-name">三十六古街</div>
+          <div class="pi-desc">源自十五世紀的傳統商店街，共36條，每條狹窄街道均以當時交易的商品命名，如絲街、米街、紙街、珠寶街等，是深入了解當地生活、選購紀念品的熱門去處。</div>
+        </div>
+      </div>
+    </details>
+  </div>
+
+  <!-- DAY 5 -->
+  <div class="page gt" id="page4">
+    <div class="day-hero gt">
+      <div class="day-tag gt">DAY 5 · 6月26日（五）</div>
+      <div class="day-title">🏠 河內 → 桃園</div>
+      <div class="day-sub">西湖・鎮國寺・河內大劇院</div>
+    </div>
+    <div class="card weather-card" data-lat="21.0285" data-lon="105.8542" data-date="2026-06-26">
+      <div class="card-title">當地天氣・河內</div>
+      <div class="wx-body">載入中…</div>
+    </div>
+    <div class="day-photo-wrap">
+      <img class="day-photo-img" src="https://commons.wikimedia.org/wiki/Special:FilePath/Around_West_Lake_%28Ho_Tay%29_03.jpg?width=900" loading="lazy" alt="河內西湖" onerror="this.parentElement.style.display='none'">
+      <div class="photo-credit">圖片來源：<a href="https://commons.wikimedia.org/wiki/Category:West_Lake_(Hanoi)" target="_blank">Wikimedia Commons</a></div>
+    </div>
+    <div class="abstract gt">西湖是河內72座湖泊中最美、最大的一座，總面積達500公頃，與相鄰的白竹湖相通；自李朝建都河內起便是著名遊覽勝地，素有「劍湖煙水西湖月」之譽，沿岸過去曾遍布王室貴族的宮殿樓閣，惟歷代戰爭已悉數毀壞。湖畔的鎮國寺更是河內現存最古老的佛寺。</div>
+    <div class="card">
+      <div class="card-title">行程時刻</div>
+      <div class="timeline">
+        <div class="tl-item"><div class="tl-left"><div class="tl-time gt">早餐</div><div class="tl-line"></div></div><div class="tl-text">🍳 飯店內自助餐</div></div>
+        <div class="tl-item"><div class="tl-left"><div class="tl-time gt">上午</div><div class="tl-line"></div></div><div class="tl-text">🏞️ 西湖<div class="tl-sub">河內最大湖泊，總面積達500公頃</div></div></div>
+        <div class="tl-item"><div class="tl-left"><div class="tl-time gt">　</div><div class="tl-line"></div></div><div class="tl-text">⛩️ 鎮國寺<div class="tl-sub">始建於六世紀，1615年遷至西湖金魚島現址</div></div></div>
+        <div class="tl-item"><div class="tl-left"><div class="tl-time gt">午餐</div><div class="tl-line"></div></div><div class="tl-text">🌸 SEN蓮花百匯自助餐（18USD）</div></div>
+        <div class="tl-item"><div class="tl-left"><div class="tl-time gt">下午</div><div class="tl-line"></div></div><div class="tl-text">🎭 河內大劇院及領事館區車遊巡禮<div class="tl-sub">仿巴黎歌劇院的法式巴洛克建築</div></div></div>
+        <div class="tl-item"><div class="tl-left"><div class="tl-time gt">　</div><div class="tl-line"></div></div><div class="tl-text">🚌 前往內排國際機場</div></div>
+        <div class="tl-item"><div class="tl-left"><div class="tl-time gt">18:00</div><div class="tl-line"></div></div><div class="tl-text">✈️ BR386 河內起飛</div></div>
+        <div class="tl-item"><div class="tl-left"><div class="tl-time gt">21:55</div><div class="tl-line"></div></div><div class="tl-text">🛬 抵達桃園國際機場<div class="tl-sub">台灣時間</div></div></div>
+        <div class="tl-item"><div class="tl-left"><div class="tl-time gt">晚餐</div><div class="tl-line"></div></div><div class="tl-text">🍱 機上簡餐</div></div>
+      </div>
+    </div>
+    <details class="x-card xc-spot">
+      <summary class="x-card-head">
+        <span class="x-card-title">景點圖文介紹</span>
+        <span class="x-card-arrow">▶</span>
+      </summary>
+      <div class="x-card-body">
+        <div class="pi">
+          <div class="pi-name">西湖</div>
+          <div class="pi-desc">河內面積最大、歷史最久的湖泊，過去沿岸遍布王室貴族的宮殿樓閣，惟歷代戰爭已悉數毀壞；自李朝定都河內起便是著名遊覽勝地。</div>
+        </div>
+        <div class="pi">
+          <div class="pi-photo-wrap">
+            <img class="pi-photo" src="https://commons.wikimedia.org/wiki/Special:FilePath/Chua_Tran_Quoc_%2812365330655%29.jpg?width=480" loading="lazy" alt="鎮國寺" onerror="this.parentElement.style.display='none'">
+          </div>
+          <div class="pi-name">鎮國寺</div>
+          <div class="pi-desc">建於公元六世紀李南帝統治時期，原名開國寺，選址紅河岸邊，因河流侵蝕於1615年遷至西湖中的金魚島現址，歷年間也曾稱安國寺、鎮北寺。寺內一株菩提樹，是1959年印度總統拉金德拉・普拉薩德訪越時所贈，源自釋迦牟尼悟道的菩提伽耶古樹。</div>
+        </div>
+        <div class="pi">
+          <div class="pi-photo-wrap">
+            <img class="pi-photo" src="https://commons.wikimedia.org/wiki/Special:FilePath/Vn-hanoi-oper-02-08-07.jpg?width=480" loading="lazy" alt="河內大劇院" onerror="this.parentElement.style.display='none'">
+          </div>
+          <div class="pi-name">河內大劇院</div>
+          <div class="pi-desc">建築藍本取自巴黎歌劇院，同屬華麗的巴洛克式建築，置身其中如同歐洲劇場一般；鄰近建於1906年的黃色法式建築群，現為各國駐越南領事館區，古樹林蔭、法式建築錯落其間。</div>
+        </div>
+      </div>
+    </details>
+  </div>
+
+  <!-- SHOPPING -->
+  <div class="page st" id="page5">
+    <div class="day-hero st">
+      <div class="day-tag st">🛍️ 買買推薦</div>
+      <div class="day-title">越南買買推薦</div>
+      <div class="day-sub">生活用品・美食・飲品（不含紀念裝飾品）</div>
+    </div>
+    <div class="abstract" style="border-left-color:var(--shop);">以下挑選的是越南當地超市與市場常見的生活用品與美食飲品，旗袍、藤編包、香水、陶瓷擺飾等紀念裝飾品類未列入。建議在Day4三十六古街或Day1河內大世界自由活動時段選購，行程中其餘時段以團體活動為主，不一定有充裕的逛街時間。</div>
+    <details class="x-card xc-shop" open>
+      <summary class="x-card-head">
+        <span class="x-card-title">咖啡・沖泡飲品</span>
+        <span class="x-card-arrow">▶</span>
+      </summary>
+      <div class="x-card-body">
+        <div class="xi">
+          <div class="xi-icon">☕</div>
+          <div class="xi-body">
+            <span class="xi-tag xt-drink">經典必買</span> <div class="xi-name">即溶咖啡（G7・中原Trung Nguyên・MR.VIET）</div>
+            <div class="xi-desc">越南是全球第二大咖啡生產國，以羅布斯塔豆為主，風味濃苦，習慣加煉乳調和。即溶包輕便耐放，超市常見整盒販售。</div>
+          </div>
+        </div>
+        <div class="xi">
+          <div class="xi-icon">🫖</div>
+          <div class="xi-body">
+            <div class="xi-name">越式滴漏咖啡壺（Phin）</div>
+            <div class="xi-desc">鋁製小壺搭配咖啡粉與煉乳，回家也能重現越式滴漏咖啡的沖泡過程，雜貨鋪、超市都能買到。</div>
+          </div>
+        </div>
+      </div>
+    </details>
+    <details class="x-card xc-shop">
+      <summary class="x-card-head">
+        <span class="x-card-title">零食・甜點</span>
+        <span class="x-card-arrow">▶</span>
+      </summary>
+      <div class="x-card-body">
+        <div class="xi">
+          <div class="xi-icon">🥥</div>
+          <div class="xi-body">
+            <div class="xi-name">椰子糖（Kẹo dừa）</div>
+            <div class="xi-desc">鮮榨椰汁熬煮而成，口感香甜軟糯，包裝輕巧好攜帶。</div>
+          </div>
+        </div>
+        <div class="xi">
+          <div class="xi-icon">🍬</div>
+          <div class="xi-body">
+            <span class="xi-tag xt-food">人氣款</span> <div class="xi-name">Galant 第一排糖</div>
+            <div class="xi-desc">花生、奶油、腰果包心後裹上椰絲，外脆內軟，常被稱為「越南版金沙巧克力」。</div>
+          </div>
+        </div>
+        <div class="xi">
+          <div class="xi-icon">🥜</div>
+          <div class="xi-body">
+            <div class="xi-name">鹽炒帶皮腰果</div>
+            <div class="xi-desc">鹽炒而非油炸，口感酥脆、香氣足，比去皮腰果更受推薦。</div>
+          </div>
+        </div>
+        <div class="xi">
+          <div class="xi-icon">🍫</div>
+          <div class="xi-body">
+            <div class="xi-name">MAROU 巧克力</div>
+            <div class="xi-desc">使用越南本地可可豆製作的精品巧克力，風味與包裝都偏高質感，價格也較一般零食高。</div>
+          </div>
+        </div>
+        <div class="xi">
+          <div class="xi-icon">🍈</div>
+          <div class="xi-body">
+            <div class="xi-name">風乾水果（波羅蜜乾・芒果乾）</div>
+            <div class="xi-desc">低溫烘焙保留天然果香，口感類似洋芋片，不額外加糖，保存期長。</div>
+          </div>
+        </div>
+      </div>
+    </details>
+    <details class="x-card xc-shop">
+      <summary class="x-card-head">
+        <span class="x-card-title">廚房常備醬料</span>
+        <span class="x-card-arrow">▶</span>
+      </summary>
+      <div class="x-card-body">
+        <div class="xi">
+          <div class="xi-icon">🌶️</div>
+          <div class="xi-body">
+            <div class="xi-name">CHIN-SU 辣椒醬</div>
+            <div class="xi-desc">越南家庭常備醬料，拌麵、沾炸物都合適，瓶裝攜帶方便。</div>
+          </div>
+        </div>
+        <div class="xi">
+          <div class="xi-icon">🐟</div>
+          <div class="xi-body">
+            <span class="xi-tag xt-warn">⚠️ 入境限制</span> <div class="xi-name">魚露（Nước mắm）</div>
+            <div class="xi-desc">越南菜的靈魂調味料，但屬液態且常含魚類成分，依台灣動植物防疫檢疫規定通常無法攜帶入境，建議當地用餐時品嚐即可，不建議購買帶回。</div>
+          </div>
+        </div>
+      </div>
+    </details>
+    <details class="x-card xc-shop">
+      <summary class="x-card-head">
+        <span class="x-card-title">生活保養用品</span>
+        <span class="x-card-arrow">▶</span>
+      </summary>
+      <div class="x-card-body">
+        <div class="xi">
+          <div class="xi-icon">🥥</div>
+          <div class="xi-body">
+            <span class="xi-tag xt-life">日常保養</span> <div class="xi-name">椰子油保養品</div>
+            <div class="xi-desc">當地品牌（如LANA）推出的椰子油身體乳、護髮油等，價格親民，超市與藥妝店都有販售。</div>
+          </div>
+        </div>
+        <div class="xi">
+          <div class="xi-icon">💆</div>
+          <div class="xi-body">
+            <div class="xi-name">提神藥膏（綠油精・白花油類）</div>
+            <div class="xi-desc">當地常見的清涼提神藥膏，旅途中可用於頭痛、暈車，體積小好收納。</div>
+          </div>
+        </div>
+        <div class="xi">
+          <div class="xi-icon">🌿</div>
+          <div class="xi-body">
+            <div class="xi-name">香茅防蚊噴霧／膏</div>
+            <div class="xi-desc">天然香茅成分為主的防蚊用品，戶外行程（長安竹筏、Halong郵輪甲板）時實用。</div>
+          </div>
+        </div>
+      </div>
+    </details>
+    <div class="card">
+      <div class="card-title">推薦採購地點</div>
+      <div class="info-row"><div class="info-icon">🏪</div><div><div class="info-label">同春市場 Đồng Xuân Market</div><div>河內最大的室內市場，零食、咖啡、茶包、日用品選擇最齊全，營業約06:00–18:00，鄰近三十六古街，Day4可步行前往。</div></div></div>
+      <div class="info-row"><div class="info-icon">🛒</div><div><div class="info-label">WinMart／Co.opmart／Lotte Mart 等連鎖超市</div><div>價格標示清楚、品項齊全，適合一次購齊咖啡、零食、保養品等生活用品。</div></div></div>
+    </div>
+  </div>
+
+  <!-- PACKING LIST -->
+  <div class="page" id="page6">
+    <div class="day-hero">
+      <div class="day-tag">🧳 行李清單</div>
+      <div class="day-title">行前打包清單</div>
+      <div class="day-sub">六月河內・下龍灣，濕熱多雨</div>
+    </div>
+    <div class="abstract">六月正值越南北部雨季，河內、下龍灣日均溫約28–34°C，悶熱潮濕、午後常有雷陣雨；長安竹筏、郵輪甲板等戶外行程日照強烈，建議做好防曬、防雨、防蚊三件事。</div>
+    <details class="x-card xc-pack" open>
+      <summary class="x-card-head">
+        <span class="x-card-title">證件與文件</span>
+        <span class="x-card-arrow">▶</span>
+      </summary>
+      <div class="x-card-body">
+        <div class="xi">
+          <div class="xi-icon">🛂</div>
+          <div class="xi-body">
+            <div class="xi-name">護照（效期建議6個月以上）</div>
+            <div class="xi-desc">出發前確認效期，並準備護照影本或手機備份照片，與正本分開放置。</div>
+          </div>
+        </div>
+        <div class="xi">
+          <div class="xi-icon">📄</div>
+          <div class="xi-body">
+            <div class="xi-name">簽證／入境文件</div>
+            <div class="xi-desc">團體旅遊通常由小林旅遊代為處理，仍建議出發前向旅行社確認自己的簽證或入境文件是否已備妥。</div>
+          </div>
+        </div>
+        <div class="xi">
+          <div class="xi-icon">🧾</div>
+          <div class="xi-body">
+            <div class="xi-name">機票、訂房憑證、旅遊保險</div>
+            <div class="xi-desc">電子檔存在手機，建議另外列印一份紙本備用，以防手機沒電或網路不通。</div>
+          </div>
+        </div>
+      </div>
+    </details>
+    <details class="x-card xc-pack">
+      <summary class="x-card-head">
+        <span class="x-card-title">現金與支付</span>
+        <span class="x-card-arrow">▶</span>
+      </summary>
+      <div class="x-card-body">
+        <div class="xi">
+          <div class="xi-icon">💵</div>
+          <div class="xi-body">
+            <div class="xi-name">美金小額現鈔</div>
+            <div class="xi-desc">行程中多項升等餐食以USD計價（8–38USD不等），建議準備足夠的美金小面額鈔票。</div>
+          </div>
+        </div>
+        <div class="xi">
+          <div class="xi-icon">🇻🇳</div>
+          <div class="xi-body">
+            <div class="xi-name">越盾現金（小費、零星花費）</div>
+            <div class="xi-desc">長安竹筏船伕小費每位約越盾20,000元或美金1元，建議備妥小額越盾或美金零錢。</div>
+          </div>
+        </div>
+        <div class="xi">
+          <div class="xi-icon">💳</div>
+          <div class="xi-body">
+            <div class="xi-name">信用卡</div>
+            <div class="xi-desc">大型超市、飯店多可刷卡，路邊攤與船伕小費仍以現金為主。</div>
+          </div>
+        </div>
+      </div>
+    </details>
+    <details class="x-card xc-pack">
+      <summary class="x-card-head">
+        <span class="x-card-title">服裝與穿著</span>
+        <span class="x-card-arrow">▶</span>
+      </summary>
+      <div class="x-card-body">
+        <div class="xi">
+          <div class="xi-icon">👕</div>
+          <div class="xi-body">
+            <div class="xi-name">輕薄透氣、快乾衣物</div>
+            <div class="xi-desc">六月濕熱，建議排汗材質、易乾衣物為主，方便每日替換。</div>
+          </div>
+        </div>
+        <div class="xi">
+          <div class="xi-icon">🩱</div>
+          <div class="xi-body">
+            <div class="xi-name">泳衣</div>
+            <div class="xi-desc">Day3 TITOP英雄島可於沙灘戲水，有興趣下水建議攜帶。</div>
+          </div>
+        </div>
+        <div class="xi">
+          <div class="xi-icon">🙏</div>
+          <div class="xi-body">
+            <div class="xi-name">可遮肩遮膝的服裝</div>
+            <div class="xi-desc">參觀一柱廟、鎮國寺等寺廟時較為合宜，建議準備薄外套或長裙／長褲。</div>
+          </div>
+        </div>
+        <div class="xi">
+          <div class="xi-icon">👟</div>
+          <div class="xi-body">
+            <div class="xi-name">好走的鞋＋拖鞋或涼鞋</div>
+            <div class="xi-desc">三十六古街、古蹟步行路段建議穿好走的鞋；船上、沙灘則拖鞋或涼鞋更方便。</div>
+          </div>
+        </div>
+      </div>
+    </details>
+    <details class="x-card xc-pack">
+      <summary class="x-card-head">
+        <span class="x-card-title">防曬・防雨・防蚊</span>
+        <span class="x-card-arrow">▶</span>
+      </summary>
+      <div class="x-card-body">
+        <div class="xi">
+          <div class="xi-icon">🧴</div>
+          <div class="xi-body">
+            <div class="xi-name">防曬乳・帽子・太陽眼鏡</div>
+            <div class="xi-desc">郵輪甲板、長安竹筏、沙灘等戶外行程日照強烈。</div>
+          </div>
+        </div>
+        <div class="xi">
+          <div class="xi-icon">☂️</div>
+          <div class="xi-body">
+            <div class="xi-name">輕便雨具或折疊雨傘</div>
+            <div class="xi-desc">六月為雨季，午後常有短暫雷陣雨，建議隨身攜帶。</div>
+          </div>
+        </div>
+        <div class="xi">
+          <div class="xi-icon">🦟</div>
+          <div class="xi-body">
+            <div class="xi-name">防蚊用品</div>
+            <div class="xi-desc">長安竹筏、郵輪甲板等戶外行程建議事先準備，當地也有香茅防蚊系列可選購（見「買買推薦」）。</div>
+          </div>
+        </div>
+      </div>
+    </details>
+    <details class="x-card xc-pack">
+      <summary class="x-card-head">
+        <span class="x-card-title">個人藥品與盥洗</span>
+        <span class="x-card-arrow">▶</span>
+      </summary>
+      <div class="x-card-body">
+        <div class="xi">
+          <div class="xi-icon">💊</div>
+          <div class="xi-body">
+            <div class="xi-name">暈船藥</div>
+            <div class="xi-desc">長安竹筏、Day3郵輪行程前可預先服用，建議搭船前30分鐘服用效果較好。</div>
+          </div>
+        </div>
+        <div class="xi">
+          <div class="xi-icon">🩹</div>
+          <div class="xi-body">
+            <div class="xi-name">個人慣用藥物、腸胃藥、OK繃</div>
+            <div class="xi-desc">飲食習慣改變容易腸胃不適，建議自備熟悉的藥品。</div>
+          </div>
+        </div>
+        <div class="xi">
+          <div class="xi-icon">🧼</div>
+          <div class="xi-body">
+            <div class="xi-name">乾洗手、個人盥洗用品</div>
+            <div class="xi-desc">部分飯店未必提供牙刷牙膏等一次性用品，建議自備。</div>
+          </div>
+        </div>
+      </div>
+    </details>
+    <details class="x-card xc-pack">
+      <summary class="x-card-head">
+        <span class="x-card-title">電器與其他</span>
+        <span class="x-card-arrow">▶</span>
+      </summary>
+      <div class="x-card-body">
+        <div class="xi">
+          <div class="xi-icon">🔌</div>
+          <div class="xi-body">
+            <div class="xi-name">電源轉接頭</div>
+            <div class="xi-desc">越南電壓220V，插座多為A／C／G型，台灣電器（110V）建議確認設備是否支援雙電壓，並準備轉接頭。</div>
+          </div>
+        </div>
+        <div class="xi">
+          <div class="xi-icon">🔋</div>
+          <div class="xi-body">
+            <div class="xi-name">行動電源、充電線</div>
+            <div class="xi-desc">郵輪、長途車程拍照耗電量大，建議多帶一顆行動電源。</div>
+          </div>
+        </div>
+        <div class="xi">
+          <div class="xi-icon">🛍️</div>
+          <div class="xi-body">
+            <div class="xi-name">輕便環保購物袋</div>
+            <div class="xi-desc">同春市場、超市採購戰利品（見「買買推薦」）打包用，也可減少當地塑膠袋使用。</div>
+          </div>
+        </div>
+      </div>
+    </details>
+  </div>
+
+  <!-- INFO TAB -->
+  <div class="page" id="page7">
+    <div class="day-hero yt">
+      <div class="day-tag yt">📋 集合資訊</div>
+      <div class="day-title">集合資訊 ・ 緊急聯絡</div>
+      <div class="day-sub">越南河內千岩競秀～陸龍灣 下龍灣五日</div>
+    </div>
+    <div class="card">
+      <div class="card-title">集合資訊</div>
+      <div class="info-row"><div class="info-icon">🏷️</div><div><div class="info-label">團體名稱</div><div>越南河內 千岩競秀～陸龍灣 下龍灣五日（五星海洋－阿特普斯號郵輪）</div></div></div>
+      <div class="info-row"><div class="info-icon">🕐</div><div><div class="info-label">集合時間</div><div>2026年6月22日（一）中午 12:10</div></div></div>
+      <div class="info-row"><div class="info-icon">📍</div><div><div class="info-label">集合地點</div><div>桃園國際機場 第二航廈 長榮航空櫃台</div></div></div>
+    </div>
+    <div class="card">
+      <div class="card-title">領隊・導遊</div>
+      <div class="info-row"><div class="info-icon">👤</div><div><div class="info-label">服務領隊　張敬茂</div><div><a href="tel:+886933481705">0933 481 705</a></div></div></div>
+      <div class="info-row"><div class="info-icon">👤</div><div><div class="info-label">服務導遊　裴氏炫女士</div><div><a href="tel:+886986676739">0986 676 739</a></div></div></div>
+    </div>
+    <div class="card">
+      <div class="card-title">越南外站緊急聯絡</div>
+      <div class="info-row"><div class="info-icon">🏢</div><div><div class="info-label">Asia Number One 國際旅行集團股份公司</div><div><a href="tel:+84392878888">+84 39 287 8888</a></div></div></div>
+      <div class="info-row"><div class="info-icon">👤</div><div><div class="info-label">苏玉海</div><div><a href="tel:+84916791688">+84 91 679 1688</a></div></div></div>
+      <div class="info-row"><div class="info-icon">👤</div><div><div class="info-label">阮紅絨</div><div><a href="tel:+84945574599">+84 94 557 4599</a></div></div></div>
+    </div>
+    <div class="card">
+      <div class="card-title">航班時刻</div>
+      <div class="info-row"><div class="info-icon">✈️</div><div><div class="info-label">BR385　桃園 → 河內　6/22（一）</div><div>14:40 起飛　→　16:50 抵達</div></div></div>
+      <div class="info-row"><div class="info-icon">✈️</div><div><div class="info-label">BR386　河內 → 桃園　6/26（五）</div><div>18:00 起飛　→　21:55 抵達</div></div></div>
+    </div>
+    <div class="card">
+      <div class="card-title">住宿飯店</div>
+      <div class="info-row"><div class="info-icon">🏨</div><div><div class="info-label">GrandView Hotel & Residence（Day1・4・5）</div><div><a href="https://grandviewhotel.com.vn" target="_blank">官網</a>　<a href="tel:+842433833368">+84 24 3383 3368</a></div></div></div>
+      <div class="info-row"><div class="info-icon">🏨</div><div><div class="info-label">PEACE HẠ LONG HOTEL（Day2・3）</div><div><a href="https://peacehotelhalong.vn" target="_blank">官網</a>　<a href="tel:+842033845555">+84 20 3384 5555</a></div></div></div>
+    </div>
+  </div>
+
+</div>
+
+<!-- BOTTOM NAV -->
+<div class="bottom-nav">
+  <button class="nav-btn active" onclick="scrollToTop()"><span>⬆️</span>回頂</button>
+  <button class="nav-btn" onclick="openMap()"><span>🗺️</span>地圖</button>
+  <button class="nav-btn" onclick="prevDay()"><span>◀</span>上一天</button>
+  <button class="nav-btn" onclick="nextDay()"><span>▶</span>下一天</button>
+</div>
+
+<script>
+  let cur = 0;
+  const N = 8;
+  const mapQueries = [
+    'Hanoi,Vietnam',
+    'Ha+Long+Bay,Vietnam',
+    'Ha+Long+Bay,Vietnam',
+    'Hoan+Kiem+Lake,Hanoi,Vietnam',
+    'West+Lake,Hanoi,Vietnam',
+    'Dong+Xuan+Market,Hanoi,Vietnam',
+    'Hanoi,Vietnam',
+    'Taoyuan+International+Airport'
+  ];
+
+  function showPage(n) {
+    cur = n;
+    document.querySelectorAll('.page').forEach((p, i) => p.classList.toggle('active', i === n));
+    document.querySelectorAll('.tab-btn').forEach((t, i) => t.classList.toggle('active', i === n));
+    const tab = document.getElementById('tab' + n);
+    if (tab) tab.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' });
+  }
+
+  document.addEventListener('DOMContentLoaded', () => {
+    showPage(0);
+    document.querySelectorAll('.weather-card').forEach(fetchWeather);
+  });
+
+  function prevDay() { if (cur > 0) showPage(cur - 1); }
+  function nextDay() { if (cur < N - 1) showPage(cur + 1); }
+  function scrollToTop() { window.scrollTo({ top: 0, behavior: 'smooth' }); }
+  function openMap() { window.open('https://maps.google.com/maps?q=' + mapQueries[cur], '_blank'); }
+
+  /* WEATHER: live fetch via Open-Meteo (free, no API key, CORS-enabled — works on static hosting incl. GitHub Pages) */
+  const WMO_TABLE = {
+    0: ['☀️', '晴朗'], 1: ['🌤️', '大致晴朗'], 2: ['⛅', '局部多雲'], 3: ['☁️', '多雲'],
+    45: ['🌫️', '有霧'], 48: ['🌫️', '有霧'],
+    51: ['🌦️', '毛毛雨'], 53: ['🌦️', '小雨'], 55: ['🌧️', '中雨'],
+    56: ['🌧️', '凍雨'], 57: ['🌧️', '凍雨'],
+    61: ['🌦️', '小雨'], 63: ['🌧️', '中雨'], 65: ['🌧️', '大雨'],
+    66: ['🌧️', '凍雨'], 67: ['🌧️', '凍雨'],
+    71: ['🌨️', '小雪'], 73: ['🌨️', '中雪'], 75: ['❄️', '大雪'],
+    80: ['🌦️', '短暫陣雨'], 81: ['🌧️', '陣雨'], 82: ['⛈️', '強陣雨'],
+    95: ['⛈️', '雷雨'], 96: ['⛈️', '雷雨（可能有冰珠）'], 99: ['⛈️', '強雷雨']
+  };
+  function wmoInfo(code) { return WMO_TABLE[code] || ['🌡️', '天氣資料']; }
+
+  async function fetchWeather(card) {
+    const lat = card.dataset.lat, lon = card.dataset.lon, date = card.dataset.date;
+    const body = card.querySelector('.wx-body');
+    try {
+      const todayMid = new Date(); todayMid.setHours(0,0,0,0);
+      const target = new Date(date + 'T00:00:00');
+      const diffDays = Math.round((target - todayMid) / 86400000);
+      let url, isHistory = false;
+      if (diffDays < -5) {
+        isHistory = true;
+        url = `https://archive-api.open-meteo.com/v1/archive?latitude=${lat}&longitude=${lon}&start_date=${date}&end_date=${date}&daily=temperature_2m_max,temperature_2m_min,precipitation_sum,weathercode&timezone=Asia%2FHo_Chi_Minh`;
+      } else if (diffDays > 15) {
+        body.innerHTML = '<div class="wx-note">出發前約2週天氣預報才會開放，目前先參考越南北部六月氣候：濕熱多雨，日均溫約28–34°C，午後常有短暫雷陣雨。</div>';
+        return;
+      } else {
+        url = `https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}&start_date=${date}&end_date=${date}&daily=temperature_2m_max,temperature_2m_min,precipitation_probability_max,weathercode&timezone=Asia%2FHo_Chi_Minh`;
+      }
+      const res = await fetch(url);
+      if (!res.ok) throw new Error('API error');
+      const data = await res.json();
+      const d = data.daily;
+      if (!d || !d.weathercode || d.weathercode[0] === null || d.weathercode[0] === undefined) {
+        body.innerHTML = '<div class="wx-note">目前查不到這天的天氣資料，建議出發前再以其他天氣App確認。</div>';
+        return;
+      }
+      const [icon, label] = wmoInfo(d.weathercode[0]);
+      const max = Math.round(d.temperature_2m_max[0]);
+      const min = Math.round(d.temperature_2m_min[0]);
+      const rainText = isHistory
+        ? ((d.precipitation_sum && d.precipitation_sum[0] != null) ? `降雨量 ${d.precipitation_sum[0]}mm` : '降雨資料缺失')
+        : ((d.precipitation_probability_max && d.precipitation_probability_max[0] != null) ? `降雨機率 ${d.precipitation_probability_max[0]}%` : '');
+      body.innerHTML = `<div class="wx-row"><div class="wx-icon">${icon}</div><div class="wx-info"><div class="wx-temp">${min}° – ${max}°C</div><div class="wx-desc">${label}${rainText ? '・' + rainText : ''}</div></div></div><div class="wx-tag">${isHistory ? '⏱ 歷史實測資料（非預報）' : '🔄 即時預報・每次開啟自動更新'}</div>`;
+    } catch (e) {
+      body.innerHTML = '<div class="wx-note">天氣資料載入失敗，可能是裝置目前無法連線到 Open-Meteo，請稍後重新整理頁面。</div>';
+    }
+  }
+
+  let sx = 0;
+  document.addEventListener('touchstart', e => { sx = e.touches[0].clientX; });
+  document.addEventListener('touchend', e => {
+    const dx = e.changedTouches[0].clientX - sx;
+    if (Math.abs(dx) > 55) dx < 0 ? nextDay() : prevDay();
+  });
+</script>
+</body>
+</html>

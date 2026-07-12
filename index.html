@@ -2,10 +2,10 @@
 <html lang="zh-TW">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 <title>04 文章1 音檔</title>
 <style>
-  * { box-sizing: border-box; margin: 0; padding: 0; }
+  * { box-sizing: border-box; margin: 0; padding: 0; touch-action: manipulation; }
   :root {
     --primary: #2563eb;
     --primary-light: #dbeafe;
@@ -1906,9 +1906,8 @@ document.addEventListener('DOMContentLoaded', () => {
       el.innerHTML = key + roman + sep + meaning;
     }
   });
+  });
 });
-});
-
 </script>
 </body>
 </html>

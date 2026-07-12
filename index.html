@@ -34,24 +34,53 @@
   header {
     background: var(--lime);
     color: var(--black);
-    padding: 16px 14px 12px;
+    padding: 12px 14px 10px;
     position: sticky; top: 0; z-index: 100;
     border-bottom: var(--border);
   }
+  .header-row {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+  }
+  .header-titles { flex: 1; min-width: 0; }
   header h1 {
     font-family: var(--font-mono);
     font-size: 17px;
     font-weight: 700;
     letter-spacing: 0.04em;
     text-transform: uppercase;
+    color: var(--black);
   }
-  header p { font-size: 12px; margin-top: 4px; color: var(--sub); font-weight: 500; }
-  .search-wrap { margin-top: 10px; position: relative; }
+  header p { font-size: 12px; margin-top: 4px; color: var(--black); font-weight: 500; opacity: .7; }
+  .icon-btn {
+    width: 40px; height: 40px;
+    border: var(--border);
+    border-radius: var(--radius);
+    background: var(--card);
+    color: var(--black);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    padding: 0;
+    flex-shrink: 0;
+  }
+  .icon-btn:active { background: var(--black); color: var(--lime); }
+  .icon-btn.active { background: var(--black); color: var(--lime); }
+  .ico { width: 18px; height: 18px; display: block; }
+  .search-panel {
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height .2s ease;
+  }
+  .search-panel.open { max-height: 60px; margin-top: 10px; }
+  .search-wrap { position: relative; }
   .search-wrap input {
     width: 100%;
     border: var(--border);
     border-radius: var(--radius);
-    padding: 10px 36px 10px 12px;
+    padding: 10px 44px 10px 12px;
     font-size: 15px;
     outline: none;
     color: var(--black);
@@ -61,12 +90,9 @@
   .search-wrap input:focus { background: #fff; }
   .search-clear {
     position: absolute; right: 6px; top: 50%; transform: translateY(-50%);
-    border: var(--border); background: var(--black); color: #fff;
-    font-size: 14px; width: 26px; height: 26px; cursor: pointer;
-    display: none; border-radius: var(--radius); line-height: 1;
+    display: none;
   }
-  .search-clear.show { display: flex; align-items: center; justify-content: center; }
-  .search-hint { font-size: 11px; margin-top: 6px; color: var(--sub); font-family: var(--font-mono); }
+  .search-clear.show { display: inline-flex; }
   .main { padding: 12px; }
   .section-card {
     background: var(--card);
@@ -107,7 +133,8 @@
   }
   .sec-right { display:flex; align-items:center; gap:6px; flex-shrink:0; padding-left:8px; }
   .sec-parts-count { font-size:11px; color:var(--sub); font-family: var(--font-mono); }
-  .arrow { font-size:18px; color:var(--black); transition:transform .15s; line-height:1; font-weight:700; }
+  .arrow { display:flex; align-items:center; transition:transform .15s; flex-shrink:0; }
+  .arrow .ico { width: 16px; height: 16px; }
   .arrow.open { transform: rotate(90deg); }
   .parts-container { padding: 8px; border-top: var(--border); display: none; background: var(--bg); }
   .parts-container.open { display: block; }
@@ -146,8 +173,9 @@
     flex: 1; font-size: 14px; color: var(--text); text-align:left;
     font-weight: 500;
   }
-  .title-audio-btn .part-label { color: var(--sub); font-size:13px; font-weight: 600; }
-  .play-icon { font-size: 15px; color: var(--black); flex-shrink:0; font-weight: 700; }
+  .title-audio-btn .part-label { color: var(--black); font-size:13px; font-weight: 600; opacity: .75; }
+  .play-icon { display:flex; align-items:center; flex-shrink:0; }
+  .play-icon .ico { width: 16px; height: 16px; }
   .bottom-player {
     position: fixed; bottom: 0; left: 0; right: 0;
     background: var(--card);
@@ -165,27 +193,51 @@
     white-space:nowrap; overflow:hidden; text-overflow:ellipsis; font-weight:700;
     font-family: var(--font-mono);
   }
-  .player-stop {
-    border: var(--border); background: var(--black); color: var(--lime);
-    border-radius: var(--radius); padding: 6px 12px; font-size: 11px;
-    cursor: pointer; flex-shrink: 0; font-family: var(--font-mono); font-weight: 700;
+  .player-stop .ico { width: 14px; height: 14px; }
+  .progress-wrap { margin-bottom: 8px; }
+  .progress-bar {
+    -webkit-appearance: none; appearance: none;
+    width: 100%; height: 10px;
+    border: var(--border); border-radius: 0;
+    background: var(--bg); outline: none;
+    display: block;
   }
-  .player-stop:active { background: var(--sub); }
-  audio { width: 100%; height: 36px; margin-bottom: 8px; border: var(--border); border-radius: var(--radius); }
+  .progress-bar::-webkit-slider-thumb {
+    -webkit-appearance: none; appearance: none;
+    width: 14px; height: 18px;
+    background: var(--black); border: var(--border); border-radius: 0;
+    cursor: pointer;
+  }
+  .progress-bar::-moz-range-thumb {
+    width: 14px; height: 18px;
+    background: var(--black); border: var(--border); border-radius: 0;
+    cursor: pointer;
+  }
+  .progress-bar::-moz-range-track {
+    height: 10px; background: var(--bg); border: none;
+  }
+  .progress-time {
+    display: flex; justify-content: flex-end; gap: 4px;
+    font-family: var(--font-mono); font-size: 11px;
+    color: var(--black); margin-top: 4px; font-weight: 600;
+  }
+  .time-sep { opacity: .5; }
+  #mainAudio { display: none; }
   .ctrl-row {
     display: flex; align-items: center; justify-content: center; gap: 6px;
   }
   .ctrl-btn {
-    flex: 1;
-    background: var(--card); border: var(--border); border-radius: var(--radius);
-    padding: 10px 0; cursor: pointer; color: var(--black);
-    font-size: 18px; line-height: 1; font-weight: 700;
-    font-family: var(--font-mono);
+    width: 44px; height: 44px;
+    position: relative;
   }
-  .ctrl-btn:active { background: var(--lime); }
-  .ctrl-btn.ctrl-seek { font-size: 14px; }
-  .part-sub { font-size: 11px; color: var(--sub); font-weight: 600; font-family: var(--font-mono); }
-  .part-meaning { font-size: 11px; color: var(--gray); }
+  .ctrl-btn .ico { width: 18px; height: 18px; }
+  .ctrl-label {
+    position: absolute; bottom: 5px; right: 6px;
+    font-family: var(--font-mono); font-size: 9px; font-weight: 700;
+    line-height: 1; pointer-events: none;
+  }
+  .part-sub { font-size: 11px; color: var(--black); font-weight: 600; font-family: var(--font-mono); opacity: .65; }
+  .part-meaning { font-size: 11px; color: var(--black); opacity: .5; }
   mark {
     background: var(--lime);
     color: var(--black);
@@ -210,13 +262,23 @@
 <body>
 
 <header>
-  <h1>音檔連結整理</h1>
-  <p>共 30 章節 · 233 個音檔</p>
-  <div class="search-wrap">
-    <input id="searchInput" type="search" placeholder="搜尋篇名、頁碼、詞條…" enterkeyhint="search" autocomplete="off">
-    <button class="search-clear" id="searchClear" type="button" aria-label="清除">×</button>
+  <div class="header-row">
+    <button type="button" class="icon-btn search-toggle" id="searchToggle" aria-label="搜尋" aria-expanded="false">
+      <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="10" cy="10" r="6"/><line x1="14.5" y1="14.5" x2="20" y2="20"/></svg>
+    </button>
+    <div class="header-titles">
+      <h1>音檔連結整理</h1>
+      <p>共 30 章節 · 233 個音檔</p>
+    </div>
   </div>
-  <div class="search-hint">例如：天燈、66、咱人</div>
+  <div class="search-panel" id="searchPanel">
+    <div class="search-wrap">
+      <input id="searchInput" type="search" placeholder="搜尋篇名、頁碼、詞條" enterkeyhint="search" autocomplete="off">
+      <button class="icon-btn search-clear" id="searchClear" type="button" aria-label="清除">
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="6" y1="6" x2="18" y2="18"/><line x1="18" y1="6" x2="6" y2="18"/></svg>
+      </button>
+    </div>
+  </div>
 </header>
 
 <div class="main">
@@ -229,55 +291,55 @@
       </div>
       <div class="sec-right">
         <span class="sec-parts-count">8 詞</span>
-        <span class="arrow">›</span>
+        <span class="arrow" aria-hidden="true"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="9,6 15,12 9,18"/></svg></span>
       </div>
     </button>
     <div class="parts-container">
       <button class="title-audio-btn" onclick="playAudio(this, 'https://language.moe.gov.tw/upload/download/jts/04%E6%96%87%E7%AB%A01(%E9%9F%B3%E6%AA%94)/0401-06.mp3')">
         <span class="badge badge-title">標</span>
         <span class="part-label">平溪放天燈</span>
-        <span class="play-icon">▶</span>
+        <span class="play-icon" aria-hidden="true"><svg class="ico ico-play" viewBox="0 0 24 24" fill="currentColor"><polygon points="8,5 8,19 18,12"/></svg><svg class="ico ico-pause" viewBox="0 0 24 24" fill="currentColor" hidden><rect x="6" y="5" width="4" height="14"/><rect x="14" y="5" width="4" height="14"/></svg></span>
       </button>
       
         <button class="part-btn" onclick="playAudio(this, 'https://language.moe.gov.tw/upload/download/jts/04%E6%96%87%E7%AB%A01(%E9%9F%B3%E6%AA%94)/0401-07-01.mp3')">
           <span class="badge badge-num">1</span>
           <span class="part-label">【咱人】</span>
-          <span class="play-icon">▶</span>
+          <span class="play-icon" aria-hidden="true"><svg class="ico ico-play" viewBox="0 0 24 24" fill="currentColor"><polygon points="8,5 8,19 18,12"/></svg><svg class="ico ico-pause" viewBox="0 0 24 24" fill="currentColor" hidden><rect x="6" y="5" width="4" height="14"/><rect x="14" y="5" width="4" height="14"/></svg></span>
         </button>
         <button class="part-btn" onclick="playAudio(this, 'https://language.moe.gov.tw/upload/download/jts/04%E6%96%87%E7%AB%A01(%E9%9F%B3%E6%AA%94)/0401-07-02.mp3')">
           <span class="badge badge-num">2</span>
           <span class="part-label">【跤兜】</span>
-          <span class="play-icon">▶</span>
+          <span class="play-icon" aria-hidden="true"><svg class="ico ico-play" viewBox="0 0 24 24" fill="currentColor"><polygon points="8,5 8,19 18,12"/></svg><svg class="ico ico-pause" viewBox="0 0 24 24" fill="currentColor" hidden><rect x="6" y="5" width="4" height="14"/><rect x="14" y="5" width="4" height="14"/></svg></span>
         </button>
         <button class="part-btn" onclick="playAudio(this, 'https://language.moe.gov.tw/upload/download/jts/04%E6%96%87%E7%AB%A01(%E9%9F%B3%E6%AA%94)/0401-07-03.mp3')">
           <span class="badge badge-num">3</span>
           <span class="part-label">【揜貼】</span>
-          <span class="play-icon">▶</span>
+          <span class="play-icon" aria-hidden="true"><svg class="ico ico-play" viewBox="0 0 24 24" fill="currentColor"><polygon points="8,5 8,19 18,12"/></svg><svg class="ico ico-pause" viewBox="0 0 24 24" fill="currentColor" hidden><rect x="6" y="5" width="4" height="14"/><rect x="14" y="5" width="4" height="14"/></svg></span>
         </button>
         <button class="part-btn" onclick="playAudio(this, 'https://language.moe.gov.tw/upload/download/jts/04%E6%96%87%E7%AB%A01(%E9%9F%B3%E6%AA%94)/0401-07-04.mp3')">
           <span class="badge badge-num">4</span>
           <span class="part-label">【聽候】</span>
-          <span class="play-icon">▶</span>
+          <span class="play-icon" aria-hidden="true"><svg class="ico ico-play" viewBox="0 0 24 24" fill="currentColor"><polygon points="8,5 8,19 18,12"/></svg><svg class="ico ico-pause" viewBox="0 0 24 24" fill="currentColor" hidden><rect x="6" y="5" width="4" height="14"/><rect x="14" y="5" width="4" height="14"/></svg></span>
         </button>
         <button class="part-btn" onclick="playAudio(this, 'https://language.moe.gov.tw/upload/download/jts/04%E6%96%87%E7%AB%A01(%E9%9F%B3%E6%AA%94)/0401-07-05.mp3')">
           <span class="badge badge-num">5</span>
           <span class="part-label">【慣勢】</span>
-          <span class="play-icon">▶</span>
+          <span class="play-icon" aria-hidden="true"><svg class="ico ico-play" viewBox="0 0 24 24" fill="currentColor"><polygon points="8,5 8,19 18,12"/></svg><svg class="ico ico-pause" viewBox="0 0 24 24" fill="currentColor" hidden><rect x="6" y="5" width="4" height="14"/><rect x="14" y="5" width="4" height="14"/></svg></span>
         </button>
         <button class="part-btn" onclick="playAudio(this, 'https://language.moe.gov.tw/upload/download/jts/04%E6%96%87%E7%AB%A01(%E9%9F%B3%E6%AA%94)/0401-07-06.mp3')">
           <span class="badge badge-num">6</span>
           <span class="part-label">【誠敨】</span>
-          <span class="play-icon">▶</span>
+          <span class="play-icon" aria-hidden="true"><svg class="ico ico-play" viewBox="0 0 24 24" fill="currentColor"><polygon points="8,5 8,19 18,12"/></svg><svg class="ico ico-pause" viewBox="0 0 24 24" fill="currentColor" hidden><rect x="6" y="5" width="4" height="14"/><rect x="14" y="5" width="4" height="14"/></svg></span>
         </button>
         <button class="part-btn" onclick="playAudio(this, 'https://language.moe.gov.tw/upload/download/jts/04%E6%96%87%E7%AB%A01(%E9%9F%B3%E6%AA%94)/0401-07-07.mp3')">
           <span class="badge badge-num">7</span>
           <span class="part-label">【閹雞趁鳳飛】</span>
-          <span class="play-icon">▶</span>
+          <span class="play-icon" aria-hidden="true"><svg class="ico ico-play" viewBox="0 0 24 24" fill="currentColor"><polygon points="8,5 8,19 18,12"/></svg><svg class="ico ico-pause" viewBox="0 0 24 24" fill="currentColor" hidden><rect x="6" y="5" width="4" height="14"/><rect x="14" y="5" width="4" height="14"/></svg></span>
         </button>
         <button class="part-btn" onclick="playAudio(this, 'https://language.moe.gov.tw/upload/download/jts/04%E6%96%87%E7%AB%A01(%E9%9F%B3%E6%AA%94)/0401-07-A.mp3')">
           <span class="badge badge-gram">文</span>
           <span class="part-label">【落落來】 字義和用法</span>
-          <span class="play-icon">▶</span>
+          <span class="play-icon" aria-hidden="true"><svg class="ico ico-play" viewBox="0 0 24 24" fill="currentColor"><polygon points="8,5 8,19 18,12"/></svg><svg class="ico ico-pause" viewBox="0 0 24 24" fill="currentColor" hidden><rect x="6" y="5" width="4" height="14"/><rect x="14" y="5" width="4" height="14"/></svg></span>
         </button>
     </div>
   </div>
@@ -289,40 +351,40 @@
       </div>
       <div class="sec-right">
         <span class="sec-parts-count">5 詞</span>
-        <span class="arrow">›</span>
+        <span class="arrow" aria-hidden="true"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="9,6 15,12 9,18"/></svg></span>
       </div>
     </button>
     <div class="parts-container">
       <button class="title-audio-btn" onclick="playAudio(this, 'https://language.moe.gov.tw/upload/download/jts/04%E6%96%87%E7%AB%A01(%E9%9F%B3%E6%AA%94)/0401-08.mp3')">
         <span class="badge badge-title">標</span>
         <span class="part-label">矮靈祭——苗栗縣Saisiat（賽夏）族重要的祭典</span>
-        <span class="play-icon">▶</span>
+        <span class="play-icon" aria-hidden="true"><svg class="ico ico-play" viewBox="0 0 24 24" fill="currentColor"><polygon points="8,5 8,19 18,12"/></svg><svg class="ico ico-pause" viewBox="0 0 24 24" fill="currentColor" hidden><rect x="6" y="5" width="4" height="14"/><rect x="14" y="5" width="4" height="14"/></svg></span>
       </button>
       
         <button class="part-btn" onclick="playAudio(this, 'https://language.moe.gov.tw/upload/download/jts/04%E6%96%87%E7%AB%A01(%E9%9F%B3%E6%AA%94)/0401-09-01.mp3')">
           <span class="badge badge-num">1</span>
           <span class="part-label">【蹛】</span>
-          <span class="play-icon">▶</span>
+          <span class="play-icon" aria-hidden="true"><svg class="ico ico-play" viewBox="0 0 24 24" fill="currentColor"><polygon points="8,5 8,19 18,12"/></svg><svg class="ico ico-pause" viewBox="0 0 24 24" fill="currentColor" hidden><rect x="6" y="5" width="4" height="14"/><rect x="14" y="5" width="4" height="14"/></svg></span>
         </button>
         <button class="part-btn" onclick="playAudio(this, 'https://language.moe.gov.tw/upload/download/jts/04%E6%96%87%E7%AB%A01(%E9%9F%B3%E6%AA%94)/0401-09-02.mp3')">
           <span class="badge badge-num">2</span>
           <span class="part-label">【無偌遠】</span>
-          <span class="play-icon">▶</span>
+          <span class="play-icon" aria-hidden="true"><svg class="ico ico-play" viewBox="0 0 24 24" fill="currentColor"><polygon points="8,5 8,19 18,12"/></svg><svg class="ico ico-pause" viewBox="0 0 24 24" fill="currentColor" hidden><rect x="6" y="5" width="4" height="14"/><rect x="14" y="5" width="4" height="14"/></svg></span>
         </button>
         <button class="part-btn" onclick="playAudio(this, 'https://language.moe.gov.tw/upload/download/jts/04%E6%96%87%E7%AB%A01(%E9%9F%B3%E6%AA%94)/0401-09-03.mp3')">
           <span class="badge badge-num">3</span>
           <span class="part-label">【會失禮】</span>
-          <span class="play-icon">▶</span>
+          <span class="play-icon" aria-hidden="true"><svg class="ico ico-play" viewBox="0 0 24 24" fill="currentColor"><polygon points="8,5 8,19 18,12"/></svg><svg class="ico ico-pause" viewBox="0 0 24 24" fill="currentColor" hidden><rect x="6" y="5" width="4" height="14"/><rect x="14" y="5" width="4" height="14"/></svg></span>
         </button>
         <button class="part-btn" onclick="playAudio(this, 'https://language.moe.gov.tw/upload/download/jts/04%E6%96%87%E7%AB%A01(%E9%9F%B3%E6%AA%94)/0401-09-04.mp3')">
           <span class="badge badge-num">4</span>
           <span class="part-label">【秮仔米】</span>
-          <span class="play-icon">▶</span>
+          <span class="play-icon" aria-hidden="true"><svg class="ico ico-play" viewBox="0 0 24 24" fill="currentColor"><polygon points="8,5 8,19 18,12"/></svg><svg class="ico ico-pause" viewBox="0 0 24 24" fill="currentColor" hidden><rect x="6" y="5" width="4" height="14"/><rect x="14" y="5" width="4" height="14"/></svg></span>
         </button>
         <button class="part-btn" onclick="playAudio(this, 'https://language.moe.gov.tw/upload/download/jts/04%E6%96%87%E7%AB%A01(%E9%9F%B3%E6%AA%94)/0401-09-05.mp3')">
           <span class="badge badge-num">5</span>
           <span class="part-label">【見若</span>
-          <span class="play-icon">▶</span>
+          <span class="play-icon" aria-hidden="true"><svg class="ico ico-play" viewBox="0 0 24 24" fill="currentColor"><polygon points="8,5 8,19 18,12"/></svg><svg class="ico ico-pause" viewBox="0 0 24 24" fill="currentColor" hidden><rect x="6" y="5" width="4" height="14"/><rect x="14" y="5" width="4" height="14"/></svg></span>
         </button>
     </div>
   </div>
@@ -334,45 +396,45 @@
       </div>
       <div class="sec-right">
         <span class="sec-parts-count">6 詞</span>
-        <span class="arrow">›</span>
+        <span class="arrow" aria-hidden="true"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="9,6 15,12 9,18"/></svg></span>
       </div>
     </button>
     <div class="parts-container">
       <button class="title-audio-btn" onclick="playAudio(this, 'https://language.moe.gov.tw/upload/download/jts/04%E6%96%87%E7%AB%A01(%E9%9F%B3%E6%AA%94)/0401-10.mp3')">
         <span class="badge badge-title">標</span>
         <span class="part-label">鹿港八郊</span>
-        <span class="play-icon">▶</span>
+        <span class="play-icon" aria-hidden="true"><svg class="ico ico-play" viewBox="0 0 24 24" fill="currentColor"><polygon points="8,5 8,19 18,12"/></svg><svg class="ico ico-pause" viewBox="0 0 24 24" fill="currentColor" hidden><rect x="6" y="5" width="4" height="14"/><rect x="14" y="5" width="4" height="14"/></svg></span>
       </button>
       
         <button class="part-btn" onclick="playAudio(this, 'https://language.moe.gov.tw/upload/download/jts/04%E6%96%87%E7%AB%A01(%E9%9F%B3%E6%AA%94)/0401-11-01.mp3')">
           <span class="badge badge-num">1</span>
           <span class="part-label">【糖籠】</span>
-          <span class="play-icon">▶</span>
+          <span class="play-icon" aria-hidden="true"><svg class="ico ico-play" viewBox="0 0 24 24" fill="currentColor"><polygon points="8,5 8,19 18,12"/></svg><svg class="ico ico-pause" viewBox="0 0 24 24" fill="currentColor" hidden><rect x="6" y="5" width="4" height="14"/><rect x="14" y="5" width="4" height="14"/></svg></span>
         </button>
         <button class="part-btn" onclick="playAudio(this, 'https://language.moe.gov.tw/upload/download/jts/04%E6%96%87%E7%AB%A01(%E9%9F%B3%E6%AA%94)/0401-11-02.mp3')">
           <span class="badge badge-num">2</span>
           <span class="part-label">【搟】</span>
-          <span class="play-icon">▶</span>
+          <span class="play-icon" aria-hidden="true"><svg class="ico ico-play" viewBox="0 0 24 24" fill="currentColor"><polygon points="8,5 8,19 18,12"/></svg><svg class="ico ico-pause" viewBox="0 0 24 24" fill="currentColor" hidden><rect x="6" y="5" width="4" height="14"/><rect x="14" y="5" width="4" height="14"/></svg></span>
         </button>
         <button class="part-btn" onclick="playAudio(this, 'https://language.moe.gov.tw/upload/download/jts/04%E6%96%87%E7%AB%A01(%E9%9F%B3%E6%AA%94)/0401-11-03.mp3')">
           <span class="badge badge-num">3</span>
           <span class="part-label">【來去拍】</span>
-          <span class="play-icon">▶</span>
+          <span class="play-icon" aria-hidden="true"><svg class="ico ico-play" viewBox="0 0 24 24" fill="currentColor"><polygon points="8,5 8,19 18,12"/></svg><svg class="ico ico-pause" viewBox="0 0 24 24" fill="currentColor" hidden><rect x="6" y="5" width="4" height="14"/><rect x="14" y="5" width="4" height="14"/></svg></span>
         </button>
         <button class="part-btn" onclick="playAudio(this, 'https://language.moe.gov.tw/upload/download/jts/04%E6%96%87%E7%AB%A01(%E9%9F%B3%E6%AA%94)/0401-11-04.mp3')">
           <span class="badge badge-num">4</span>
           <span class="part-label">【輕爽】</span>
-          <span class="play-icon">▶</span>
+          <span class="play-icon" aria-hidden="true"><svg class="ico ico-play" viewBox="0 0 24 24" fill="currentColor"><polygon points="8,5 8,19 18,12"/></svg><svg class="ico ico-pause" viewBox="0 0 24 24" fill="currentColor" hidden><rect x="6" y="5" width="4" height="14"/><rect x="14" y="5" width="4" height="14"/></svg></span>
         </button>
         <button class="part-btn" onclick="playAudio(this, 'https://language.moe.gov.tw/upload/download/jts/04%E6%96%87%E7%AB%A01(%E9%9F%B3%E6%AA%94)/0401-11-05.mp3')">
           <span class="badge badge-num">5</span>
           <span class="part-label">【𥴊壺仔】</span>
-          <span class="play-icon">▶</span>
+          <span class="play-icon" aria-hidden="true"><svg class="ico ico-play" viewBox="0 0 24 24" fill="currentColor"><polygon points="8,5 8,19 18,12"/></svg><svg class="ico ico-pause" viewBox="0 0 24 24" fill="currentColor" hidden><rect x="6" y="5" width="4" height="14"/><rect x="14" y="5" width="4" height="14"/></svg></span>
         </button>
         <button class="part-btn" onclick="playAudio(this, 'https://language.moe.gov.tw/upload/download/jts/04%E6%96%87%E7%AB%A01(%E9%9F%B3%E6%AA%94)/0401-11-06.mp3')">
           <span class="badge badge-num">6</span>
           <span class="part-label">【交易】</span>
-          <span class="play-icon">▶</span>
+          <span class="play-icon" aria-hidden="true"><svg class="ico ico-play" viewBox="0 0 24 24" fill="currentColor"><polygon points="8,5 8,19 18,12"/></svg><svg class="ico ico-pause" viewBox="0 0 24 24" fill="currentColor" hidden><rect x="6" y="5" width="4" height="14"/><rect x="14" y="5" width="4" height="14"/></svg></span>
         </button>
     </div>
   </div>
@@ -384,45 +446,45 @@
       </div>
       <div class="sec-right">
         <span class="sec-parts-count">6 詞</span>
-        <span class="arrow">›</span>
+        <span class="arrow" aria-hidden="true"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="9,6 15,12 9,18"/></svg></span>
       </div>
     </button>
     <div class="parts-container">
       <button class="title-audio-btn" onclick="playAudio(this, 'https://language.moe.gov.tw/upload/download/jts/04%E6%96%87%E7%AB%A01(%E9%9F%B3%E6%AA%94)/0401-12.mp3')">
         <span class="badge badge-title">標</span>
         <span class="part-label">臺南縣北門鄉南鯤鯓的王爺祭</span>
-        <span class="play-icon">▶</span>
+        <span class="play-icon" aria-hidden="true"><svg class="ico ico-play" viewBox="0 0 24 24" fill="currentColor"><polygon points="8,5 8,19 18,12"/></svg><svg class="ico ico-pause" viewBox="0 0 24 24" fill="currentColor" hidden><rect x="6" y="5" width="4" height="14"/><rect x="14" y="5" width="4" height="14"/></svg></span>
       </button>
       
         <button class="part-btn" onclick="playAudio(this, 'https://language.moe.gov.tw/upload/download/jts/04%E6%96%87%E7%AB%A01(%E9%9F%B3%E6%AA%94)/0401-13-01.mp3')">
           <span class="badge badge-num">1</span>
           <span class="part-label">【王爺】</span>
-          <span class="play-icon">▶</span>
+          <span class="play-icon" aria-hidden="true"><svg class="ico ico-play" viewBox="0 0 24 24" fill="currentColor"><polygon points="8,5 8,19 18,12"/></svg><svg class="ico ico-pause" viewBox="0 0 24 24" fill="currentColor" hidden><rect x="6" y="5" width="4" height="14"/><rect x="14" y="5" width="4" height="14"/></svg></span>
         </button>
         <button class="part-btn" onclick="playAudio(this, 'https://language.moe.gov.tw/upload/download/jts/04%E6%96%87%E7%AB%A01(%E9%9F%B3%E6%AA%94)/0401-13-02.mp3')">
           <span class="badge badge-num">2</span>
           <span class="part-label">【服侍】</span>
-          <span class="play-icon">▶</span>
+          <span class="play-icon" aria-hidden="true"><svg class="ico ico-play" viewBox="0 0 24 24" fill="currentColor"><polygon points="8,5 8,19 18,12"/></svg><svg class="ico ico-pause" viewBox="0 0 24 24" fill="currentColor" hidden><rect x="6" y="5" width="4" height="14"/><rect x="14" y="5" width="4" height="14"/></svg></span>
         </button>
         <button class="part-btn" onclick="playAudio(this, 'https://language.moe.gov.tw/upload/download/jts/04%E6%96%87%E7%AB%A01(%E9%9F%B3%E6%AA%94)/0401-13-03.mp3')">
           <span class="badge badge-num">3</span>
           <span class="part-label">【咱人】</span>
-          <span class="play-icon">▶</span>
+          <span class="play-icon" aria-hidden="true"><svg class="ico ico-play" viewBox="0 0 24 24" fill="currentColor"><polygon points="8,5 8,19 18,12"/></svg><svg class="ico ico-pause" viewBox="0 0 24 24" fill="currentColor" hidden><rect x="6" y="5" width="4" height="14"/><rect x="14" y="5" width="4" height="14"/></svg></span>
         </button>
         <button class="part-btn" onclick="playAudio(this, 'https://language.moe.gov.tw/upload/download/jts/04%E6%96%87%E7%AB%A01(%E9%9F%B3%E6%AA%94)/0401-13-04.mp3')">
           <span class="badge badge-num">4</span>
           <span class="part-label">【童乩】</span>
-          <span class="play-icon">▶</span>
+          <span class="play-icon" aria-hidden="true"><svg class="ico ico-play" viewBox="0 0 24 24" fill="currentColor"><polygon points="8,5 8,19 18,12"/></svg><svg class="ico ico-pause" viewBox="0 0 24 24" fill="currentColor" hidden><rect x="6" y="5" width="4" height="14"/><rect x="14" y="5" width="4" height="14"/></svg></span>
         </button>
         <button class="part-btn" onclick="playAudio(this, 'https://language.moe.gov.tw/upload/download/jts/04%E6%96%87%E7%AB%A01(%E9%9F%B3%E6%AA%94)/0401-13-05.mp3')">
           <span class="badge badge-num">5</span>
           <span class="part-label">【齊行跤到】</span>
-          <span class="play-icon">▶</span>
+          <span class="play-icon" aria-hidden="true"><svg class="ico ico-play" viewBox="0 0 24 24" fill="currentColor"><polygon points="8,5 8,19 18,12"/></svg><svg class="ico ico-pause" viewBox="0 0 24 24" fill="currentColor" hidden><rect x="6" y="5" width="4" height="14"/><rect x="14" y="5" width="4" height="14"/></svg></span>
         </button>
         <button class="part-btn" onclick="playAudio(this, 'https://language.moe.gov.tw/upload/download/jts/04%E6%96%87%E7%AB%A01(%E9%9F%B3%E6%AA%94)/0401-13-06.mp3')">
           <span class="badge badge-num">6</span>
           <span class="part-label">【佇咧】</span>
-          <span class="play-icon">▶</span>
+          <span class="play-icon" aria-hidden="true"><svg class="ico ico-play" viewBox="0 0 24 24" fill="currentColor"><polygon points="8,5 8,19 18,12"/></svg><svg class="ico ico-pause" viewBox="0 0 24 24" fill="currentColor" hidden><rect x="6" y="5" width="4" height="14"/><rect x="14" y="5" width="4" height="14"/></svg></span>
         </button>
     </div>
   </div>
@@ -434,45 +496,45 @@
       </div>
       <div class="sec-right">
         <span class="sec-parts-count">6 詞</span>
-        <span class="arrow">›</span>
+        <span class="arrow" aria-hidden="true"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="9,6 15,12 9,18"/></svg></span>
       </div>
     </button>
     <div class="parts-container">
       <button class="title-audio-btn" onclick="playAudio(this, 'https://language.moe.gov.tw/upload/download/jts/04%E6%96%87%E7%AB%A01(%E9%9F%B3%E6%AA%94)/0401-14.mp3')">
         <span class="badge badge-title">標</span>
         <span class="part-label">臺灣第一个現代化的糖廠——橋仔頭糖廠</span>
-        <span class="play-icon">▶</span>
+        <span class="play-icon" aria-hidden="true"><svg class="ico ico-play" viewBox="0 0 24 24" fill="currentColor"><polygon points="8,5 8,19 18,12"/></svg><svg class="ico ico-pause" viewBox="0 0 24 24" fill="currentColor" hidden><rect x="6" y="5" width="4" height="14"/><rect x="14" y="5" width="4" height="14"/></svg></span>
       </button>
       
         <button class="part-btn" onclick="playAudio(this, 'https://language.moe.gov.tw/upload/download/jts/04%E6%96%87%E7%AB%A01(%E9%9F%B3%E6%AA%94)/0401-15-01.mp3')">
           <span class="badge badge-num">1</span>
           <span class="part-label">【茶米】</span>
-          <span class="play-icon">▶</span>
+          <span class="play-icon" aria-hidden="true"><svg class="ico ico-play" viewBox="0 0 24 24" fill="currentColor"><polygon points="8,5 8,19 18,12"/></svg><svg class="ico ico-pause" viewBox="0 0 24 24" fill="currentColor" hidden><rect x="6" y="5" width="4" height="14"/><rect x="14" y="5" width="4" height="14"/></svg></span>
         </button>
         <button class="part-btn" onclick="playAudio(this, 'https://language.moe.gov.tw/upload/download/jts/04%E6%96%87%E7%AB%A01(%E9%9F%B3%E6%AA%94)/0401-15-02.mp3')">
           <span class="badge badge-num">2</span>
           <span class="part-label">【廍動】</span>
-          <span class="play-icon">▶</span>
+          <span class="play-icon" aria-hidden="true"><svg class="ico ico-play" viewBox="0 0 24 24" fill="currentColor"><polygon points="8,5 8,19 18,12"/></svg><svg class="ico ico-pause" viewBox="0 0 24 24" fill="currentColor" hidden><rect x="6" y="5" width="4" height="14"/><rect x="14" y="5" width="4" height="14"/></svg></span>
         </button>
         <button class="part-btn" onclick="playAudio(this, 'https://language.moe.gov.tw/upload/download/jts/04%E6%96%87%E7%AB%A01(%E9%9F%B3%E6%AA%94)/0401-15-03.mp3')">
           <span class="badge badge-num">3</span>
           <span class="part-label">【剉】</span>
-          <span class="play-icon">▶</span>
+          <span class="play-icon" aria-hidden="true"><svg class="ico ico-play" viewBox="0 0 24 24" fill="currentColor"><polygon points="8,5 8,19 18,12"/></svg><svg class="ico ico-pause" viewBox="0 0 24 24" fill="currentColor" hidden><rect x="6" y="5" width="4" height="14"/><rect x="14" y="5" width="4" height="14"/></svg></span>
         </button>
         <button class="part-btn" onclick="playAudio(this, 'https://language.moe.gov.tw/upload/download/jts/04%E6%96%87%E7%AB%A01(%E9%9F%B3%E6%AA%94)/0401-15-04.mp3')">
           <span class="badge badge-num">4</span>
           <span class="part-label">【揜】</span>
-          <span class="play-icon">▶</span>
+          <span class="play-icon" aria-hidden="true"><svg class="ico ico-play" viewBox="0 0 24 24" fill="currentColor"><polygon points="8,5 8,19 18,12"/></svg><svg class="ico ico-pause" viewBox="0 0 24 24" fill="currentColor" hidden><rect x="6" y="5" width="4" height="14"/><rect x="14" y="5" width="4" height="14"/></svg></span>
         </button>
         <button class="part-btn" onclick="playAudio(this, 'https://language.moe.gov.tw/upload/download/jts/04%E6%96%87%E7%AB%A01(%E9%9F%B3%E6%AA%94)/0401-15-05.mp3')">
           <span class="badge badge-num">5</span>
           <span class="part-label">【祀】</span>
-          <span class="play-icon">▶</span>
+          <span class="play-icon" aria-hidden="true"><svg class="ico ico-play" viewBox="0 0 24 24" fill="currentColor"><polygon points="8,5 8,19 18,12"/></svg><svg class="ico ico-pause" viewBox="0 0 24 24" fill="currentColor" hidden><rect x="6" y="5" width="4" height="14"/><rect x="14" y="5" width="4" height="14"/></svg></span>
         </button>
         <button class="part-btn" onclick="playAudio(this, 'https://language.moe.gov.tw/upload/download/jts/04%E6%96%87%E7%AB%A01(%E9%9F%B3%E6%AA%94)/0401-15-06.mp3')">
           <span class="badge badge-num">6</span>
           <span class="part-label">【寢頭】</span>
-          <span class="play-icon">▶</span>
+          <span class="play-icon" aria-hidden="true"><svg class="ico ico-play" viewBox="0 0 24 24" fill="currentColor"><polygon points="8,5 8,19 18,12"/></svg><svg class="ico ico-pause" viewBox="0 0 24 24" fill="currentColor" hidden><rect x="6" y="5" width="4" height="14"/><rect x="14" y="5" width="4" height="14"/></svg></span>
         </button>
     </div>
   </div>
@@ -484,50 +546,50 @@
       </div>
       <div class="sec-right">
         <span class="sec-parts-count">7 詞</span>
-        <span class="arrow">›</span>
+        <span class="arrow" aria-hidden="true"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="9,6 15,12 9,18"/></svg></span>
       </div>
     </button>
     <div class="parts-container">
       <button class="title-audio-btn" onclick="playAudio(this, 'https://language.moe.gov.tw/upload/download/jts/04%E6%96%87%E7%AB%A01(%E9%9F%B3%E6%AA%94)/0401-16.mp3')">
         <span class="badge badge-title">標</span>
         <span class="part-label">茂林的Rukai族佮烏秫米祭</span>
-        <span class="play-icon">▶</span>
+        <span class="play-icon" aria-hidden="true"><svg class="ico ico-play" viewBox="0 0 24 24" fill="currentColor"><polygon points="8,5 8,19 18,12"/></svg><svg class="ico ico-pause" viewBox="0 0 24 24" fill="currentColor" hidden><rect x="6" y="5" width="4" height="14"/><rect x="14" y="5" width="4" height="14"/></svg></span>
       </button>
       
         <button class="part-btn" onclick="playAudio(this, 'https://language.moe.gov.tw/upload/download/jts/04%E6%96%87%E7%AB%A01(%E9%9F%B3%E6%AA%94)/0401-17-01.mp3')">
           <span class="badge badge-num">1</span>
           <span class="part-label">【烏秫米】</span>
-          <span class="play-icon">▶</span>
+          <span class="play-icon" aria-hidden="true"><svg class="ico ico-play" viewBox="0 0 24 24" fill="currentColor"><polygon points="8,5 8,19 18,12"/></svg><svg class="ico ico-pause" viewBox="0 0 24 24" fill="currentColor" hidden><rect x="6" y="5" width="4" height="14"/><rect x="14" y="5" width="4" height="14"/></svg></span>
         </button>
         <button class="part-btn" onclick="playAudio(this, 'https://language.moe.gov.tw/upload/download/jts/04%E6%96%87%E7%AB%A01(%E9%9F%B3%E6%AA%94)/0401-17-02.mp3')">
           <span class="badge badge-num">2</span>
           <span class="part-label">【品】</span>
-          <span class="play-icon">▶</span>
+          <span class="play-icon" aria-hidden="true"><svg class="ico ico-play" viewBox="0 0 24 24" fill="currentColor"><polygon points="8,5 8,19 18,12"/></svg><svg class="ico ico-pause" viewBox="0 0 24 24" fill="currentColor" hidden><rect x="6" y="5" width="4" height="14"/><rect x="14" y="5" width="4" height="14"/></svg></span>
         </button>
         <button class="part-btn" onclick="playAudio(this, 'https://language.moe.gov.tw/upload/download/jts/04%E6%96%87%E7%AB%A01(%E9%9F%B3%E6%AA%94)/0401-17-03.mp3')">
           <span class="badge badge-num">3</span>
           <span class="part-label">【無錢工】</span>
-          <span class="play-icon">▶</span>
+          <span class="play-icon" aria-hidden="true"><svg class="ico ico-play" viewBox="0 0 24 24" fill="currentColor"><polygon points="8,5 8,19 18,12"/></svg><svg class="ico ico-pause" viewBox="0 0 24 24" fill="currentColor" hidden><rect x="6" y="5" width="4" height="14"/><rect x="14" y="5" width="4" height="14"/></svg></span>
         </button>
         <button class="part-btn" onclick="playAudio(this, 'https://language.moe.gov.tw/upload/download/jts/04%E6%96%87%E7%AB%A01(%E9%9F%B3%E6%AA%94)/0401-17-04.mp3')">
           <span class="badge badge-num">4</span>
           <span class="part-label">【偝】</span>
-          <span class="play-icon">▶</span>
+          <span class="play-icon" aria-hidden="true"><svg class="ico ico-play" viewBox="0 0 24 24" fill="currentColor"><polygon points="8,5 8,19 18,12"/></svg><svg class="ico ico-pause" viewBox="0 0 24 24" fill="currentColor" hidden><rect x="6" y="5" width="4" height="14"/><rect x="14" y="5" width="4" height="14"/></svg></span>
         </button>
         <button class="part-btn" onclick="playAudio(this, 'https://language.moe.gov.tw/upload/download/jts/04%E6%96%87%E7%AB%A01(%E9%9F%B3%E6%AA%94)/0401-17-05.mp3')">
           <span class="badge badge-num">5</span>
           <span class="part-label">【無品】</span>
-          <span class="play-icon">▶</span>
+          <span class="play-icon" aria-hidden="true"><svg class="ico ico-play" viewBox="0 0 24 24" fill="currentColor"><polygon points="8,5 8,19 18,12"/></svg><svg class="ico ico-pause" viewBox="0 0 24 24" fill="currentColor" hidden><rect x="6" y="5" width="4" height="14"/><rect x="14" y="5" width="4" height="14"/></svg></span>
         </button>
         <button class="part-btn" onclick="playAudio(this, 'https://language.moe.gov.tw/upload/download/jts/04%E6%96%87%E7%AB%A01(%E9%9F%B3%E6%AA%94)/0401-17-06.mp3')">
           <span class="badge badge-num">6</span>
           <span class="part-label">【條直】</span>
-          <span class="play-icon">▶</span>
+          <span class="play-icon" aria-hidden="true"><svg class="ico ico-play" viewBox="0 0 24 24" fill="currentColor"><polygon points="8,5 8,19 18,12"/></svg><svg class="ico ico-pause" viewBox="0 0 24 24" fill="currentColor" hidden><rect x="6" y="5" width="4" height="14"/><rect x="14" y="5" width="4" height="14"/></svg></span>
         </button>
         <button class="part-btn" onclick="playAudio(this, 'https://language.moe.gov.tw/upload/download/jts/04%E6%96%87%E7%AB%A01(%E9%9F%B3%E6%AA%94)/0401-17-07.mp3')">
           <span class="badge badge-num">7</span>
           <span class="part-label">【相伨】</span>
-          <span class="play-icon">▶</span>
+          <span class="play-icon" aria-hidden="true"><svg class="ico ico-play" viewBox="0 0 24 24" fill="currentColor"><polygon points="8,5 8,19 18,12"/></svg><svg class="ico ico-pause" viewBox="0 0 24 24" fill="currentColor" hidden><rect x="6" y="5" width="4" height="14"/><rect x="14" y="5" width="4" height="14"/></svg></span>
         </button>
     </div>
   </div>
@@ -539,30 +601,30 @@
       </div>
       <div class="sec-right">
         <span class="sec-parts-count">3 詞</span>
-        <span class="arrow">›</span>
+        <span class="arrow" aria-hidden="true"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="9,6 15,12 9,18"/></svg></span>
       </div>
     </button>
     <div class="parts-container">
       <button class="title-audio-btn" onclick="playAudio(this, 'https://language.moe.gov.tw/upload/download/jts/04%E6%96%87%E7%AB%A01(%E9%9F%B3%E6%AA%94)/0401-18.mp3')">
         <span class="badge badge-title">標</span>
         <span class="part-label">Truku（太魯閣）—花蓮的美景佮原住民族群</span>
-        <span class="play-icon">▶</span>
+        <span class="play-icon" aria-hidden="true"><svg class="ico ico-play" viewBox="0 0 24 24" fill="currentColor"><polygon points="8,5 8,19 18,12"/></svg><svg class="ico ico-pause" viewBox="0 0 24 24" fill="currentColor" hidden><rect x="6" y="5" width="4" height="14"/><rect x="14" y="5" width="4" height="14"/></svg></span>
       </button>
       
         <button class="part-btn" onclick="playAudio(this, 'https://language.moe.gov.tw/upload/download/jts/04%E6%96%87%E7%AB%A01(%E9%9F%B3%E6%AA%94)/0401-19-01.mp3')">
           <span class="badge badge-num">1</span>
           <span class="part-label">【以早】</span>
-          <span class="play-icon">▶</span>
+          <span class="play-icon" aria-hidden="true"><svg class="ico ico-play" viewBox="0 0 24 24" fill="currentColor"><polygon points="8,5 8,19 18,12"/></svg><svg class="ico ico-pause" viewBox="0 0 24 24" fill="currentColor" hidden><rect x="6" y="5" width="4" height="14"/><rect x="14" y="5" width="4" height="14"/></svg></span>
         </button>
         <button class="part-btn" onclick="playAudio(this, 'https://language.moe.gov.tw/upload/download/jts/04%E6%96%87%E7%AB%A01(%E9%9F%B3%E6%AA%94)/0401-19-02.mp3')">
           <span class="badge badge-num">2</span>
           <span class="part-label">【揣】</span>
-          <span class="play-icon">▶</span>
+          <span class="play-icon" aria-hidden="true"><svg class="ico ico-play" viewBox="0 0 24 24" fill="currentColor"><polygon points="8,5 8,19 18,12"/></svg><svg class="ico ico-pause" viewBox="0 0 24 24" fill="currentColor" hidden><rect x="6" y="5" width="4" height="14"/><rect x="14" y="5" width="4" height="14"/></svg></span>
         </button>
         <button class="part-btn" onclick="playAudio(this, 'https://language.moe.gov.tw/upload/download/jts/04%E6%96%87%E7%AB%A01(%E9%9F%B3%E6%AA%94)/0401-19-03.mp3')">
           <span class="badge badge-num">3</span>
           <span class="part-label">【lau-lau】</span>
-          <span class="play-icon">▶</span>
+          <span class="play-icon" aria-hidden="true"><svg class="ico ico-play" viewBox="0 0 24 24" fill="currentColor"><polygon points="8,5 8,19 18,12"/></svg><svg class="ico ico-pause" viewBox="0 0 24 24" fill="currentColor" hidden><rect x="6" y="5" width="4" height="14"/><rect x="14" y="5" width="4" height="14"/></svg></span>
         </button>
     </div>
   </div>
@@ -574,45 +636,45 @@
       </div>
       <div class="sec-right">
         <span class="sec-parts-count">6 詞</span>
-        <span class="arrow">›</span>
+        <span class="arrow" aria-hidden="true"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="9,6 15,12 9,18"/></svg></span>
       </div>
     </button>
     <div class="parts-container">
       <button class="title-audio-btn" onclick="playAudio(this, 'https://language.moe.gov.tw/upload/download/jts/04%E6%96%87%E7%AB%A01(%E9%9F%B3%E6%AA%94)/0401-22.mp3')">
         <span class="badge badge-title">標</span>
         <span class="part-label">新竹風佮新竹米粉</span>
-        <span class="play-icon">▶</span>
+        <span class="play-icon" aria-hidden="true"><svg class="ico ico-play" viewBox="0 0 24 24" fill="currentColor"><polygon points="8,5 8,19 18,12"/></svg><svg class="ico ico-pause" viewBox="0 0 24 24" fill="currentColor" hidden><rect x="6" y="5" width="4" height="14"/><rect x="14" y="5" width="4" height="14"/></svg></span>
       </button>
       
         <button class="part-btn" onclick="playAudio(this, 'https://language.moe.gov.tw/upload/download/jts/04%E6%96%87%E7%AB%A01(%E9%9F%B3%E6%AA%94)/0401-23-01.mp3')">
           <span class="badge badge-num">1</span>
           <span class="part-label">【檢采】</span>
-          <span class="play-icon">▶</span>
+          <span class="play-icon" aria-hidden="true"><svg class="ico ico-play" viewBox="0 0 24 24" fill="currentColor"><polygon points="8,5 8,19 18,12"/></svg><svg class="ico ico-pause" viewBox="0 0 24 24" fill="currentColor" hidden><rect x="6" y="5" width="4" height="14"/><rect x="14" y="5" width="4" height="14"/></svg></span>
         </button>
         <button class="part-btn" onclick="playAudio(this, 'https://language.moe.gov.tw/upload/download/jts/04%E6%96%87%E7%AB%A01(%E9%9F%B3%E6%AA%94)/0401-23-02.mp3')">
           <span class="badge badge-num">2</span>
           <span class="part-label">【向時】</span>
-          <span class="play-icon">▶</span>
+          <span class="play-icon" aria-hidden="true"><svg class="ico ico-play" viewBox="0 0 24 24" fill="currentColor"><polygon points="8,5 8,19 18,12"/></svg><svg class="ico ico-pause" viewBox="0 0 24 24" fill="currentColor" hidden><rect x="6" y="5" width="4" height="14"/><rect x="14" y="5" width="4" height="14"/></svg></span>
         </button>
         <button class="part-btn" onclick="playAudio(this, 'https://language.moe.gov.tw/upload/download/jts/04%E6%96%87%E7%AB%A01(%E9%9F%B3%E6%AA%94)/0401-23-03.mp3')">
           <span class="badge badge-num">3</span>
           <span class="part-label">【做做】</span>
-          <span class="play-icon">▶</span>
+          <span class="play-icon" aria-hidden="true"><svg class="ico ico-play" viewBox="0 0 24 24" fill="currentColor"><polygon points="8,5 8,19 18,12"/></svg><svg class="ico ico-pause" viewBox="0 0 24 24" fill="currentColor" hidden><rect x="6" y="5" width="4" height="14"/><rect x="14" y="5" width="4" height="14"/></svg></span>
         </button>
         <button class="part-btn" onclick="playAudio(this, 'https://language.moe.gov.tw/upload/download/jts/04%E6%96%87%E7%AB%A01(%E9%9F%B3%E6%AA%94)/0401-23-04.mp3')">
           <span class="badge badge-num">4</span>
           <span class="part-label">【臨時臨曜】</span>
-          <span class="play-icon">▶</span>
+          <span class="play-icon" aria-hidden="true"><svg class="ico ico-play" viewBox="0 0 24 24" fill="currentColor"><polygon points="8,5 8,19 18,12"/></svg><svg class="ico ico-pause" viewBox="0 0 24 24" fill="currentColor" hidden><rect x="6" y="5" width="4" height="14"/><rect x="14" y="5" width="4" height="14"/></svg></span>
         </button>
         <button class="part-btn" onclick="playAudio(this, 'https://language.moe.gov.tw/upload/download/jts/04%E6%96%87%E7%AB%A01(%E9%9F%B3%E6%AA%94)/0401-23-05.mp3')">
           <span class="badge badge-num">5</span>
           <span class="part-label">【攢物配】</span>
-          <span class="play-icon">▶</span>
+          <span class="play-icon" aria-hidden="true"><svg class="ico ico-play" viewBox="0 0 24 24" fill="currentColor"><polygon points="8,5 8,19 18,12"/></svg><svg class="ico ico-pause" viewBox="0 0 24 24" fill="currentColor" hidden><rect x="6" y="5" width="4" height="14"/><rect x="14" y="5" width="4" height="14"/></svg></span>
         </button>
         <button class="part-btn" onclick="playAudio(this, 'https://language.moe.gov.tw/upload/download/jts/04%E6%96%87%E7%AB%A01(%E9%9F%B3%E6%AA%94)/0401-23-06.mp3')">
           <span class="badge badge-num">6</span>
           <span class="part-label">【煠】</span>
-          <span class="play-icon">▶</span>
+          <span class="play-icon" aria-hidden="true"><svg class="ico ico-play" viewBox="0 0 24 24" fill="currentColor"><polygon points="8,5 8,19 18,12"/></svg><svg class="ico ico-pause" viewBox="0 0 24 24" fill="currentColor" hidden><rect x="6" y="5" width="4" height="14"/><rect x="14" y="5" width="4" height="14"/></svg></span>
         </button>
     </div>
   </div>
@@ -624,40 +686,40 @@
       </div>
       <div class="sec-right">
         <span class="sec-parts-count">5 詞</span>
-        <span class="arrow">›</span>
+        <span class="arrow" aria-hidden="true"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="9,6 15,12 9,18"/></svg></span>
       </div>
     </button>
     <div class="parts-container">
       <button class="title-audio-btn" onclick="playAudio(this, 'https://language.moe.gov.tw/upload/download/jts/04%E6%96%87%E7%AB%A01(%E9%9F%B3%E6%AA%94)/0401-24.mp3')">
         <span class="badge badge-title">標</span>
         <span class="part-label">佮竹仔無關係的竹塹餅</span>
-        <span class="play-icon">▶</span>
+        <span class="play-icon" aria-hidden="true"><svg class="ico ico-play" viewBox="0 0 24 24" fill="currentColor"><polygon points="8,5 8,19 18,12"/></svg><svg class="ico ico-pause" viewBox="0 0 24 24" fill="currentColor" hidden><rect x="6" y="5" width="4" height="14"/><rect x="14" y="5" width="4" height="14"/></svg></span>
       </button>
       
         <button class="part-btn" onclick="playAudio(this, 'https://language.moe.gov.tw/upload/download/jts/04%E6%96%87%E7%AB%A01(%E9%9F%B3%E6%AA%94)/0401-25-01.mp3')">
           <span class="badge badge-num">1</span>
           <span class="part-label">【竹塹】</span>
-          <span class="play-icon">▶</span>
+          <span class="play-icon" aria-hidden="true"><svg class="ico ico-play" viewBox="0 0 24 24" fill="currentColor"><polygon points="8,5 8,19 18,12"/></svg><svg class="ico ico-pause" viewBox="0 0 24 24" fill="currentColor" hidden><rect x="6" y="5" width="4" height="14"/><rect x="14" y="5" width="4" height="14"/></svg></span>
         </button>
         <button class="part-btn" onclick="playAudio(this, 'https://language.moe.gov.tw/upload/download/jts/04%E6%96%87%E7%AB%A01(%E9%9F%B3%E6%AA%94)/0401-25-02.mp3')">
           <span class="badge badge-num">2</span>
           <span class="part-label">【健】</span>
-          <span class="play-icon">▶</span>
+          <span class="play-icon" aria-hidden="true"><svg class="ico ico-play" viewBox="0 0 24 24" fill="currentColor"><polygon points="8,5 8,19 18,12"/></svg><svg class="ico ico-pause" viewBox="0 0 24 24" fill="currentColor" hidden><rect x="6" y="5" width="4" height="14"/><rect x="14" y="5" width="4" height="14"/></svg></span>
         </button>
         <button class="part-btn" onclick="playAudio(this, 'https://language.moe.gov.tw/upload/download/jts/04%E6%96%87%E7%AB%A01(%E9%9F%B3%E6%AA%94)/0401-25-03.mp3')">
           <span class="badge badge-num">3</span>
           <span class="part-label">【偌爾仔】</span>
-          <span class="play-icon">▶</span>
+          <span class="play-icon" aria-hidden="true"><svg class="ico ico-play" viewBox="0 0 24 24" fill="currentColor"><polygon points="8,5 8,19 18,12"/></svg><svg class="ico ico-pause" viewBox="0 0 24 24" fill="currentColor" hidden><rect x="6" y="5" width="4" height="14"/><rect x="14" y="5" width="4" height="14"/></svg></span>
         </button>
         <button class="part-btn" onclick="playAudio(this, 'https://language.moe.gov.tw/upload/download/jts/04%E6%96%87%E7%AB%A01(%E9%9F%B3%E6%AA%94)/0401-25-04.mp3')">
           <span class="badge badge-num">4</span>
           <span class="part-label">【鹹汫】</span>
-          <span class="play-icon">▶</span>
+          <span class="play-icon" aria-hidden="true"><svg class="ico ico-play" viewBox="0 0 24 24" fill="currentColor"><polygon points="8,5 8,19 18,12"/></svg><svg class="ico ico-pause" viewBox="0 0 24 24" fill="currentColor" hidden><rect x="6" y="5" width="4" height="14"/><rect x="14" y="5" width="4" height="14"/></svg></span>
         </button>
         <button class="part-btn" onclick="playAudio(this, 'https://language.moe.gov.tw/upload/download/jts/04%E6%96%87%E7%AB%A01(%E9%9F%B3%E6%AA%94)/0401-25-05.mp3')">
           <span class="badge badge-num">5</span>
           <span class="part-label">【記持】</span>
-          <span class="play-icon">▶</span>
+          <span class="play-icon" aria-hidden="true"><svg class="ico ico-play" viewBox="0 0 24 24" fill="currentColor"><polygon points="8,5 8,19 18,12"/></svg><svg class="ico ico-pause" viewBox="0 0 24 24" fill="currentColor" hidden><rect x="6" y="5" width="4" height="14"/><rect x="14" y="5" width="4" height="14"/></svg></span>
         </button>
     </div>
   </div>
@@ -669,40 +731,40 @@
       </div>
       <div class="sec-right">
         <span class="sec-parts-count">5 詞</span>
-        <span class="arrow">›</span>
+        <span class="arrow" aria-hidden="true"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="9,6 15,12 9,18"/></svg></span>
       </div>
     </button>
     <div class="parts-container">
       <button class="title-audio-btn" onclick="playAudio(this, 'https://language.moe.gov.tw/upload/download/jts/04%E6%96%87%E7%AB%A01(%E9%9F%B3%E6%AA%94)/0401-26.mp3')">
         <span class="badge badge-title">標</span>
         <span class="part-label">覆菜——苗栗的名產</span>
-        <span class="play-icon">▶</span>
+        <span class="play-icon" aria-hidden="true"><svg class="ico ico-play" viewBox="0 0 24 24" fill="currentColor"><polygon points="8,5 8,19 18,12"/></svg><svg class="ico ico-pause" viewBox="0 0 24 24" fill="currentColor" hidden><rect x="6" y="5" width="4" height="14"/><rect x="14" y="5" width="4" height="14"/></svg></span>
       </button>
       
         <button class="part-btn" onclick="playAudio(this, 'https://language.moe.gov.tw/upload/download/jts/04%E6%96%87%E7%AB%A01(%E9%9F%B3%E6%AA%94)/0401-27-01.mp3')">
           <span class="badge badge-num">1</span>
           <span class="part-label">【豉】</span>
-          <span class="play-icon">▶</span>
+          <span class="play-icon" aria-hidden="true"><svg class="ico ico-play" viewBox="0 0 24 24" fill="currentColor"><polygon points="8,5 8,19 18,12"/></svg><svg class="ico ico-pause" viewBox="0 0 24 24" fill="currentColor" hidden><rect x="6" y="5" width="4" height="14"/><rect x="14" y="5" width="4" height="14"/></svg></span>
         </button>
         <button class="part-btn" onclick="playAudio(this, 'https://language.moe.gov.tw/upload/download/jts/04%E6%96%87%E7%AB%A01(%E9%9F%B3%E6%AA%94)/0401-27-02.mp3')">
           <span class="badge badge-num">2</span>
           <span class="part-label">【實櫼】</span>
-          <span class="play-icon">▶</span>
+          <span class="play-icon" aria-hidden="true"><svg class="ico ico-play" viewBox="0 0 24 24" fill="currentColor"><polygon points="8,5 8,19 18,12"/></svg><svg class="ico ico-pause" viewBox="0 0 24 24" fill="currentColor" hidden><rect x="6" y="5" width="4" height="14"/><rect x="14" y="5" width="4" height="14"/></svg></span>
         </button>
         <button class="part-btn" onclick="playAudio(this, 'https://language.moe.gov.tw/upload/download/jts/04%E6%96%87%E7%AB%A01(%E9%9F%B3%E6%AA%94)/0401-27-03.mp3')">
           <span class="badge badge-num">3</span>
           <span class="part-label">【閬縫】</span>
-          <span class="play-icon">▶</span>
+          <span class="play-icon" aria-hidden="true"><svg class="ico ico-play" viewBox="0 0 24 24" fill="currentColor"><polygon points="8,5 8,19 18,12"/></svg><svg class="ico ico-pause" viewBox="0 0 24 24" fill="currentColor" hidden><rect x="6" y="5" width="4" height="14"/><rect x="14" y="5" width="4" height="14"/></svg></span>
         </button>
         <button class="part-btn" onclick="playAudio(this, 'https://language.moe.gov.tw/upload/download/jts/04%E6%96%87%E7%AB%A01(%E9%9F%B3%E6%AA%94)/0401-27-04.mp3')">
           <span class="badge badge-num">4</span>
           <span class="part-label">【生菇】</span>
-          <span class="play-icon">▶</span>
+          <span class="play-icon" aria-hidden="true"><svg class="ico ico-play" viewBox="0 0 24 24" fill="currentColor"><polygon points="8,5 8,19 18,12"/></svg><svg class="ico ico-pause" viewBox="0 0 24 24" fill="currentColor" hidden><rect x="6" y="5" width="4" height="14"/><rect x="14" y="5" width="4" height="14"/></svg></span>
         </button>
         <button class="part-btn" onclick="playAudio(this, 'https://language.moe.gov.tw/upload/download/jts/04%E6%96%87%E7%AB%A01(%E9%9F%B3%E6%AA%94)/0401-27-05.mp3')">
           <span class="badge badge-num">5</span>
           <span class="part-label">【三層肉】</span>
-          <span class="play-icon">▶</span>
+          <span class="play-icon" aria-hidden="true"><svg class="ico ico-play" viewBox="0 0 24 24" fill="currentColor"><polygon points="8,5 8,19 18,12"/></svg><svg class="ico ico-pause" viewBox="0 0 24 24" fill="currentColor" hidden><rect x="6" y="5" width="4" height="14"/><rect x="14" y="5" width="4" height="14"/></svg></span>
         </button>
     </div>
   </div>
@@ -714,60 +776,60 @@
       </div>
       <div class="sec-right">
         <span class="sec-parts-count">9 詞</span>
-        <span class="arrow">›</span>
+        <span class="arrow" aria-hidden="true"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="9,6 15,12 9,18"/></svg></span>
       </div>
     </button>
     <div class="parts-container">
       <button class="title-audio-btn" onclick="playAudio(this, 'https://language.moe.gov.tw/upload/download/jts/04%E6%96%87%E7%AB%A01(%E9%9F%B3%E6%AA%94)/0401-28.mp3')">
         <span class="badge badge-title">標</span>
         <span class="part-label">新港飴按怎來</span>
-        <span class="play-icon">▶</span>
+        <span class="play-icon" aria-hidden="true"><svg class="ico ico-play" viewBox="0 0 24 24" fill="currentColor"><polygon points="8,5 8,19 18,12"/></svg><svg class="ico ico-pause" viewBox="0 0 24 24" fill="currentColor" hidden><rect x="6" y="5" width="4" height="14"/><rect x="14" y="5" width="4" height="14"/></svg></span>
       </button>
       
         <button class="part-btn" onclick="playAudio(this, 'https://language.moe.gov.tw/upload/download/jts/04%E6%96%87%E7%AB%A01(%E9%9F%B3%E6%AA%94)/0401-29-01.mp3')">
           <span class="badge badge-num">1</span>
           <span class="part-label">【等路】</span>
-          <span class="play-icon">▶</span>
+          <span class="play-icon" aria-hidden="true"><svg class="ico ico-play" viewBox="0 0 24 24" fill="currentColor"><polygon points="8,5 8,19 18,12"/></svg><svg class="ico ico-pause" viewBox="0 0 24 24" fill="currentColor" hidden><rect x="6" y="5" width="4" height="14"/><rect x="14" y="5" width="4" height="14"/></svg></span>
         </button>
         <button class="part-btn" onclick="playAudio(this, 'https://language.moe.gov.tw/upload/download/jts/04%E6%96%87%E7%AB%A01(%E9%9F%B3%E6%AA%94)/0401-29-02.mp3')">
           <span class="badge badge-num">2</span>
           <span class="part-label">【滒粉】</span>
-          <span class="play-icon">▶</span>
+          <span class="play-icon" aria-hidden="true"><svg class="ico ico-play" viewBox="0 0 24 24" fill="currentColor"><polygon points="8,5 8,19 18,12"/></svg><svg class="ico ico-pause" viewBox="0 0 24 24" fill="currentColor" hidden><rect x="6" y="5" width="4" height="14"/><rect x="14" y="5" width="4" height="14"/></svg></span>
         </button>
         <button class="part-btn" onclick="playAudio(this, 'https://language.moe.gov.tw/upload/download/jts/04%E6%96%87%E7%AB%A01(%E9%9F%B3%E6%AA%94)/0401-29-03.mp3')">
           <span class="badge badge-num">3</span>
           <span class="part-label">【頭來尾去】</span>
-          <span class="play-icon">▶</span>
+          <span class="play-icon" aria-hidden="true"><svg class="ico ico-play" viewBox="0 0 24 24" fill="currentColor"><polygon points="8,5 8,19 18,12"/></svg><svg class="ico ico-pause" viewBox="0 0 24 24" fill="currentColor" hidden><rect x="6" y="5" width="4" height="14"/><rect x="14" y="5" width="4" height="14"/></svg></span>
         </button>
         <button class="part-btn" onclick="playAudio(this, 'https://language.moe.gov.tw/upload/download/jts/04%E6%96%87%E7%AB%A01(%E9%9F%B3%E6%AA%94)/0401-29-04.mp3')">
           <span class="badge badge-num">4</span>
           <span class="part-label">【轉潤落軟】</span>
-          <span class="play-icon">▶</span>
+          <span class="play-icon" aria-hidden="true"><svg class="ico ico-play" viewBox="0 0 24 24" fill="currentColor"><polygon points="8,5 8,19 18,12"/></svg><svg class="ico ico-pause" viewBox="0 0 24 24" fill="currentColor" hidden><rect x="6" y="5" width="4" height="14"/><rect x="14" y="5" width="4" height="14"/></svg></span>
         </button>
         <button class="part-btn" onclick="playAudio(this, 'https://language.moe.gov.tw/upload/download/jts/04%E6%96%87%E7%AB%A01(%E9%9F%B3%E6%AA%94)/0401-29-05.mp3')">
           <span class="badge badge-num">5</span>
           <span class="part-label">【這聲】</span>
-          <span class="play-icon">▶</span>
+          <span class="play-icon" aria-hidden="true"><svg class="ico ico-play" viewBox="0 0 24 24" fill="currentColor"><polygon points="8,5 8,19 18,12"/></svg><svg class="ico ico-pause" viewBox="0 0 24 24" fill="currentColor" hidden><rect x="6" y="5" width="4" height="14"/><rect x="14" y="5" width="4" height="14"/></svg></span>
         </button>
         <button class="part-btn" onclick="playAudio(this, 'https://language.moe.gov.tw/upload/download/jts/04%E6%96%87%E7%AB%A01(%E9%9F%B3%E6%AA%94)/0401-29-06.mp3')">
           <span class="badge badge-num">6</span>
           <span class="part-label">【毋甘搐搐】</span>
-          <span class="play-icon">▶</span>
+          <span class="play-icon" aria-hidden="true"><svg class="ico ico-play" viewBox="0 0 24 24" fill="currentColor"><polygon points="8,5 8,19 18,12"/></svg><svg class="ico ico-pause" viewBox="0 0 24 24" fill="currentColor" hidden><rect x="6" y="5" width="4" height="14"/><rect x="14" y="5" width="4" height="14"/></svg></span>
         </button>
         <button class="part-btn" onclick="playAudio(this, 'https://language.moe.gov.tw/upload/download/jts/04%E6%96%87%E7%AB%A01(%E9%9F%B3%E6%AA%94)/0401-29-07.mp3')">
           <span class="badge badge-num">7</span>
           <span class="part-label">【齊勻】</span>
-          <span class="play-icon">▶</span>
+          <span class="play-icon" aria-hidden="true"><svg class="ico ico-play" viewBox="0 0 24 24" fill="currentColor"><polygon points="8,5 8,19 18,12"/></svg><svg class="ico ico-pause" viewBox="0 0 24 24" fill="currentColor" hidden><rect x="6" y="5" width="4" height="14"/><rect x="14" y="5" width="4" height="14"/></svg></span>
         </button>
         <button class="part-btn" onclick="playAudio(this, 'https://language.moe.gov.tw/upload/download/jts/04%E6%96%87%E7%AB%A01(%E9%9F%B3%E6%AA%94)/0401-29-08.mp3')">
           <span class="badge badge-num">8</span>
           <span class="part-label">【愛顧】</span>
-          <span class="play-icon">▶</span>
+          <span class="play-icon" aria-hidden="true"><svg class="ico ico-play" viewBox="0 0 24 24" fill="currentColor"><polygon points="8,5 8,19 18,12"/></svg><svg class="ico ico-pause" viewBox="0 0 24 24" fill="currentColor" hidden><rect x="6" y="5" width="4" height="14"/><rect x="14" y="5" width="4" height="14"/></svg></span>
         </button>
         <button class="part-btn" onclick="playAudio(this, 'https://language.moe.gov.tw/upload/download/jts/04%E6%96%87%E7%AB%A01(%E9%9F%B3%E6%AA%94)/0401-29-09.mp3')">
           <span class="badge badge-num">9</span>
           <span class="part-label">【交易兼利市】</span>
-          <span class="play-icon">▶</span>
+          <span class="play-icon" aria-hidden="true"><svg class="ico ico-play" viewBox="0 0 24 24" fill="currentColor"><polygon points="8,5 8,19 18,12"/></svg><svg class="ico ico-pause" viewBox="0 0 24 24" fill="currentColor" hidden><rect x="6" y="5" width="4" height="14"/><rect x="14" y="5" width="4" height="14"/></svg></span>
         </button>
     </div>
   </div>
@@ -779,45 +841,45 @@
       </div>
       <div class="sec-right">
         <span class="sec-parts-count">6 詞</span>
-        <span class="arrow">›</span>
+        <span class="arrow" aria-hidden="true"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="9,6 15,12 9,18"/></svg></span>
       </div>
     </button>
     <div class="parts-container">
       <button class="title-audio-btn" onclick="playAudio(this, 'https://language.moe.gov.tw/upload/download/jts/04%E6%96%87%E7%AB%A01(%E9%9F%B3%E6%AA%94)/0401-30.mp3')">
         <span class="badge badge-title">標</span>
         <span class="part-label">臺南的度小月擔仔麵</span>
-        <span class="play-icon">▶</span>
+        <span class="play-icon" aria-hidden="true"><svg class="ico ico-play" viewBox="0 0 24 24" fill="currentColor"><polygon points="8,5 8,19 18,12"/></svg><svg class="ico ico-pause" viewBox="0 0 24 24" fill="currentColor" hidden><rect x="6" y="5" width="4" height="14"/><rect x="14" y="5" width="4" height="14"/></svg></span>
       </button>
       
         <button class="part-btn" onclick="playAudio(this, 'https://language.moe.gov.tw/upload/download/jts/04%E6%96%87%E7%AB%A01(%E9%9F%B3%E6%AA%94)/0401-31-01.mp3')">
           <span class="badge badge-num">1</span>
           <span class="part-label">【厚風颱】</span>
-          <span class="play-icon">▶</span>
+          <span class="play-icon" aria-hidden="true"><svg class="ico ico-play" viewBox="0 0 24 24" fill="currentColor"><polygon points="8,5 8,19 18,12"/></svg><svg class="ico ico-pause" viewBox="0 0 24 24" fill="currentColor" hidden><rect x="6" y="5" width="4" height="14"/><rect x="14" y="5" width="4" height="14"/></svg></span>
         </button>
         <button class="part-btn" onclick="playAudio(this, 'https://language.moe.gov.tw/upload/download/jts/04%E6%96%87%E7%AB%A01(%E9%9F%B3%E6%AA%94)/0401-31-02.mp3')">
           <span class="badge badge-num">2</span>
           <span class="part-label">【改途】</span>
-          <span class="play-icon">▶</span>
+          <span class="play-icon" aria-hidden="true"><svg class="ico ico-play" viewBox="0 0 24 24" fill="currentColor"><polygon points="8,5 8,19 18,12"/></svg><svg class="ico ico-pause" viewBox="0 0 24 24" fill="currentColor" hidden><rect x="6" y="5" width="4" height="14"/><rect x="14" y="5" width="4" height="14"/></svg></span>
         </button>
         <button class="part-btn" onclick="playAudio(this, 'https://language.moe.gov.tw/upload/download/jts/04%E6%96%87%E7%AB%A01(%E9%9F%B3%E6%AA%94)/0401-31-03.mp3')">
           <span class="badge badge-num">3</span>
           <span class="part-label">【定著】</span>
-          <span class="play-icon">▶</span>
+          <span class="play-icon" aria-hidden="true"><svg class="ico ico-play" viewBox="0 0 24 24" fill="currentColor"><polygon points="8,5 8,19 18,12"/></svg><svg class="ico ico-pause" viewBox="0 0 24 24" fill="currentColor" hidden><rect x="6" y="5" width="4" height="14"/><rect x="14" y="5" width="4" height="14"/></svg></span>
         </button>
         <button class="part-btn" onclick="playAudio(this, 'https://language.moe.gov.tw/upload/download/jts/04%E6%96%87%E7%AB%A01(%E9%9F%B3%E6%AA%94)/0401-31-04.mp3')">
           <span class="badge badge-num">4</span>
           <span class="part-label">【拍損】</span>
-          <span class="play-icon">▶</span>
+          <span class="play-icon" aria-hidden="true"><svg class="ico ico-play" viewBox="0 0 24 24" fill="currentColor"><polygon points="8,5 8,19 18,12"/></svg><svg class="ico ico-pause" viewBox="0 0 24 24" fill="currentColor" hidden><rect x="6" y="5" width="4" height="14"/><rect x="14" y="5" width="4" height="14"/></svg></span>
         </button>
         <button class="part-btn" onclick="playAudio(this, 'https://language.moe.gov.tw/upload/download/jts/04%E6%96%87%E7%AB%A01(%E9%9F%B3%E6%AA%94)/0401-31-05.mp3')">
           <span class="badge badge-num">5</span>
           <span class="part-label">【幼秀麵】</span>
-          <span class="play-icon">▶</span>
+          <span class="play-icon" aria-hidden="true"><svg class="ico ico-play" viewBox="0 0 24 24" fill="currentColor"><polygon points="8,5 8,19 18,12"/></svg><svg class="ico ico-pause" viewBox="0 0 24 24" fill="currentColor" hidden><rect x="6" y="5" width="4" height="14"/><rect x="14" y="5" width="4" height="14"/></svg></span>
         </button>
         <button class="part-btn" onclick="playAudio(this, 'https://language.moe.gov.tw/upload/download/jts/04%E6%96%87%E7%AB%A01(%E9%9F%B3%E6%AA%94)/0401-31-06.mp3')">
           <span class="badge badge-num">6</span>
           <span class="part-label">【抐】</span>
-          <span class="play-icon">▶</span>
+          <span class="play-icon" aria-hidden="true"><svg class="ico ico-play" viewBox="0 0 24 24" fill="currentColor"><polygon points="8,5 8,19 18,12"/></svg><svg class="ico ico-pause" viewBox="0 0 24 24" fill="currentColor" hidden><rect x="6" y="5" width="4" height="14"/><rect x="14" y="5" width="4" height="14"/></svg></span>
         </button>
     </div>
   </div>
@@ -829,45 +891,45 @@
       </div>
       <div class="sec-right">
         <span class="sec-parts-count">6 詞</span>
-        <span class="arrow">›</span>
+        <span class="arrow" aria-hidden="true"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="9,6 15,12 9,18"/></svg></span>
       </div>
     </button>
     <div class="parts-container">
       <button class="title-audio-btn" onclick="playAudio(this, 'https://language.moe.gov.tw/upload/download/jts/04%E6%96%87%E7%AB%A01(%E9%9F%B3%E6%AA%94)/0401-32.mp3')">
         <span class="badge badge-title">標</span>
         <span class="part-label">萬巒豬跤行遍全臺灣</span>
-        <span class="play-icon">▶</span>
+        <span class="play-icon" aria-hidden="true"><svg class="ico ico-play" viewBox="0 0 24 24" fill="currentColor"><polygon points="8,5 8,19 18,12"/></svg><svg class="ico ico-pause" viewBox="0 0 24 24" fill="currentColor" hidden><rect x="6" y="5" width="4" height="14"/><rect x="14" y="5" width="4" height="14"/></svg></span>
       </button>
       
         <button class="part-btn" onclick="playAudio(this, 'https://language.moe.gov.tw/upload/download/jts/04%E6%96%87%E7%AB%A01(%E9%9F%B3%E6%AA%94)/0401-33-01.mp3')">
           <span class="badge badge-num">1</span>
           <span class="part-label">【寬寬仔】</span>
-          <span class="play-icon">▶</span>
+          <span class="play-icon" aria-hidden="true"><svg class="ico ico-play" viewBox="0 0 24 24" fill="currentColor"><polygon points="8,5 8,19 18,12"/></svg><svg class="ico ico-pause" viewBox="0 0 24 24" fill="currentColor" hidden><rect x="6" y="5" width="4" height="14"/><rect x="14" y="5" width="4" height="14"/></svg></span>
         </button>
         <button class="part-btn" onclick="playAudio(this, 'https://language.moe.gov.tw/upload/download/jts/04%E6%96%87%E7%AB%A01(%E9%9F%B3%E6%AA%94)/0401-33-02.mp3')">
           <span class="badge badge-num">2</span>
           <span class="part-label">【𩚨嗲嗲】</span>
-          <span class="play-icon">▶</span>
+          <span class="play-icon" aria-hidden="true"><svg class="ico ico-play" viewBox="0 0 24 24" fill="currentColor"><polygon points="8,5 8,19 18,12"/></svg><svg class="ico ico-pause" viewBox="0 0 24 24" fill="currentColor" hidden><rect x="6" y="5" width="4" height="14"/><rect x="14" y="5" width="4" height="14"/></svg></span>
         </button>
         <button class="part-btn" onclick="playAudio(this, 'https://language.moe.gov.tw/upload/download/jts/04%E6%96%87%E7%AB%A01(%E9%9F%B3%E6%AA%94)/0401-33-03.mp3')">
           <span class="badge badge-num">3</span>
           <span class="part-label">【搵料】</span>
-          <span class="play-icon">▶</span>
+          <span class="play-icon" aria-hidden="true"><svg class="ico ico-play" viewBox="0 0 24 24" fill="currentColor"><polygon points="8,5 8,19 18,12"/></svg><svg class="ico ico-pause" viewBox="0 0 24 24" fill="currentColor" hidden><rect x="6" y="5" width="4" height="14"/><rect x="14" y="5" width="4" height="14"/></svg></span>
         </button>
         <button class="part-btn" onclick="playAudio(this, 'https://language.moe.gov.tw/upload/download/jts/04%E6%96%87%E7%AB%A01(%E9%9F%B3%E6%AA%94)/0401-33-04.mp3')">
           <span class="badge badge-num">4</span>
           <span class="part-label">【脆喙】</span>
-          <span class="play-icon">▶</span>
+          <span class="play-icon" aria-hidden="true"><svg class="ico ico-play" viewBox="0 0 24 24" fill="currentColor"><polygon points="8,5 8,19 18,12"/></svg><svg class="ico ico-pause" viewBox="0 0 24 24" fill="currentColor" hidden><rect x="6" y="5" width="4" height="14"/><rect x="14" y="5" width="4" height="14"/></svg></span>
         </button>
         <button class="part-btn" onclick="playAudio(this, 'https://language.moe.gov.tw/upload/download/jts/04%E6%96%87%E7%AB%A01(%E9%9F%B3%E6%AA%94)/0401-33-05.mp3')">
           <span class="badge badge-num">5</span>
           <span class="part-label">【插插插】</span>
-          <span class="play-icon">▶</span>
+          <span class="play-icon" aria-hidden="true"><svg class="ico ico-play" viewBox="0 0 24 24" fill="currentColor"><polygon points="8,5 8,19 18,12"/></svg><svg class="ico ico-pause" viewBox="0 0 24 24" fill="currentColor" hidden><rect x="6" y="5" width="4" height="14"/><rect x="14" y="5" width="4" height="14"/></svg></span>
         </button>
         <button class="part-btn" onclick="playAudio(this, 'https://language.moe.gov.tw/upload/download/jts/04%E6%96%87%E7%AB%A01(%E9%9F%B3%E6%AA%94)/0401-33-06.mp3')">
           <span class="badge badge-num">6</span>
           <span class="part-label">【拍蜂】</span>
-          <span class="play-icon">▶</span>
+          <span class="play-icon" aria-hidden="true"><svg class="ico ico-play" viewBox="0 0 24 24" fill="currentColor"><polygon points="8,5 8,19 18,12"/></svg><svg class="ico ico-pause" viewBox="0 0 24 24" fill="currentColor" hidden><rect x="6" y="5" width="4" height="14"/><rect x="14" y="5" width="4" height="14"/></svg></span>
         </button>
     </div>
   </div>
@@ -879,40 +941,40 @@
       </div>
       <div class="sec-right">
         <span class="sec-parts-count">5 詞</span>
-        <span class="arrow">›</span>
+        <span class="arrow" aria-hidden="true"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="9,6 15,12 9,18"/></svg></span>
       </div>
     </button>
     <div class="parts-container">
       <button class="title-audio-btn" onclick="playAudio(this, 'https://language.moe.gov.tw/upload/download/jts/04%E6%96%87%E7%AB%A01(%E9%9F%B3%E6%AA%94)/0401-34.mp3')">
         <span class="badge badge-title">標</span>
         <span class="part-label">臺東池上便當——深深數念的古早味</span>
-        <span class="play-icon">▶</span>
+        <span class="play-icon" aria-hidden="true"><svg class="ico ico-play" viewBox="0 0 24 24" fill="currentColor"><polygon points="8,5 8,19 18,12"/></svg><svg class="ico ico-pause" viewBox="0 0 24 24" fill="currentColor" hidden><rect x="6" y="5" width="4" height="14"/><rect x="14" y="5" width="4" height="14"/></svg></span>
       </button>
       
         <button class="part-btn" onclick="playAudio(this, 'https://language.moe.gov.tw/upload/download/jts/04%E6%96%87%E7%AB%A01(%E9%9F%B3%E6%AA%94)/0401-35-01.mp3')">
           <span class="badge badge-num">1</span>
           <span class="part-label">【節好勢】</span>
-          <span class="play-icon">▶</span>
+          <span class="play-icon" aria-hidden="true"><svg class="ico ico-play" viewBox="0 0 24 24" fill="currentColor"><polygon points="8,5 8,19 18,12"/></svg><svg class="ico ico-pause" viewBox="0 0 24 24" fill="currentColor" hidden><rect x="6" y="5" width="4" height="14"/><rect x="14" y="5" width="4" height="14"/></svg></span>
         </button>
         <button class="part-btn" onclick="playAudio(this, 'https://language.moe.gov.tw/upload/download/jts/04%E6%96%87%E7%AB%A01(%E9%9F%B3%E6%AA%94)/0401-35-02.mp3')">
           <span class="badge badge-num">2</span>
           <span class="part-label">【粟種】</span>
-          <span class="play-icon">▶</span>
+          <span class="play-icon" aria-hidden="true"><svg class="ico ico-play" viewBox="0 0 24 24" fill="currentColor"><polygon points="8,5 8,19 18,12"/></svg><svg class="ico ico-pause" viewBox="0 0 24 24" fill="currentColor" hidden><rect x="6" y="5" width="4" height="14"/><rect x="14" y="5" width="4" height="14"/></svg></span>
         </button>
         <button class="part-btn" onclick="playAudio(this, 'https://language.moe.gov.tw/upload/download/jts/04%E6%96%87%E7%AB%A01(%E9%9F%B3%E6%AA%94)/0401-35-03.mp3')">
           <span class="badge badge-num">3</span>
           <span class="part-label">【精肉】</span>
-          <span class="play-icon">▶</span>
+          <span class="play-icon" aria-hidden="true"><svg class="ico ico-play" viewBox="0 0 24 24" fill="currentColor"><polygon points="8,5 8,19 18,12"/></svg><svg class="ico ico-pause" viewBox="0 0 24 24" fill="currentColor" hidden><rect x="6" y="5" width="4" height="14"/><rect x="14" y="5" width="4" height="14"/></svg></span>
         </button>
         <button class="part-btn" onclick="playAudio(this, 'https://language.moe.gov.tw/upload/download/jts/04%E6%96%87%E7%AB%A01(%E9%9F%B3%E6%AA%94)/0401-35-04.mp3')">
           <span class="badge badge-num">4</span>
           <span class="part-label">【煙腸</span>
-          <span class="play-icon">▶</span>
+          <span class="play-icon" aria-hidden="true"><svg class="ico ico-play" viewBox="0 0 24 24" fill="currentColor"><polygon points="8,5 8,19 18,12"/></svg><svg class="ico ico-pause" viewBox="0 0 24 24" fill="currentColor" hidden><rect x="6" y="5" width="4" height="14"/><rect x="14" y="5" width="4" height="14"/></svg></span>
         </button>
         <button class="part-btn" onclick="playAudio(this, 'https://language.moe.gov.tw/upload/download/jts/04%E6%96%87%E7%AB%A01(%E9%9F%B3%E6%AA%94)/0401-35-05.mp3')">
           <span class="badge badge-num">5</span>
           <span class="part-label">【糋】</span>
-          <span class="play-icon">▶</span>
+          <span class="play-icon" aria-hidden="true"><svg class="ico ico-play" viewBox="0 0 24 24" fill="currentColor"><polygon points="8,5 8,19 18,12"/></svg><svg class="ico ico-pause" viewBox="0 0 24 24" fill="currentColor" hidden><rect x="6" y="5" width="4" height="14"/><rect x="14" y="5" width="4" height="14"/></svg></span>
         </button>
     </div>
   </div>
@@ -924,50 +986,50 @@
       </div>
       <div class="sec-right">
         <span class="sec-parts-count">7 詞</span>
-        <span class="arrow">›</span>
+        <span class="arrow" aria-hidden="true"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="9,6 15,12 9,18"/></svg></span>
       </div>
     </button>
     <div class="parts-container">
       <button class="title-audio-btn" onclick="playAudio(this, 'https://language.moe.gov.tw/upload/download/jts/04%E6%96%87%E7%AB%A01(%E9%9F%B3%E6%AA%94)/0401-36.mp3')">
         <span class="badge badge-title">標</span>
         <span class="part-label">金門貢糖——予你袂假得</span>
-        <span class="play-icon">▶</span>
+        <span class="play-icon" aria-hidden="true"><svg class="ico ico-play" viewBox="0 0 24 24" fill="currentColor"><polygon points="8,5 8,19 18,12"/></svg><svg class="ico ico-pause" viewBox="0 0 24 24" fill="currentColor" hidden><rect x="6" y="5" width="4" height="14"/><rect x="14" y="5" width="4" height="14"/></svg></span>
       </button>
       
         <button class="part-btn" onclick="playAudio(this, 'https://language.moe.gov.tw/upload/download/jts/04%E6%96%87%E7%AB%A01(%E9%9F%B3%E6%AA%94)/0401-37-01.mp3')">
           <span class="badge badge-num">1</span>
           <span class="part-label">【袂假得】</span>
-          <span class="play-icon">▶</span>
+          <span class="play-icon" aria-hidden="true"><svg class="ico ico-play" viewBox="0 0 24 24" fill="currentColor"><polygon points="8,5 8,19 18,12"/></svg><svg class="ico ico-pause" viewBox="0 0 24 24" fill="currentColor" hidden><rect x="6" y="5" width="4" height="14"/><rect x="14" y="5" width="4" height="14"/></svg></span>
         </button>
         <button class="part-btn" onclick="playAudio(this, 'https://language.moe.gov.tw/upload/download/jts/04%E6%96%87%E7%AB%A01(%E9%9F%B3%E6%AA%94)/0401-37-02.mp3')">
           <span class="badge badge-num">2</span>
           <span class="part-label">【摃】</span>
-          <span class="play-icon">▶</span>
+          <span class="play-icon" aria-hidden="true"><svg class="ico ico-play" viewBox="0 0 24 24" fill="currentColor"><polygon points="8,5 8,19 18,12"/></svg><svg class="ico ico-pause" viewBox="0 0 24 24" fill="currentColor" hidden><rect x="6" y="5" width="4" height="14"/><rect x="14" y="5" width="4" height="14"/></svg></span>
         </button>
         <button class="part-btn" onclick="playAudio(this, 'https://language.moe.gov.tw/upload/download/jts/04%E6%96%87%E7%AB%A01(%E9%9F%B3%E6%AA%94)/0401-37-03.mp3')">
           <span class="badge badge-num">3</span>
           <span class="part-label">【硩】</span>
-          <span class="play-icon">▶</span>
+          <span class="play-icon" aria-hidden="true"><svg class="ico ico-play" viewBox="0 0 24 24" fill="currentColor"><polygon points="8,5 8,19 18,12"/></svg><svg class="ico ico-pause" viewBox="0 0 24 24" fill="currentColor" hidden><rect x="6" y="5" width="4" height="14"/><rect x="14" y="5" width="4" height="14"/></svg></span>
         </button>
         <button class="part-btn" onclick="playAudio(this, 'https://language.moe.gov.tw/upload/download/jts/04%E6%96%87%E7%AB%A01(%E9%9F%B3%E6%AA%94)/0401-37-04.mp3')">
           <span class="badge badge-num">4</span>
           <span class="part-label">【鏨】</span>
-          <span class="play-icon">▶</span>
+          <span class="play-icon" aria-hidden="true"><svg class="ico ico-play" viewBox="0 0 24 24" fill="currentColor"><polygon points="8,5 8,19 18,12"/></svg><svg class="ico ico-pause" viewBox="0 0 24 24" fill="currentColor" hidden><rect x="6" y="5" width="4" height="14"/><rect x="14" y="5" width="4" height="14"/></svg></span>
         </button>
         <button class="part-btn" onclick="playAudio(this, 'https://language.moe.gov.tw/upload/download/jts/04%E6%96%87%E7%AB%A01(%E9%9F%B3%E6%AA%94)/0401-37-05.mp3')">
           <span class="badge badge-num">5</span>
           <span class="part-label">【市草】</span>
-          <span class="play-icon">▶</span>
+          <span class="play-icon" aria-hidden="true"><svg class="ico ico-play" viewBox="0 0 24 24" fill="currentColor"><polygon points="8,5 8,19 18,12"/></svg><svg class="ico ico-pause" viewBox="0 0 24 24" fill="currentColor" hidden><rect x="6" y="5" width="4" height="14"/><rect x="14" y="5" width="4" height="14"/></svg></span>
         </button>
         <button class="part-btn" onclick="playAudio(this, 'https://language.moe.gov.tw/upload/download/jts/04%E6%96%87%E7%AB%A01(%E9%9F%B3%E6%AA%94)/0401-37-06.mp3')">
           <span class="badge badge-num">6</span>
           <span class="part-label">【假包】</span>
-          <span class="play-icon">▶</span>
+          <span class="play-icon" aria-hidden="true"><svg class="ico ico-play" viewBox="0 0 24 24" fill="currentColor"><polygon points="8,5 8,19 18,12"/></svg><svg class="ico ico-pause" viewBox="0 0 24 24" fill="currentColor" hidden><rect x="6" y="5" width="4" height="14"/><rect x="14" y="5" width="4" height="14"/></svg></span>
         </button>
         <button class="part-btn" onclick="playAudio(this, 'https://language.moe.gov.tw/upload/download/jts/04%E6%96%87%E7%AB%A01(%E9%9F%B3%E6%AA%94)/0401-37-07.mp3')">
           <span class="badge badge-num">7</span>
           <span class="part-label">【一粒一】</span>
-          <span class="play-icon">▶</span>
+          <span class="play-icon" aria-hidden="true"><svg class="ico ico-play" viewBox="0 0 24 24" fill="currentColor"><polygon points="8,5 8,19 18,12"/></svg><svg class="ico ico-pause" viewBox="0 0 24 24" fill="currentColor" hidden><rect x="6" y="5" width="4" height="14"/><rect x="14" y="5" width="4" height="14"/></svg></span>
         </button>
     </div>
   </div>
@@ -979,55 +1041,55 @@
       </div>
       <div class="sec-right">
         <span class="sec-parts-count">8 詞</span>
-        <span class="arrow">›</span>
+        <span class="arrow" aria-hidden="true"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="9,6 15,12 9,18"/></svg></span>
       </div>
     </button>
     <div class="parts-container">
       <button class="title-audio-btn" onclick="playAudio(this, 'https://language.moe.gov.tw/upload/download/jts/04%E6%96%87%E7%AB%A01(%E9%9F%B3%E6%AA%94)/0401-40.mp3')">
         <span class="badge badge-title">標</span>
         <span class="part-label">千算萬算，毋值天一劃</span>
-        <span class="play-icon">▶</span>
+        <span class="play-icon" aria-hidden="true"><svg class="ico ico-play" viewBox="0 0 24 24" fill="currentColor"><polygon points="8,5 8,19 18,12"/></svg><svg class="ico ico-pause" viewBox="0 0 24 24" fill="currentColor" hidden><rect x="6" y="5" width="4" height="14"/><rect x="14" y="5" width="4" height="14"/></svg></span>
       </button>
       
         <button class="part-btn" onclick="playAudio(this, 'https://language.moe.gov.tw/upload/download/jts/04%E6%96%87%E7%AB%A01(%E9%9F%B3%E6%AA%94)/0401-41-01.mp3')">
           <span class="badge badge-num">1</span>
           <span class="part-label">【對同】</span>
-          <span class="play-icon">▶</span>
+          <span class="play-icon" aria-hidden="true"><svg class="ico ico-play" viewBox="0 0 24 24" fill="currentColor"><polygon points="8,5 8,19 18,12"/></svg><svg class="ico ico-pause" viewBox="0 0 24 24" fill="currentColor" hidden><rect x="6" y="5" width="4" height="14"/><rect x="14" y="5" width="4" height="14"/></svg></span>
         </button>
         <button class="part-btn" onclick="playAudio(this, 'https://language.moe.gov.tw/upload/download/jts/04%E6%96%87%E7%AB%A01(%E9%9F%B3%E6%AA%94)/0401-41-02.mp3')">
           <span class="badge badge-num">2</span>
           <span class="part-label">【合軀】</span>
-          <span class="play-icon">▶</span>
+          <span class="play-icon" aria-hidden="true"><svg class="ico ico-play" viewBox="0 0 24 24" fill="currentColor"><polygon points="8,5 8,19 18,12"/></svg><svg class="ico ico-pause" viewBox="0 0 24 24" fill="currentColor" hidden><rect x="6" y="5" width="4" height="14"/><rect x="14" y="5" width="4" height="14"/></svg></span>
         </button>
         <button class="part-btn" onclick="playAudio(this, 'https://language.moe.gov.tw/upload/download/jts/04%E6%96%87%E7%AB%A01(%E9%9F%B3%E6%AA%94)/0401-41-03.mp3')">
           <span class="badge badge-num">3</span>
           <span class="part-label">【過謙】</span>
-          <span class="play-icon">▶</span>
+          <span class="play-icon" aria-hidden="true"><svg class="ico ico-play" viewBox="0 0 24 24" fill="currentColor"><polygon points="8,5 8,19 18,12"/></svg><svg class="ico ico-pause" viewBox="0 0 24 24" fill="currentColor" hidden><rect x="6" y="5" width="4" height="14"/><rect x="14" y="5" width="4" height="14"/></svg></span>
         </button>
         <button class="part-btn" onclick="playAudio(this, 'https://language.moe.gov.tw/upload/download/jts/04%E6%96%87%E7%AB%A01(%E9%9F%B3%E6%AA%94)/0401-41-04.mp3')">
           <span class="badge badge-num">4</span>
           <span class="part-label">【食著羹】</span>
-          <span class="play-icon">▶</span>
+          <span class="play-icon" aria-hidden="true"><svg class="ico ico-play" viewBox="0 0 24 24" fill="currentColor"><polygon points="8,5 8,19 18,12"/></svg><svg class="ico ico-pause" viewBox="0 0 24 24" fill="currentColor" hidden><rect x="6" y="5" width="4" height="14"/><rect x="14" y="5" width="4" height="14"/></svg></span>
         </button>
         <button class="part-btn" onclick="playAudio(this, 'https://language.moe.gov.tw/upload/download/jts/04%E6%96%87%E7%AB%A01(%E9%9F%B3%E6%AA%94)/0401-41-05.mp3')">
           <span class="badge badge-num">5</span>
           <span class="part-label">【脫箠】</span>
-          <span class="play-icon">▶</span>
+          <span class="play-icon" aria-hidden="true"><svg class="ico ico-play" viewBox="0 0 24 24" fill="currentColor"><polygon points="8,5 8,19 18,12"/></svg><svg class="ico ico-pause" viewBox="0 0 24 24" fill="currentColor" hidden><rect x="6" y="5" width="4" height="14"/><rect x="14" y="5" width="4" height="14"/></svg></span>
         </button>
         <button class="part-btn" onclick="playAudio(this, 'https://language.moe.gov.tw/upload/download/jts/04%E6%96%87%E7%AB%A01(%E9%9F%B3%E6%AA%94)/0401-41-06.mp3')">
           <span class="badge badge-num">6</span>
           <span class="part-label">【海漲】</span>
-          <span class="play-icon">▶</span>
+          <span class="play-icon" aria-hidden="true"><svg class="ico ico-play" viewBox="0 0 24 24" fill="currentColor"><polygon points="8,5 8,19 18,12"/></svg><svg class="ico ico-pause" viewBox="0 0 24 24" fill="currentColor" hidden><rect x="6" y="5" width="4" height="14"/><rect x="14" y="5" width="4" height="14"/></svg></span>
         </button>
         <button class="part-btn" onclick="playAudio(this, 'https://language.moe.gov.tw/upload/download/jts/04%E6%96%87%E7%AB%A01(%E9%9F%B3%E6%AA%94)/0401-41-A.mp3')">
           <span class="badge badge-gram">文</span>
           <span class="part-label">【緊早慢】</span>
-          <span class="play-icon">▶</span>
+          <span class="play-icon" aria-hidden="true"><svg class="ico ico-play" viewBox="0 0 24 24" fill="currentColor"><polygon points="8,5 8,19 18,12"/></svg><svg class="ico ico-pause" viewBox="0 0 24 24" fill="currentColor" hidden><rect x="6" y="5" width="4" height="14"/><rect x="14" y="5" width="4" height="14"/></svg></span>
         </button>
         <button class="part-btn" onclick="playAudio(this, 'https://language.moe.gov.tw/upload/download/jts/04%E6%96%87%E7%AB%A01(%E9%9F%B3%E6%AA%94)/0401-41-B.mp3')">
           <span class="badge badge-num">8</span>
           <span class="part-label">【厚】</span>
-          <span class="play-icon">▶</span>
+          <span class="play-icon" aria-hidden="true"><svg class="ico ico-play" viewBox="0 0 24 24" fill="currentColor"><polygon points="8,5 8,19 18,12"/></svg><svg class="ico ico-pause" viewBox="0 0 24 24" fill="currentColor" hidden><rect x="6" y="5" width="4" height="14"/><rect x="14" y="5" width="4" height="14"/></svg></span>
         </button>
     </div>
   </div>
@@ -1039,50 +1101,50 @@
       </div>
       <div class="sec-right">
         <span class="sec-parts-count">7 詞</span>
-        <span class="arrow">›</span>
+        <span class="arrow" aria-hidden="true"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="9,6 15,12 9,18"/></svg></span>
       </div>
     </button>
     <div class="parts-container">
       <button class="title-audio-btn" onclick="playAudio(this, 'https://language.moe.gov.tw/upload/download/jts/04%E6%96%87%E7%AB%A01(%E9%9F%B3%E6%AA%94)/0401-42.mp3')">
         <span class="badge badge-title">標</span>
         <span class="part-label">踢銅管仔</span>
-        <span class="play-icon">▶</span>
+        <span class="play-icon" aria-hidden="true"><svg class="ico ico-play" viewBox="0 0 24 24" fill="currentColor"><polygon points="8,5 8,19 18,12"/></svg><svg class="ico ico-pause" viewBox="0 0 24 24" fill="currentColor" hidden><rect x="6" y="5" width="4" height="14"/><rect x="14" y="5" width="4" height="14"/></svg></span>
       </button>
       
         <button class="part-btn" onclick="playAudio(this, 'https://language.moe.gov.tw/upload/download/jts/04%E6%96%87%E7%AB%A01(%E9%9F%B3%E6%AA%94)/0401-43-01.mp3')">
           <span class="badge badge-num">1</span>
           <span class="part-label">【銅管仔】</span>
-          <span class="play-icon">▶</span>
+          <span class="play-icon" aria-hidden="true"><svg class="ico ico-play" viewBox="0 0 24 24" fill="currentColor"><polygon points="8,5 8,19 18,12"/></svg><svg class="ico ico-pause" viewBox="0 0 24 24" fill="currentColor" hidden><rect x="6" y="5" width="4" height="14"/><rect x="14" y="5" width="4" height="14"/></svg></span>
         </button>
         <button class="part-btn" onclick="playAudio(this, 'https://language.moe.gov.tw/upload/download/jts/04%E6%96%87%E7%AB%A01(%E9%9F%B3%E6%AA%94)/0401-43-02.mp3')">
           <span class="badge badge-num">2</span>
           <span class="part-label">【賴賴趖】</span>
-          <span class="play-icon">▶</span>
+          <span class="play-icon" aria-hidden="true"><svg class="ico ico-play" viewBox="0 0 24 24" fill="currentColor"><polygon points="8,5 8,19 18,12"/></svg><svg class="ico ico-pause" viewBox="0 0 24 24" fill="currentColor" hidden><rect x="6" y="5" width="4" height="14"/><rect x="14" y="5" width="4" height="14"/></svg></span>
         </button>
         <button class="part-btn" onclick="playAudio(this, 'https://language.moe.gov.tw/upload/download/jts/04%E6%96%87%E7%AB%A01(%E9%9F%B3%E6%AA%94)/0401-43-03.mp3')">
           <span class="badge badge-num">3</span>
           <span class="part-label">【jiang-kián】</span>
-          <span class="play-icon">▶</span>
+          <span class="play-icon" aria-hidden="true"><svg class="ico ico-play" viewBox="0 0 24 24" fill="currentColor"><polygon points="8,5 8,19 18,12"/></svg><svg class="ico ico-pause" viewBox="0 0 24 24" fill="currentColor" hidden><rect x="6" y="5" width="4" height="14"/><rect x="14" y="5" width="4" height="14"/></svg></span>
         </button>
         <button class="part-btn" onclick="playAudio(this, 'https://language.moe.gov.tw/upload/download/jts/04%E6%96%87%E7%AB%A01(%E9%9F%B3%E6%AA%94)/0401-43-04.mp3')">
           <span class="badge badge-num">4</span>
           <span class="part-label">【óo-nih】</span>
-          <span class="play-icon">▶</span>
+          <span class="play-icon" aria-hidden="true"><svg class="ico ico-play" viewBox="0 0 24 24" fill="currentColor"><polygon points="8,5 8,19 18,12"/></svg><svg class="ico ico-pause" viewBox="0 0 24 24" fill="currentColor" hidden><rect x="6" y="5" width="4" height="14"/><rect x="14" y="5" width="4" height="14"/></svg></span>
         </button>
         <button class="part-btn" onclick="playAudio(this, 'https://language.moe.gov.tw/upload/download/jts/04%E6%96%87%E7%AB%A01(%E9%9F%B3%E6%AA%94)/0401-43-05.mp3')">
           <span class="badge badge-num">5</span>
           <span class="part-label">【唌】</span>
-          <span class="play-icon">▶</span>
+          <span class="play-icon" aria-hidden="true"><svg class="ico ico-play" viewBox="0 0 24 24" fill="currentColor"><polygon points="8,5 8,19 18,12"/></svg><svg class="ico ico-pause" viewBox="0 0 24 24" fill="currentColor" hidden><rect x="6" y="5" width="4" height="14"/><rect x="14" y="5" width="4" height="14"/></svg></span>
         </button>
         <button class="part-btn" onclick="playAudio(this, 'https://language.moe.gov.tw/upload/download/jts/04%E6%96%87%E7%AB%A01(%E9%9F%B3%E6%AA%94)/0401-43-06.mp3')">
           <span class="badge badge-num">6</span>
           <span class="part-label">【蝹】</span>
-          <span class="play-icon">▶</span>
+          <span class="play-icon" aria-hidden="true"><svg class="ico ico-play" viewBox="0 0 24 24" fill="currentColor"><polygon points="8,5 8,19 18,12"/></svg><svg class="ico ico-pause" viewBox="0 0 24 24" fill="currentColor" hidden><rect x="6" y="5" width="4" height="14"/><rect x="14" y="5" width="4" height="14"/></svg></span>
         </button>
         <button class="part-btn" onclick="playAudio(this, 'https://language.moe.gov.tw/upload/download/jts/04%E6%96%87%E7%AB%A01(%E9%9F%B3%E6%AA%94)/0401-43-A.mp3')">
           <span class="badge badge-gram">文</span>
           <span class="part-label">【遠遠遠】</span>
-          <span class="play-icon">▶</span>
+          <span class="play-icon" aria-hidden="true"><svg class="ico ico-play" viewBox="0 0 24 24" fill="currentColor"><polygon points="8,5 8,19 18,12"/></svg><svg class="ico ico-pause" viewBox="0 0 24 24" fill="currentColor" hidden><rect x="6" y="5" width="4" height="14"/><rect x="14" y="5" width="4" height="14"/></svg></span>
         </button>
     </div>
   </div>
@@ -1094,70 +1156,70 @@
       </div>
       <div class="sec-right">
         <span class="sec-parts-count">11 詞</span>
-        <span class="arrow">›</span>
+        <span class="arrow" aria-hidden="true"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="9,6 15,12 9,18"/></svg></span>
       </div>
     </button>
     <div class="parts-container">
       <button class="title-audio-btn" onclick="playAudio(this, 'https://language.moe.gov.tw/upload/download/jts/04%E6%96%87%E7%AB%A01(%E9%9F%B3%E6%AA%94)/0401-44.mp3')">
         <span class="badge badge-title">標</span>
         <span class="part-label">遠足</span>
-        <span class="play-icon">▶</span>
+        <span class="play-icon" aria-hidden="true"><svg class="ico ico-play" viewBox="0 0 24 24" fill="currentColor"><polygon points="8,5 8,19 18,12"/></svg><svg class="ico ico-pause" viewBox="0 0 24 24" fill="currentColor" hidden><rect x="6" y="5" width="4" height="14"/><rect x="14" y="5" width="4" height="14"/></svg></span>
       </button>
       
         <button class="part-btn" onclick="playAudio(this, 'https://language.moe.gov.tw/upload/download/jts/04%E6%96%87%E7%AB%A01(%E9%9F%B3%E6%AA%94)/0401-45-01.mp3')">
           <span class="badge badge-num">1</span>
           <span class="part-label">【hong】</span>
-          <span class="play-icon">▶</span>
+          <span class="play-icon" aria-hidden="true"><svg class="ico ico-play" viewBox="0 0 24 24" fill="currentColor"><polygon points="8,5 8,19 18,12"/></svg><svg class="ico ico-pause" viewBox="0 0 24 24" fill="currentColor" hidden><rect x="6" y="5" width="4" height="14"/><rect x="14" y="5" width="4" height="14"/></svg></span>
         </button>
         <button class="part-btn" onclick="playAudio(this, 'https://language.moe.gov.tw/upload/download/jts/04%E6%96%87%E7%AB%A01(%E9%9F%B3%E6%AA%94)/0401-45-02.mp3')">
           <span class="badge badge-num">2</span>
           <span class="part-label">【衰䆀】</span>
-          <span class="play-icon">▶</span>
+          <span class="play-icon" aria-hidden="true"><svg class="ico ico-play" viewBox="0 0 24 24" fill="currentColor"><polygon points="8,5 8,19 18,12"/></svg><svg class="ico ico-pause" viewBox="0 0 24 24" fill="currentColor" hidden><rect x="6" y="5" width="4" height="14"/><rect x="14" y="5" width="4" height="14"/></svg></span>
         </button>
         <button class="part-btn" onclick="playAudio(this, 'https://language.moe.gov.tw/upload/download/jts/04%E6%96%87%E7%AB%A01(%E9%9F%B3%E6%AA%94)/0401-45-03.mp3')">
           <span class="badge badge-num">3</span>
           <span class="part-label">【咻】</span>
-          <span class="play-icon">▶</span>
+          <span class="play-icon" aria-hidden="true"><svg class="ico ico-play" viewBox="0 0 24 24" fill="currentColor"><polygon points="8,5 8,19 18,12"/></svg><svg class="ico ico-pause" viewBox="0 0 24 24" fill="currentColor" hidden><rect x="6" y="5" width="4" height="14"/><rect x="14" y="5" width="4" height="14"/></svg></span>
         </button>
         <button class="part-btn" onclick="playAudio(this, 'https://language.moe.gov.tw/upload/download/jts/04%E6%96%87%E7%AB%A01(%E9%9F%B3%E6%AA%94)/0401-45-04.mp3')">
           <span class="badge badge-num">4</span>
           <span class="part-label">【撆手䘼】</span>
-          <span class="play-icon">▶</span>
+          <span class="play-icon" aria-hidden="true"><svg class="ico ico-play" viewBox="0 0 24 24" fill="currentColor"><polygon points="8,5 8,19 18,12"/></svg><svg class="ico ico-pause" viewBox="0 0 24 24" fill="currentColor" hidden><rect x="6" y="5" width="4" height="14"/><rect x="14" y="5" width="4" height="14"/></svg></span>
         </button>
         <button class="part-btn" onclick="playAudio(this, 'https://language.moe.gov.tw/upload/download/jts/04%E6%96%87%E7%AB%A01(%E9%9F%B3%E6%AA%94)/0401-45-05.mp3')">
           <span class="badge badge-num">5</span>
           <span class="part-label">【探頭】</span>
-          <span class="play-icon">▶</span>
+          <span class="play-icon" aria-hidden="true"><svg class="ico ico-play" viewBox="0 0 24 24" fill="currentColor"><polygon points="8,5 8,19 18,12"/></svg><svg class="ico ico-pause" viewBox="0 0 24 24" fill="currentColor" hidden><rect x="6" y="5" width="4" height="14"/><rect x="14" y="5" width="4" height="14"/></svg></span>
         </button>
         <button class="part-btn" onclick="playAudio(this, 'https://language.moe.gov.tw/upload/download/jts/04%E6%96%87%E7%AB%A01(%E9%9F%B3%E6%AA%94)/0401-45-06.mp3')">
           <span class="badge badge-num">6</span>
           <span class="part-label">【牽罟】</span>
-          <span class="play-icon">▶</span>
+          <span class="play-icon" aria-hidden="true"><svg class="ico ico-play" viewBox="0 0 24 24" fill="currentColor"><polygon points="8,5 8,19 18,12"/></svg><svg class="ico ico-pause" viewBox="0 0 24 24" fill="currentColor" hidden><rect x="6" y="5" width="4" height="14"/><rect x="14" y="5" width="4" height="14"/></svg></span>
         </button>
         <button class="part-btn" onclick="playAudio(this, 'https://language.moe.gov.tw/upload/download/jts/04%E6%96%87%E7%AB%A01(%E9%9F%B3%E6%AA%94)/0401-45-07.mp3')">
           <span class="badge badge-num">7</span>
           <span class="part-label">【一伐】</span>
-          <span class="play-icon">▶</span>
+          <span class="play-icon" aria-hidden="true"><svg class="ico ico-play" viewBox="0 0 24 24" fill="currentColor"><polygon points="8,5 8,19 18,12"/></svg><svg class="ico ico-pause" viewBox="0 0 24 24" fill="currentColor" hidden><rect x="6" y="5" width="4" height="14"/><rect x="14" y="5" width="4" height="14"/></svg></span>
         </button>
         <button class="part-btn" onclick="playAudio(this, 'https://language.moe.gov.tw/upload/download/jts/04%E6%96%87%E7%AB%A01(%E9%9F%B3%E6%AA%94)/0401-45-08.mp3')">
           <span class="badge badge-num">8</span>
           <span class="part-label">【囡仔兄】</span>
-          <span class="play-icon">▶</span>
+          <span class="play-icon" aria-hidden="true"><svg class="ico ico-play" viewBox="0 0 24 24" fill="currentColor"><polygon points="8,5 8,19 18,12"/></svg><svg class="ico ico-pause" viewBox="0 0 24 24" fill="currentColor" hidden><rect x="6" y="5" width="4" height="14"/><rect x="14" y="5" width="4" height="14"/></svg></span>
         </button>
         <button class="part-btn" onclick="playAudio(this, 'https://language.moe.gov.tw/upload/download/jts/04%E6%96%87%E7%AB%A01(%E9%9F%B3%E6%AA%94)/0401-45-09.mp3')">
           <span class="badge badge-num">9</span>
           <span class="part-label">【鹹草】</span>
-          <span class="play-icon">▶</span>
+          <span class="play-icon" aria-hidden="true"><svg class="ico ico-play" viewBox="0 0 24 24" fill="currentColor"><polygon points="8,5 8,19 18,12"/></svg><svg class="ico ico-pause" viewBox="0 0 24 24" fill="currentColor" hidden><rect x="6" y="5" width="4" height="14"/><rect x="14" y="5" width="4" height="14"/></svg></span>
         </button>
         <button class="part-btn" onclick="playAudio(this, 'https://language.moe.gov.tw/upload/download/jts/04%E6%96%87%E7%AB%A01(%E9%9F%B3%E6%AA%94)/0401-45-10.mp3')">
           <span class="badge badge-num">10</span>
           <span class="part-label">【拍交落】</span>
-          <span class="play-icon">▶</span>
+          <span class="play-icon" aria-hidden="true"><svg class="ico ico-play" viewBox="0 0 24 24" fill="currentColor"><polygon points="8,5 8,19 18,12"/></svg><svg class="ico ico-pause" viewBox="0 0 24 24" fill="currentColor" hidden><rect x="6" y="5" width="4" height="14"/><rect x="14" y="5" width="4" height="14"/></svg></span>
         </button>
         <button class="part-btn" onclick="playAudio(this, 'https://language.moe.gov.tw/upload/download/jts/04%E6%96%87%E7%AB%A01(%E9%9F%B3%E6%AA%94)/0401-45-A.mp3')">
           <span class="badge badge-gram">文</span>
           <span class="part-label">【那……那……】</span>
-          <span class="play-icon">▶</span>
+          <span class="play-icon" aria-hidden="true"><svg class="ico ico-play" viewBox="0 0 24 24" fill="currentColor"><polygon points="8,5 8,19 18,12"/></svg><svg class="ico ico-pause" viewBox="0 0 24 24" fill="currentColor" hidden><rect x="6" y="5" width="4" height="14"/><rect x="14" y="5" width="4" height="14"/></svg></span>
         </button>
     </div>
   </div>
@@ -1169,45 +1231,45 @@
       </div>
       <div class="sec-right">
         <span class="sec-parts-count">6 詞</span>
-        <span class="arrow">›</span>
+        <span class="arrow" aria-hidden="true"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="9,6 15,12 9,18"/></svg></span>
       </div>
     </button>
     <div class="parts-container">
       <button class="title-audio-btn" onclick="playAudio(this, 'https://language.moe.gov.tw/upload/download/jts/04%E6%96%87%E7%AB%A01(%E9%9F%B3%E6%AA%94)/0401-48.mp3')">
         <span class="badge badge-title">標</span>
         <span class="part-label">雲林口湖牽水</span>
-        <span class="play-icon">▶</span>
+        <span class="play-icon" aria-hidden="true"><svg class="ico ico-play" viewBox="0 0 24 24" fill="currentColor"><polygon points="8,5 8,19 18,12"/></svg><svg class="ico ico-pause" viewBox="0 0 24 24" fill="currentColor" hidden><rect x="6" y="5" width="4" height="14"/><rect x="14" y="5" width="4" height="14"/></svg></span>
       </button>
       
         <button class="part-btn" onclick="playAudio(this, 'https://language.moe.gov.tw/upload/download/jts/04%E6%96%87%E7%AB%A01(%E9%9F%B3%E6%AA%94)/0401-49-01.mp3')">
           <span class="badge badge-num">1</span>
           <span class="part-label">【大海漲】</span>
-          <span class="play-icon">▶</span>
+          <span class="play-icon" aria-hidden="true"><svg class="ico ico-play" viewBox="0 0 24 24" fill="currentColor"><polygon points="8,5 8,19 18,12"/></svg><svg class="ico ico-pause" viewBox="0 0 24 24" fill="currentColor" hidden><rect x="6" y="5" width="4" height="14"/><rect x="14" y="5" width="4" height="14"/></svg></span>
         </button>
         <button class="part-btn" onclick="playAudio(this, 'https://language.moe.gov.tw/upload/download/jts/04%E6%96%87%E7%AB%A01(%E9%9F%B3%E6%AA%94)/0401-49-02.mp3')">
           <span class="badge badge-num">2</span>
           <span class="part-label">【遮爾】</span>
-          <span class="play-icon">▶</span>
+          <span class="play-icon" aria-hidden="true"><svg class="ico ico-play" viewBox="0 0 24 24" fill="currentColor"><polygon points="8,5 8,19 18,12"/></svg><svg class="ico ico-pause" viewBox="0 0 24 24" fill="currentColor" hidden><rect x="6" y="5" width="4" height="14"/><rect x="14" y="5" width="4" height="14"/></svg></span>
         </button>
         <button class="part-btn" onclick="playAudio(this, 'https://language.moe.gov.tw/upload/download/jts/04%E6%96%87%E7%AB%A01(%E9%9F%B3%E6%AA%94)/0401-49-03.mp3')">
           <span class="badge badge-num">3</span>
           <span class="part-label">【刣豬倒羊】</span>
-          <span class="play-icon">▶</span>
+          <span class="play-icon" aria-hidden="true"><svg class="ico ico-play" viewBox="0 0 24 24" fill="currentColor"><polygon points="8,5 8,19 18,12"/></svg><svg class="ico ico-pause" viewBox="0 0 24 24" fill="currentColor" hidden><rect x="6" y="5" width="4" height="14"/><rect x="14" y="5" width="4" height="14"/></svg></span>
         </button>
         <button class="part-btn" onclick="playAudio(this, 'https://language.moe.gov.tw/upload/download/jts/04%E6%96%87%E7%AB%A01(%E9%9F%B3%E6%AA%94)/0401-49-04.mp3')">
           <span class="badge badge-num">4</span>
           <span class="part-label">【竹篾仔】</span>
-          <span class="play-icon">▶</span>
+          <span class="play-icon" aria-hidden="true"><svg class="ico ico-play" viewBox="0 0 24 24" fill="currentColor"><polygon points="8,5 8,19 18,12"/></svg><svg class="ico ico-pause" viewBox="0 0 24 24" fill="currentColor" hidden><rect x="6" y="5" width="4" height="14"/><rect x="14" y="5" width="4" height="14"/></svg></span>
         </button>
         <button class="part-btn" onclick="playAudio(this, 'https://language.moe.gov.tw/upload/download/jts/04%E6%96%87%E7%AB%A01(%E9%9F%B3%E6%AA%94)/0401-49-05.mp3')">
           <span class="badge badge-num">5</span>
           <span class="part-label">【踅】</span>
-          <span class="play-icon">▶</span>
+          <span class="play-icon" aria-hidden="true"><svg class="ico ico-play" viewBox="0 0 24 24" fill="currentColor"><polygon points="8,5 8,19 18,12"/></svg><svg class="ico ico-pause" viewBox="0 0 24 24" fill="currentColor" hidden><rect x="6" y="5" width="4" height="14"/><rect x="14" y="5" width="4" height="14"/></svg></span>
         </button>
         <button class="part-btn" onclick="playAudio(this, 'https://language.moe.gov.tw/upload/download/jts/04%E6%96%87%E7%AB%A01(%E9%9F%B3%E6%AA%94)/0401-49-06.mp3')">
           <span class="badge badge-num">6</span>
           <span class="part-label">【司公】</span>
-          <span class="play-icon">▶</span>
+          <span class="play-icon" aria-hidden="true"><svg class="ico ico-play" viewBox="0 0 24 24" fill="currentColor"><polygon points="8,5 8,19 18,12"/></svg><svg class="ico ico-pause" viewBox="0 0 24 24" fill="currentColor" hidden><rect x="6" y="5" width="4" height="14"/><rect x="14" y="5" width="4" height="14"/></svg></span>
         </button>
     </div>
   </div>
@@ -1219,60 +1281,60 @@
       </div>
       <div class="sec-right">
         <span class="sec-parts-count">9 詞</span>
-        <span class="arrow">›</span>
+        <span class="arrow" aria-hidden="true"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="9,6 15,12 9,18"/></svg></span>
       </div>
     </button>
     <div class="parts-container">
       <button class="title-audio-btn" onclick="playAudio(this, 'https://language.moe.gov.tw/upload/download/jts/04%E6%96%87%E7%AB%A01(%E9%9F%B3%E6%AA%94)/0401-50.mp3')">
         <span class="badge badge-title">標</span>
         <span class="part-label">馬偕牧師來臺灣宣教</span>
-        <span class="play-icon">▶</span>
+        <span class="play-icon" aria-hidden="true"><svg class="ico ico-play" viewBox="0 0 24 24" fill="currentColor"><polygon points="8,5 8,19 18,12"/></svg><svg class="ico ico-pause" viewBox="0 0 24 24" fill="currentColor" hidden><rect x="6" y="5" width="4" height="14"/><rect x="14" y="5" width="4" height="14"/></svg></span>
       </button>
       
         <button class="part-btn" onclick="playAudio(this, 'https://language.moe.gov.tw/upload/download/jts/04%E6%96%87%E7%AB%A01(%E9%9F%B3%E6%AA%94)/0401-51-01.mp3')">
           <span class="badge badge-num">1</span>
           <span class="part-label">【出世】</span>
-          <span class="play-icon">▶</span>
+          <span class="play-icon" aria-hidden="true"><svg class="ico ico-play" viewBox="0 0 24 24" fill="currentColor"><polygon points="8,5 8,19 18,12"/></svg><svg class="ico ico-pause" viewBox="0 0 24 24" fill="currentColor" hidden><rect x="6" y="5" width="4" height="14"/><rect x="14" y="5" width="4" height="14"/></svg></span>
         </button>
         <button class="part-btn" onclick="playAudio(this, 'https://language.moe.gov.tw/upload/download/jts/04%E6%96%87%E7%AB%A01(%E9%9F%B3%E6%AA%94)/0401-51-02.mp3')">
           <span class="badge badge-num">2</span>
           <span class="part-label">【出業】</span>
-          <span class="play-icon">▶</span>
+          <span class="play-icon" aria-hidden="true"><svg class="ico ico-play" viewBox="0 0 24 24" fill="currentColor"><polygon points="8,5 8,19 18,12"/></svg><svg class="ico ico-pause" viewBox="0 0 24 24" fill="currentColor" hidden><rect x="6" y="5" width="4" height="14"/><rect x="14" y="5" width="4" height="14"/></svg></span>
         </button>
         <button class="part-btn" onclick="playAudio(this, 'https://language.moe.gov.tw/upload/download/jts/04%E6%96%87%E7%AB%A01(%E9%9F%B3%E6%AA%94)/0401-51-03.mp3')">
           <span class="badge badge-num">3</span>
           <span class="part-label">【紲落來】</span>
-          <span class="play-icon">▶</span>
+          <span class="play-icon" aria-hidden="true"><svg class="ico ico-play" viewBox="0 0 24 24" fill="currentColor"><polygon points="8,5 8,19 18,12"/></svg><svg class="ico ico-pause" viewBox="0 0 24 24" fill="currentColor" hidden><rect x="6" y="5" width="4" height="14"/><rect x="14" y="5" width="4" height="14"/></svg></span>
         </button>
         <button class="part-btn" onclick="playAudio(this, 'https://language.moe.gov.tw/upload/download/jts/04%E6%96%87%E7%AB%A01(%E9%9F%B3%E6%AA%94)/0401-51-04.mp3')">
           <span class="badge badge-num">4</span>
           <span class="part-label">【無拍算】</span>
-          <span class="play-icon">▶</span>
+          <span class="play-icon" aria-hidden="true"><svg class="ico ico-play" viewBox="0 0 24 24" fill="currentColor"><polygon points="8,5 8,19 18,12"/></svg><svg class="ico ico-pause" viewBox="0 0 24 24" fill="currentColor" hidden><rect x="6" y="5" width="4" height="14"/><rect x="14" y="5" width="4" height="14"/></svg></span>
         </button>
         <button class="part-btn" onclick="playAudio(this, 'https://language.moe.gov.tw/upload/download/jts/04%E6%96%87%E7%AB%A01(%E9%9F%B3%E6%AA%94)/0401-51-05.mp3')">
           <span class="badge badge-num">5</span>
           <span class="part-label">【欲暗仔】</span>
-          <span class="play-icon">▶</span>
+          <span class="play-icon" aria-hidden="true"><svg class="ico ico-play" viewBox="0 0 24 24" fill="currentColor"><polygon points="8,5 8,19 18,12"/></svg><svg class="ico ico-pause" viewBox="0 0 24 24" fill="currentColor" hidden><rect x="6" y="5" width="4" height="14"/><rect x="14" y="5" width="4" height="14"/></svg></span>
         </button>
         <button class="part-btn" onclick="playAudio(this, 'https://language.moe.gov.tw/upload/download/jts/04%E6%96%87%E7%AB%A01(%E9%9F%B3%E6%AA%94)/0401-51-06.mp3')">
           <span class="badge badge-num">6</span>
           <span class="part-label">【滬尾】</span>
-          <span class="play-icon">▶</span>
+          <span class="play-icon" aria-hidden="true"><svg class="ico ico-play" viewBox="0 0 24 24" fill="currentColor"><polygon points="8,5 8,19 18,12"/></svg><svg class="ico ico-pause" viewBox="0 0 24 24" fill="currentColor" hidden><rect x="6" y="5" width="4" height="14"/><rect x="14" y="5" width="4" height="14"/></svg></span>
         </button>
         <button class="part-btn" onclick="playAudio(this, 'https://language.moe.gov.tw/upload/download/jts/04%E6%96%87%E7%AB%A01(%E9%9F%B3%E6%AA%94)/0401-51-07.mp3')">
           <span class="badge badge-num">7</span>
           <span class="part-label">【過往】</span>
-          <span class="play-icon">▶</span>
+          <span class="play-icon" aria-hidden="true"><svg class="ico ico-play" viewBox="0 0 24 24" fill="currentColor"><polygon points="8,5 8,19 18,12"/></svg><svg class="ico ico-pause" viewBox="0 0 24 24" fill="currentColor" hidden><rect x="6" y="5" width="4" height="14"/><rect x="14" y="5" width="4" height="14"/></svg></span>
         </button>
         <button class="part-btn" onclick="playAudio(this, 'https://language.moe.gov.tw/upload/download/jts/04%E6%96%87%E7%AB%A01(%E9%9F%B3%E6%AA%94)/0401-51-08.mp3')">
           <span class="badge badge-num">8</span>
           <span class="part-label">【看牛囡仔】</span>
-          <span class="play-icon">▶</span>
+          <span class="play-icon" aria-hidden="true"><svg class="ico ico-play" viewBox="0 0 24 24" fill="currentColor"><polygon points="8,5 8,19 18,12"/></svg><svg class="ico ico-pause" viewBox="0 0 24 24" fill="currentColor" hidden><rect x="6" y="5" width="4" height="14"/><rect x="14" y="5" width="4" height="14"/></svg></span>
         </button>
         <button class="part-btn" onclick="playAudio(this, 'https://language.moe.gov.tw/upload/download/jts/04%E6%96%87%E7%AB%A01(%E9%9F%B3%E6%AA%94)/0401-51-A.mp3')">
           <span class="badge badge-gram">文</span>
           <span class="part-label">【10月19】</span>
-          <span class="play-icon">▶</span>
+          <span class="play-icon" aria-hidden="true"><svg class="ico ico-play" viewBox="0 0 24 24" fill="currentColor"><polygon points="8,5 8,19 18,12"/></svg><svg class="ico ico-pause" viewBox="0 0 24 24" fill="currentColor" hidden><rect x="6" y="5" width="4" height="14"/><rect x="14" y="5" width="4" height="14"/></svg></span>
         </button>
     </div>
   </div>
@@ -1284,50 +1346,50 @@
       </div>
       <div class="sec-right">
         <span class="sec-parts-count">7 詞</span>
-        <span class="arrow">›</span>
+        <span class="arrow" aria-hidden="true"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="9,6 15,12 9,18"/></svg></span>
       </div>
     </button>
     <div class="parts-container">
       <button class="title-audio-btn" onclick="playAudio(this, 'https://language.moe.gov.tw/upload/download/jts/04%E6%96%87%E7%AB%A01(%E9%9F%B3%E6%AA%94)/0401-52.mp3')">
         <span class="badge badge-title">標</span>
         <span class="part-label">馬偕牧師的醫療傳教</span>
-        <span class="play-icon">▶</span>
+        <span class="play-icon" aria-hidden="true"><svg class="ico ico-play" viewBox="0 0 24 24" fill="currentColor"><polygon points="8,5 8,19 18,12"/></svg><svg class="ico ico-pause" viewBox="0 0 24 24" fill="currentColor" hidden><rect x="6" y="5" width="4" height="14"/><rect x="14" y="5" width="4" height="14"/></svg></span>
       </button>
       
         <button class="part-btn" onclick="playAudio(this, 'https://language.moe.gov.tw/upload/download/jts/04%E6%96%87%E7%AB%A01(%E9%9F%B3%E6%AA%94)/0401-53-01.mp3')">
           <span class="badge badge-num">1</span>
           <span class="part-label">【滬尾】</span>
-          <span class="play-icon">▶</span>
+          <span class="play-icon" aria-hidden="true"><svg class="ico ico-play" viewBox="0 0 24 24" fill="currentColor"><polygon points="8,5 8,19 18,12"/></svg><svg class="ico ico-pause" viewBox="0 0 24 24" fill="currentColor" hidden><rect x="6" y="5" width="4" height="14"/><rect x="14" y="5" width="4" height="14"/></svg></span>
         </button>
         <button class="part-btn" onclick="playAudio(this, 'https://language.moe.gov.tw/upload/download/jts/04%E6%96%87%E7%AB%A01(%E9%9F%B3%E6%AA%94)/0401-53-02.mp3')">
           <span class="badge badge-num">2</span>
           <span class="part-label">【寒熱仔症】</span>
-          <span class="play-icon">▶</span>
+          <span class="play-icon" aria-hidden="true"><svg class="ico ico-play" viewBox="0 0 24 24" fill="currentColor"><polygon points="8,5 8,19 18,12"/></svg><svg class="ico ico-pause" viewBox="0 0 24 24" fill="currentColor" hidden><rect x="6" y="5" width="4" height="14"/><rect x="14" y="5" width="4" height="14"/></svg></span>
         </button>
         <button class="part-btn" onclick="playAudio(this, 'https://language.moe.gov.tw/upload/download/jts/04%E6%96%87%E7%AB%A01(%E9%9F%B3%E6%AA%94)/0401-53-03.mp3')">
           <span class="badge badge-num">3</span>
           <span class="part-label">【白藥水】</span>
-          <span class="play-icon">▶</span>
+          <span class="play-icon" aria-hidden="true"><svg class="ico ico-play" viewBox="0 0 24 24" fill="currentColor"><polygon points="8,5 8,19 18,12"/></svg><svg class="ico ico-pause" viewBox="0 0 24 24" fill="currentColor" hidden><rect x="6" y="5" width="4" height="14"/><rect x="14" y="5" width="4" height="14"/></svg></span>
         </button>
         <button class="part-btn" onclick="playAudio(this, 'https://language.moe.gov.tw/upload/download/jts/04%E6%96%87%E7%AB%A01(%E9%9F%B3%E6%AA%94)/0401-53-04.mp3')">
           <span class="badge badge-num">4</span>
           <span class="part-label">【臭跤臁】</span>
-          <span class="play-icon">▶</span>
+          <span class="play-icon" aria-hidden="true"><svg class="ico ico-play" viewBox="0 0 24 24" fill="currentColor"><polygon points="8,5 8,19 18,12"/></svg><svg class="ico ico-pause" viewBox="0 0 24 24" fill="currentColor" hidden><rect x="6" y="5" width="4" height="14"/><rect x="14" y="5" width="4" height="14"/></svg></span>
         </button>
         <button class="part-btn" onclick="playAudio(this, 'https://language.moe.gov.tw/upload/download/jts/04%E6%96%87%E7%AB%A01(%E9%9F%B3%E6%AA%94)/0401-53-05.mp3')">
           <span class="badge badge-num">5</span>
           <span class="part-label">【過往】</span>
-          <span class="play-icon">▶</span>
+          <span class="play-icon" aria-hidden="true"><svg class="ico ico-play" viewBox="0 0 24 24" fill="currentColor"><polygon points="8,5 8,19 18,12"/></svg><svg class="ico ico-pause" viewBox="0 0 24 24" fill="currentColor" hidden><rect x="6" y="5" width="4" height="14"/><rect x="14" y="5" width="4" height="14"/></svg></span>
         </button>
         <button class="part-btn" onclick="playAudio(this, 'https://language.moe.gov.tw/upload/download/jts/04%E6%96%87%E7%AB%A01(%E9%9F%B3%E6%AA%94)/0401-53-06.mp3')">
           <span class="badge badge-num">6</span>
           <span class="part-label">【接紲】</span>
-          <span class="play-icon">▶</span>
+          <span class="play-icon" aria-hidden="true"><svg class="ico ico-play" viewBox="0 0 24 24" fill="currentColor"><polygon points="8,5 8,19 18,12"/></svg><svg class="ico ico-pause" viewBox="0 0 24 24" fill="currentColor" hidden><rect x="6" y="5" width="4" height="14"/><rect x="14" y="5" width="4" height="14"/></svg></span>
         </button>
         <button class="part-btn" onclick="playAudio(this, 'https://language.moe.gov.tw/upload/download/jts/04%E6%96%87%E7%AB%A01(%E9%9F%B3%E6%AA%94)/0401-53-A.mp3')">
           <span class="badge badge-gram">文</span>
           <span class="part-label">【欲倚……】 倚三百人（</span>
-          <span class="play-icon">▶</span>
+          <span class="play-icon" aria-hidden="true"><svg class="ico ico-play" viewBox="0 0 24 24" fill="currentColor"><polygon points="8,5 8,19 18,12"/></svg><svg class="ico ico-pause" viewBox="0 0 24 24" fill="currentColor" hidden><rect x="6" y="5" width="4" height="14"/><rect x="14" y="5" width="4" height="14"/></svg></span>
         </button>
     </div>
   </div>
@@ -1339,45 +1401,45 @@
       </div>
       <div class="sec-right">
         <span class="sec-parts-count">6 詞</span>
-        <span class="arrow">›</span>
+        <span class="arrow" aria-hidden="true"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="9,6 15,12 9,18"/></svg></span>
       </div>
     </button>
     <div class="parts-container">
       <button class="title-audio-btn" onclick="playAudio(this, 'https://language.moe.gov.tw/upload/download/jts/04%E6%96%87%E7%AB%A01(%E9%9F%B3%E6%AA%94)/0401-54.mp3')">
         <span class="badge badge-title">標</span>
         <span class="part-label">嘉南大圳之父——八田與一</span>
-        <span class="play-icon">▶</span>
+        <span class="play-icon" aria-hidden="true"><svg class="ico ico-play" viewBox="0 0 24 24" fill="currentColor"><polygon points="8,5 8,19 18,12"/></svg><svg class="ico ico-pause" viewBox="0 0 24 24" fill="currentColor" hidden><rect x="6" y="5" width="4" height="14"/><rect x="14" y="5" width="4" height="14"/></svg></span>
       </button>
       
         <button class="part-btn" onclick="playAudio(this, 'https://language.moe.gov.tw/upload/download/jts/04%E6%96%87%E7%AB%A01(%E9%9F%B3%E6%AA%94)/0401-55-01.mp3')">
           <span class="badge badge-num">1</span>
           <span class="part-label">【蹛】</span>
-          <span class="play-icon">▶</span>
+          <span class="play-icon" aria-hidden="true"><svg class="ico ico-play" viewBox="0 0 24 24" fill="currentColor"><polygon points="8,5 8,19 18,12"/></svg><svg class="ico ico-pause" viewBox="0 0 24 24" fill="currentColor" hidden><rect x="6" y="5" width="4" height="14"/><rect x="14" y="5" width="4" height="14"/></svg></span>
         </button>
         <button class="part-btn" onclick="playAudio(this, 'https://language.moe.gov.tw/upload/download/jts/04%E6%96%87%E7%AB%A01(%E9%9F%B3%E6%AA%94)/0401-55-02.mp3')">
           <span class="badge badge-num">2</span>
           <span class="part-label">【捌】</span>
-          <span class="play-icon">▶</span>
+          <span class="play-icon" aria-hidden="true"><svg class="ico ico-play" viewBox="0 0 24 24" fill="currentColor"><polygon points="8,5 8,19 18,12"/></svg><svg class="ico ico-pause" viewBox="0 0 24 24" fill="currentColor" hidden><rect x="6" y="5" width="4" height="14"/><rect x="14" y="5" width="4" height="14"/></svg></span>
         </button>
         <button class="part-btn" onclick="playAudio(this, 'https://language.moe.gov.tw/upload/download/jts/04%E6%96%87%E7%AB%A01(%E9%9F%B3%E6%AA%94)/0401-55-03.mp3')">
           <span class="badge badge-num">3</span>
           <span class="part-label">【同齊】</span>
-          <span class="play-icon">▶</span>
+          <span class="play-icon" aria-hidden="true"><svg class="ico ico-play" viewBox="0 0 24 24" fill="currentColor"><polygon points="8,5 8,19 18,12"/></svg><svg class="ico ico-pause" viewBox="0 0 24 24" fill="currentColor" hidden><rect x="6" y="5" width="4" height="14"/><rect x="14" y="5" width="4" height="14"/></svg></span>
         </button>
         <button class="part-btn" onclick="playAudio(this, 'https://language.moe.gov.tw/upload/download/jts/04%E6%96%87%E7%AB%A01(%E9%9F%B3%E6%AA%94)/0401-55-04.mp3')">
           <span class="badge badge-num">4</span>
           <span class="part-label">【粟仔】</span>
-          <span class="play-icon">▶</span>
+          <span class="play-icon" aria-hidden="true"><svg class="ico ico-play" viewBox="0 0 24 24" fill="currentColor"><polygon points="8,5 8,19 18,12"/></svg><svg class="ico ico-pause" viewBox="0 0 24 24" fill="currentColor" hidden><rect x="6" y="5" width="4" height="14"/><rect x="14" y="5" width="4" height="14"/></svg></span>
         </button>
         <button class="part-btn" onclick="playAudio(this, 'https://language.moe.gov.tw/upload/download/jts/04%E6%96%87%E7%AB%A01(%E9%9F%B3%E6%AA%94)/0401-55-A.mp3')">
           <span class="badge badge-gram">文</span>
           <span class="part-label">【9月】</span>
-          <span class="play-icon">▶</span>
+          <span class="play-icon" aria-hidden="true"><svg class="ico ico-play" viewBox="0 0 24 24" fill="currentColor"><polygon points="8,5 8,19 18,12"/></svg><svg class="ico ico-pause" viewBox="0 0 24 24" fill="currentColor" hidden><rect x="6" y="5" width="4" height="14"/><rect x="14" y="5" width="4" height="14"/></svg></span>
         </button>
         <button class="part-btn" onclick="playAudio(this, 'https://language.moe.gov.tw/upload/download/jts/04%E6%96%87%E7%AB%A01(%E9%9F%B3%E6%AA%94)/0401-55-B.mp3')">
           <span class="badge badge-num">6</span>
           <span class="part-label">【9月初】 獨說「</span>
-          <span class="play-icon">▶</span>
+          <span class="play-icon" aria-hidden="true"><svg class="ico ico-play" viewBox="0 0 24 24" fill="currentColor"><polygon points="8,5 8,19 18,12"/></svg><svg class="ico ico-pause" viewBox="0 0 24 24" fill="currentColor" hidden><rect x="6" y="5" width="4" height="14"/><rect x="14" y="5" width="4" height="14"/></svg></span>
         </button>
     </div>
   </div>
@@ -1389,55 +1451,55 @@
       </div>
       <div class="sec-right">
         <span class="sec-parts-count">8 詞</span>
-        <span class="arrow">›</span>
+        <span class="arrow" aria-hidden="true"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="9,6 15,12 9,18"/></svg></span>
       </div>
     </button>
     <div class="parts-container">
       <button class="title-audio-btn" onclick="playAudio(this, 'https://language.moe.gov.tw/upload/download/jts/04%E6%96%87%E7%AB%A01(%E9%9F%B3%E6%AA%94)/0401-58.mp3')">
         <span class="badge badge-title">標</span>
         <span class="part-label">生查埔佮生查某</span>
-        <span class="play-icon">▶</span>
+        <span class="play-icon" aria-hidden="true"><svg class="ico ico-play" viewBox="0 0 24 24" fill="currentColor"><polygon points="8,5 8,19 18,12"/></svg><svg class="ico ico-pause" viewBox="0 0 24 24" fill="currentColor" hidden><rect x="6" y="5" width="4" height="14"/><rect x="14" y="5" width="4" height="14"/></svg></span>
       </button>
       
         <button class="part-btn" onclick="playAudio(this, 'https://language.moe.gov.tw/upload/download/jts/04%E6%96%87%E7%AB%A01(%E9%9F%B3%E6%AA%94)/0401-59-01.mp3')">
           <span class="badge badge-num">1</span>
           <span class="part-label">【去倒了】 【有趁的】</span>
-          <span class="play-icon">▶</span>
+          <span class="play-icon" aria-hidden="true"><svg class="ico ico-play" viewBox="0 0 24 24" fill="currentColor"><polygon points="8,5 8,19 18,12"/></svg><svg class="ico ico-pause" viewBox="0 0 24 24" fill="currentColor" hidden><rect x="6" y="5" width="4" height="14"/><rect x="14" y="5" width="4" height="14"/></svg></span>
         </button>
         <button class="part-btn" onclick="playAudio(this, 'https://language.moe.gov.tw/upload/download/jts/04%E6%96%87%E7%AB%A01(%E9%9F%B3%E6%AA%94)/0401-59-02.mp3')">
           <span class="badge badge-num">2</span>
           <span class="part-label">【有趁的】</span>
-          <span class="play-icon">▶</span>
+          <span class="play-icon" aria-hidden="true"><svg class="ico ico-play" viewBox="0 0 24 24" fill="currentColor"><polygon points="8,5 8,19 18,12"/></svg><svg class="ico ico-pause" viewBox="0 0 24 24" fill="currentColor" hidden><rect x="6" y="5" width="4" height="14"/><rect x="14" y="5" width="4" height="14"/></svg></span>
         </button>
         <button class="part-btn" onclick="playAudio(this, 'https://language.moe.gov.tw/upload/download/jts/04%E6%96%87%E7%AB%A01(%E9%9F%B3%E6%AA%94)/0401-59-03.mp3')">
           <span class="badge badge-num">3</span>
           <span class="part-label">【煞是】</span>
-          <span class="play-icon">▶</span>
+          <span class="play-icon" aria-hidden="true"><svg class="ico ico-play" viewBox="0 0 24 24" fill="currentColor"><polygon points="8,5 8,19 18,12"/></svg><svg class="ico ico-pause" viewBox="0 0 24 24" fill="currentColor" hidden><rect x="6" y="5" width="4" height="14"/><rect x="14" y="5" width="4" height="14"/></svg></span>
         </button>
         <button class="part-btn" onclick="playAudio(this, 'https://language.moe.gov.tw/upload/download/jts/04%E6%96%87%E7%AB%A01(%E9%9F%B3%E6%AA%94)/0401-59-04.mp3')">
           <span class="badge badge-num">4</span>
           <span class="part-label">【透濫】</span>
-          <span class="play-icon">▶</span>
+          <span class="play-icon" aria-hidden="true"><svg class="ico ico-play" viewBox="0 0 24 24" fill="currentColor"><polygon points="8,5 8,19 18,12"/></svg><svg class="ico ico-pause" viewBox="0 0 24 24" fill="currentColor" hidden><rect x="6" y="5" width="4" height="14"/><rect x="14" y="5" width="4" height="14"/></svg></span>
         </button>
         <button class="part-btn" onclick="playAudio(this, 'https://language.moe.gov.tw/upload/download/jts/04%E6%96%87%E7%AB%A01(%E9%9F%B3%E6%AA%94)/0401-59-05.mp3')">
           <span class="badge badge-num">5</span>
           <span class="part-label">【生湠】</span>
-          <span class="play-icon">▶</span>
+          <span class="play-icon" aria-hidden="true"><svg class="ico ico-play" viewBox="0 0 24 24" fill="currentColor"><polygon points="8,5 8,19 18,12"/></svg><svg class="ico ico-pause" viewBox="0 0 24 24" fill="currentColor" hidden><rect x="6" y="5" width="4" height="14"/><rect x="14" y="5" width="4" height="14"/></svg></span>
         </button>
         <button class="part-btn" onclick="playAudio(this, 'https://language.moe.gov.tw/upload/download/jts/04%E6%96%87%E7%AB%A01(%E9%9F%B3%E6%AA%94)/0401-59-06.mp3')">
           <span class="badge badge-num">6</span>
           <span class="part-label">【香爐耳】</span>
-          <span class="play-icon">▶</span>
+          <span class="play-icon" aria-hidden="true"><svg class="ico ico-play" viewBox="0 0 24 24" fill="currentColor"><polygon points="8,5 8,19 18,12"/></svg><svg class="ico ico-pause" viewBox="0 0 24 24" fill="currentColor" hidden><rect x="6" y="5" width="4" height="14"/><rect x="14" y="5" width="4" height="14"/></svg></span>
         </button>
         <button class="part-btn" onclick="playAudio(this, 'https://language.moe.gov.tw/upload/download/jts/04%E6%96%87%E7%AB%A01(%E9%9F%B3%E6%AA%94)/0401-59-07.mp3')">
           <span class="badge badge-num">7</span>
           <span class="part-label">【宗接代之 【捀斗】</span>
-          <span class="play-icon">▶</span>
+          <span class="play-icon" aria-hidden="true"><svg class="ico ico-play" viewBox="0 0 24 24" fill="currentColor"><polygon points="8,5 8,19 18,12"/></svg><svg class="ico ico-pause" viewBox="0 0 24 24" fill="currentColor" hidden><rect x="6" y="5" width="4" height="14"/><rect x="14" y="5" width="4" height="14"/></svg></span>
         </button>
         <button class="part-btn" onclick="playAudio(this, 'https://language.moe.gov.tw/upload/download/jts/04%E6%96%87%E7%AB%A01(%E9%9F%B3%E6%AA%94)/0401-59-A.mp3')">
           <span class="badge badge-gram">文</span>
           <span class="part-label">【啊……】 能，例如</span>
-          <span class="play-icon">▶</span>
+          <span class="play-icon" aria-hidden="true"><svg class="ico ico-play" viewBox="0 0 24 24" fill="currentColor"><polygon points="8,5 8,19 18,12"/></svg><svg class="ico ico-pause" viewBox="0 0 24 24" fill="currentColor" hidden><rect x="6" y="5" width="4" height="14"/><rect x="14" y="5" width="4" height="14"/></svg></span>
         </button>
     </div>
   </div>
@@ -1449,40 +1511,40 @@
       </div>
       <div class="sec-right">
         <span class="sec-parts-count">5 詞</span>
-        <span class="arrow">›</span>
+        <span class="arrow" aria-hidden="true"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="9,6 15,12 9,18"/></svg></span>
       </div>
     </button>
     <div class="parts-container">
       <button class="title-audio-btn" onclick="playAudio(this, 'https://language.moe.gov.tw/upload/download/jts/04%E6%96%87%E7%AB%A01(%E9%9F%B3%E6%AA%94)/0401-60.mp3')">
         <span class="badge badge-title">標</span>
         <span class="part-label">世界一的臺灣Hinoki</span>
-        <span class="play-icon">▶</span>
+        <span class="play-icon" aria-hidden="true"><svg class="ico ico-play" viewBox="0 0 24 24" fill="currentColor"><polygon points="8,5 8,19 18,12"/></svg><svg class="ico ico-pause" viewBox="0 0 24 24" fill="currentColor" hidden><rect x="6" y="5" width="4" height="14"/><rect x="14" y="5" width="4" height="14"/></svg></span>
       </button>
       
         <button class="part-btn" onclick="playAudio(this, 'https://language.moe.gov.tw/upload/download/jts/04%E6%96%87%E7%AB%A01(%E9%9F%B3%E6%AA%94)/0401-61-01.mp3')">
           <span class="badge badge-num">1</span>
           <span class="part-label">【常在】</span>
-          <span class="play-icon">▶</span>
+          <span class="play-icon" aria-hidden="true"><svg class="ico ico-play" viewBox="0 0 24 24" fill="currentColor"><polygon points="8,5 8,19 18,12"/></svg><svg class="ico ico-pause" viewBox="0 0 24 24" fill="currentColor" hidden><rect x="6" y="5" width="4" height="14"/><rect x="14" y="5" width="4" height="14"/></svg></span>
         </button>
         <button class="part-btn" onclick="playAudio(this, 'https://language.moe.gov.tw/upload/download/jts/04%E6%96%87%E7%AB%A01(%E9%9F%B3%E6%AA%94)/0401-61-02.mp3')">
           <span class="badge badge-num">2</span>
           <span class="part-label">【Makau】</span>
-          <span class="play-icon">▶</span>
+          <span class="play-icon" aria-hidden="true"><svg class="ico ico-play" viewBox="0 0 24 24" fill="currentColor"><polygon points="8,5 8,19 18,12"/></svg><svg class="ico ico-pause" viewBox="0 0 24 24" fill="currentColor" hidden><rect x="6" y="5" width="4" height="14"/><rect x="14" y="5" width="4" height="14"/></svg></span>
         </button>
         <button class="part-btn" onclick="playAudio(this, 'https://language.moe.gov.tw/upload/download/jts/04%E6%96%87%E7%AB%A01(%E9%9F%B3%E6%AA%94)/0401-61-03.mp3')">
           <span class="badge badge-num">3</span>
           <span class="part-label">【假包】</span>
-          <span class="play-icon">▶</span>
+          <span class="play-icon" aria-hidden="true"><svg class="ico ico-play" viewBox="0 0 24 24" fill="currentColor"><polygon points="8,5 8,19 18,12"/></svg><svg class="ico ico-pause" viewBox="0 0 24 24" fill="currentColor" hidden><rect x="6" y="5" width="4" height="14"/><rect x="14" y="5" width="4" height="14"/></svg></span>
         </button>
         <button class="part-btn" onclick="playAudio(this, 'https://language.moe.gov.tw/upload/download/jts/04%E6%96%87%E7%AB%A01(%E9%9F%B3%E6%AA%94)/0401-61-04.mp3')">
           <span class="badge badge-num">4</span>
           <span class="part-label">【較大面】</span>
-          <span class="play-icon">▶</span>
+          <span class="play-icon" aria-hidden="true"><svg class="ico ico-play" viewBox="0 0 24 24" fill="currentColor"><polygon points="8,5 8,19 18,12"/></svg><svg class="ico ico-pause" viewBox="0 0 24 24" fill="currentColor" hidden><rect x="6" y="5" width="4" height="14"/><rect x="14" y="5" width="4" height="14"/></svg></span>
         </button>
         <button class="part-btn" onclick="playAudio(this, 'https://language.moe.gov.tw/upload/download/jts/04%E6%96%87%E7%AB%A01(%E9%9F%B3%E6%AA%94)/0401-61-A.mp3')">
           <span class="badge badge-gram">文</span>
           <span class="part-label">【上大片】</span>
-          <span class="play-icon">▶</span>
+          <span class="play-icon" aria-hidden="true"><svg class="ico ico-play" viewBox="0 0 24 24" fill="currentColor"><polygon points="8,5 8,19 18,12"/></svg><svg class="ico ico-pause" viewBox="0 0 24 24" fill="currentColor" hidden><rect x="6" y="5" width="4" height="14"/><rect x="14" y="5" width="4" height="14"/></svg></span>
         </button>
     </div>
   </div>
@@ -1494,45 +1556,45 @@
       </div>
       <div class="sec-right">
         <span class="sec-parts-count">6 詞</span>
-        <span class="arrow">›</span>
+        <span class="arrow" aria-hidden="true"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="9,6 15,12 9,18"/></svg></span>
       </div>
     </button>
     <div class="parts-container">
       <button class="title-audio-btn" onclick="playAudio(this, 'https://language.moe.gov.tw/upload/download/jts/04%E6%96%87%E7%AB%A01(%E9%9F%B3%E6%AA%94)/0401-62.mp3')">
         <span class="badge badge-title">標</span>
         <span class="part-label">新族群</span>
-        <span class="play-icon">▶</span>
+        <span class="play-icon" aria-hidden="true"><svg class="ico ico-play" viewBox="0 0 24 24" fill="currentColor"><polygon points="8,5 8,19 18,12"/></svg><svg class="ico ico-pause" viewBox="0 0 24 24" fill="currentColor" hidden><rect x="6" y="5" width="4" height="14"/><rect x="14" y="5" width="4" height="14"/></svg></span>
       </button>
       
         <button class="part-btn" onclick="playAudio(this, 'https://language.moe.gov.tw/upload/download/jts/04%E6%96%87%E7%AB%A01(%E9%9F%B3%E6%AA%94)/0401-63-01.mp3')">
           <span class="badge badge-num">1</span>
           <span class="part-label">【慣勢】</span>
-          <span class="play-icon">▶</span>
+          <span class="play-icon" aria-hidden="true"><svg class="ico ico-play" viewBox="0 0 24 24" fill="currentColor"><polygon points="8,5 8,19 18,12"/></svg><svg class="ico ico-pause" viewBox="0 0 24 24" fill="currentColor" hidden><rect x="6" y="5" width="4" height="14"/><rect x="14" y="5" width="4" height="14"/></svg></span>
         </button>
         <button class="part-btn" onclick="playAudio(this, 'https://language.moe.gov.tw/upload/download/jts/04%E6%96%87%E7%AB%A01(%E9%9F%B3%E6%AA%94)/0401-63-02.mp3')">
           <span class="badge badge-num">2</span>
           <span class="part-label">【尻川鬥柄】</span>
-          <span class="play-icon">▶</span>
+          <span class="play-icon" aria-hidden="true"><svg class="ico ico-play" viewBox="0 0 24 24" fill="currentColor"><polygon points="8,5 8,19 18,12"/></svg><svg class="ico ico-pause" viewBox="0 0 24 24" fill="currentColor" hidden><rect x="6" y="5" width="4" height="14"/><rect x="14" y="5" width="4" height="14"/></svg></span>
         </button>
         <button class="part-btn" onclick="playAudio(this, 'https://language.moe.gov.tw/upload/download/jts/04%E6%96%87%E7%AB%A01(%E9%9F%B3%E6%AA%94)/0401-63-03.mp3')">
           <span class="badge badge-num">3</span>
           <span class="part-label">【時行】</span>
-          <span class="play-icon">▶</span>
+          <span class="play-icon" aria-hidden="true"><svg class="ico ico-play" viewBox="0 0 24 24" fill="currentColor"><polygon points="8,5 8,19 18,12"/></svg><svg class="ico ico-pause" viewBox="0 0 24 24" fill="currentColor" hidden><rect x="6" y="5" width="4" height="14"/><rect x="14" y="5" width="4" height="14"/></svg></span>
         </button>
         <button class="part-btn" onclick="playAudio(this, 'https://language.moe.gov.tw/upload/download/jts/04%E6%96%87%E7%AB%A01(%E9%9F%B3%E6%AA%94)/0401-63-04.mp3')">
           <span class="badge badge-num">4</span>
           <span class="part-label">【逐口灶】</span>
-          <span class="play-icon">▶</span>
+          <span class="play-icon" aria-hidden="true"><svg class="ico ico-play" viewBox="0 0 24 24" fill="currentColor"><polygon points="8,5 8,19 18,12"/></svg><svg class="ico ico-pause" viewBox="0 0 24 24" fill="currentColor" hidden><rect x="6" y="5" width="4" height="14"/><rect x="14" y="5" width="4" height="14"/></svg></span>
         </button>
         <button class="part-btn" onclick="playAudio(this, 'https://language.moe.gov.tw/upload/download/jts/04%E6%96%87%E7%AB%A01(%E9%9F%B3%E6%AA%94)/0401-63-05.mp3')">
           <span class="badge badge-num">5</span>
           <span class="part-label">【便若】</span>
-          <span class="play-icon">▶</span>
+          <span class="play-icon" aria-hidden="true"><svg class="ico ico-play" viewBox="0 0 24 24" fill="currentColor"><polygon points="8,5 8,19 18,12"/></svg><svg class="ico ico-pause" viewBox="0 0 24 24" fill="currentColor" hidden><rect x="6" y="5" width="4" height="14"/><rect x="14" y="5" width="4" height="14"/></svg></span>
         </button>
         <button class="part-btn" onclick="playAudio(this, 'https://language.moe.gov.tw/upload/download/jts/04%E6%96%87%E7%AB%A01(%E9%9F%B3%E6%AA%94)/0401-63-06.mp3')">
           <span class="badge badge-num">6</span>
           <span class="part-label">【半老老】</span>
-          <span class="play-icon">▶</span>
+          <span class="play-icon" aria-hidden="true"><svg class="ico ico-play" viewBox="0 0 24 24" fill="currentColor"><polygon points="8,5 8,19 18,12"/></svg><svg class="ico ico-pause" viewBox="0 0 24 24" fill="currentColor" hidden><rect x="6" y="5" width="4" height="14"/><rect x="14" y="5" width="4" height="14"/></svg></span>
         </button>
     </div>
   </div>
@@ -1544,55 +1606,55 @@
       </div>
       <div class="sec-right">
         <span class="sec-parts-count">8 詞</span>
-        <span class="arrow">›</span>
+        <span class="arrow" aria-hidden="true"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="9,6 15,12 9,18"/></svg></span>
       </div>
     </button>
     <div class="parts-container">
       <button class="title-audio-btn" onclick="playAudio(this, 'https://language.moe.gov.tw/upload/download/jts/04%E6%96%87%E7%AB%A01(%E9%9F%B3%E6%AA%94)/0401-64.mp3')">
         <span class="badge badge-title">標</span>
         <span class="part-label">魚仔話之一</span>
-        <span class="play-icon">▶</span>
+        <span class="play-icon" aria-hidden="true"><svg class="ico ico-play" viewBox="0 0 24 24" fill="currentColor"><polygon points="8,5 8,19 18,12"/></svg><svg class="ico ico-pause" viewBox="0 0 24 24" fill="currentColor" hidden><rect x="6" y="5" width="4" height="14"/><rect x="14" y="5" width="4" height="14"/></svg></span>
       </button>
       
         <button class="part-btn" onclick="playAudio(this, 'https://language.moe.gov.tw/upload/download/jts/04%E6%96%87%E7%AB%A01(%E9%9F%B3%E6%AA%94)/0401-65-01.mp3')">
           <span class="badge badge-num">1</span>
           <span class="part-label">【蛤仔】</span>
-          <span class="play-icon">▶</span>
+          <span class="play-icon" aria-hidden="true"><svg class="ico ico-play" viewBox="0 0 24 24" fill="currentColor"><polygon points="8,5 8,19 18,12"/></svg><svg class="ico ico-pause" viewBox="0 0 24 24" fill="currentColor" hidden><rect x="6" y="5" width="4" height="14"/><rect x="14" y="5" width="4" height="14"/></svg></span>
         </button>
         <button class="part-btn" onclick="playAudio(this, 'https://language.moe.gov.tw/upload/download/jts/04%E6%96%87%E7%AB%A01(%E9%9F%B3%E6%AA%94)/0401-65-02.mp3')">
           <span class="badge badge-num">2</span>
           <span class="part-label">【臭風】</span>
-          <span class="play-icon">▶</span>
+          <span class="play-icon" aria-hidden="true"><svg class="ico ico-play" viewBox="0 0 24 24" fill="currentColor"><polygon points="8,5 8,19 18,12"/></svg><svg class="ico ico-pause" viewBox="0 0 24 24" fill="currentColor" hidden><rect x="6" y="5" width="4" height="14"/><rect x="14" y="5" width="4" height="14"/></svg></span>
         </button>
         <button class="part-btn" onclick="playAudio(this, 'https://language.moe.gov.tw/upload/download/jts/04%E6%96%87%E7%AB%A01(%E9%9F%B3%E6%AA%94)/0401-65-03.mp3')">
           <span class="badge badge-num">3</span>
           <span class="part-label">【反肚】</span>
-          <span class="play-icon">▶</span>
+          <span class="play-icon" aria-hidden="true"><svg class="ico ico-play" viewBox="0 0 24 24" fill="currentColor"><polygon points="8,5 8,19 18,12"/></svg><svg class="ico ico-pause" viewBox="0 0 24 24" fill="currentColor" hidden><rect x="6" y="5" width="4" height="14"/><rect x="14" y="5" width="4" height="14"/></svg></span>
         </button>
         <button class="part-btn" onclick="playAudio(this, 'https://language.moe.gov.tw/upload/download/jts/04%E6%96%87%E7%AB%A01(%E9%9F%B3%E6%AA%94)/0401-65-04.mp3')">
           <span class="badge badge-num">4</span>
           <span class="part-label">【相拍雞仔】</span>
-          <span class="play-icon">▶</span>
+          <span class="play-icon" aria-hidden="true"><svg class="ico ico-play" viewBox="0 0 24 24" fill="currentColor"><polygon points="8,5 8,19 18,12"/></svg><svg class="ico ico-pause" viewBox="0 0 24 24" fill="currentColor" hidden><rect x="6" y="5" width="4" height="14"/><rect x="14" y="5" width="4" height="14"/></svg></span>
         </button>
         <button class="part-btn" onclick="playAudio(this, 'https://language.moe.gov.tw/upload/download/jts/04%E6%96%87%E7%AB%A01(%E9%9F%B3%E6%AA%94)/0401-65-05.mp3')">
           <span class="badge badge-num">5</span>
           <span class="part-label">【弄濁水】</span>
-          <span class="play-icon">▶</span>
+          <span class="play-icon" aria-hidden="true"><svg class="ico ico-play" viewBox="0 0 24 24" fill="currentColor"><polygon points="8,5 8,19 18,12"/></svg><svg class="ico ico-pause" viewBox="0 0 24 24" fill="currentColor" hidden><rect x="6" y="5" width="4" height="14"/><rect x="14" y="5" width="4" height="14"/></svg></span>
         </button>
         <button class="part-btn" onclick="playAudio(this, 'https://language.moe.gov.tw/upload/download/jts/04%E6%96%87%E7%AB%A01(%E9%9F%B3%E6%AA%94)/0401-65-06.mp3')">
           <span class="badge badge-num">6</span>
           <span class="part-label">【天狗熱】</span>
-          <span class="play-icon">▶</span>
+          <span class="play-icon" aria-hidden="true"><svg class="ico ico-play" viewBox="0 0 24 24" fill="currentColor"><polygon points="8,5 8,19 18,12"/></svg><svg class="ico ico-pause" viewBox="0 0 24 24" fill="currentColor" hidden><rect x="6" y="5" width="4" height="14"/><rect x="14" y="5" width="4" height="14"/></svg></span>
         </button>
         <button class="part-btn" onclick="playAudio(this, 'https://language.moe.gov.tw/upload/download/jts/04%E6%96%87%E7%AB%A01(%E9%9F%B3%E6%AA%94)/0401-65-07.mp3')">
           <span class="badge badge-num">7</span>
           <span class="part-label">【蛆】</span>
-          <span class="play-icon">▶</span>
+          <span class="play-icon" aria-hidden="true"><svg class="ico ico-play" viewBox="0 0 24 24" fill="currentColor"><polygon points="8,5 8,19 18,12"/></svg><svg class="ico ico-pause" viewBox="0 0 24 24" fill="currentColor" hidden><rect x="6" y="5" width="4" height="14"/><rect x="14" y="5" width="4" height="14"/></svg></span>
         </button>
         <button class="part-btn" onclick="playAudio(this, 'https://language.moe.gov.tw/upload/download/jts/04%E6%96%87%E7%AB%A01(%E9%9F%B3%E6%AA%94)/0401-65-A.mp3')">
           <span class="badge badge-gram">文</span>
           <span class="part-label">【袂堪得】</span>
-          <span class="play-icon">▶</span>
+          <span class="play-icon" aria-hidden="true"><svg class="ico ico-play" viewBox="0 0 24 24" fill="currentColor"><polygon points="8,5 8,19 18,12"/></svg><svg class="ico ico-pause" viewBox="0 0 24 24" fill="currentColor" hidden><rect x="6" y="5" width="4" height="14"/><rect x="14" y="5" width="4" height="14"/></svg></span>
         </button>
     </div>
   </div>
@@ -1604,45 +1666,45 @@
       </div>
       <div class="sec-right">
         <span class="sec-parts-count">6 詞</span>
-        <span class="arrow">›</span>
+        <span class="arrow" aria-hidden="true"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="9,6 15,12 9,18"/></svg></span>
       </div>
     </button>
     <div class="parts-container">
       <button class="title-audio-btn" onclick="playAudio(this, 'https://language.moe.gov.tw/upload/download/jts/04%E6%96%87%E7%AB%A01(%E9%9F%B3%E6%AA%94)/0401-66.mp3')">
         <span class="badge badge-title">標</span>
         <span class="part-label">山球</span>
-        <span class="play-icon">▶</span>
+        <span class="play-icon" aria-hidden="true"><svg class="ico ico-play" viewBox="0 0 24 24" fill="currentColor"><polygon points="8,5 8,19 18,12"/></svg><svg class="ico ico-pause" viewBox="0 0 24 24" fill="currentColor" hidden><rect x="6" y="5" width="4" height="14"/><rect x="14" y="5" width="4" height="14"/></svg></span>
       </button>
       
         <button class="part-btn" onclick="playAudio(this, 'https://language.moe.gov.tw/upload/download/jts/04%E6%96%87%E7%AB%A01(%E9%9F%B3%E6%AA%94)/0401-67-01.mp3')">
           <span class="badge badge-num">1</span>
           <span class="part-label">【Tee台】</span>
-          <span class="play-icon">▶</span>
+          <span class="play-icon" aria-hidden="true"><svg class="ico ico-play" viewBox="0 0 24 24" fill="currentColor"><polygon points="8,5 8,19 18,12"/></svg><svg class="ico ico-pause" viewBox="0 0 24 24" fill="currentColor" hidden><rect x="6" y="5" width="4" height="14"/><rect x="14" y="5" width="4" height="14"/></svg></span>
         </button>
         <button class="part-btn" onclick="playAudio(this, 'https://language.moe.gov.tw/upload/download/jts/04%E6%96%87%E7%AB%A01(%E9%9F%B3%E6%AA%94)/0401-67-02.mp3')">
           <span class="badge badge-num">2</span>
           <span class="part-label">【gu-lín】</span>
-          <span class="play-icon">▶</span>
+          <span class="play-icon" aria-hidden="true"><svg class="ico ico-play" viewBox="0 0 24 24" fill="currentColor"><polygon points="8,5 8,19 18,12"/></svg><svg class="ico ico-pause" viewBox="0 0 24 24" fill="currentColor" hidden><rect x="6" y="5" width="4" height="14"/><rect x="14" y="5" width="4" height="14"/></svg></span>
         </button>
         <button class="part-btn" onclick="playAudio(this, 'https://language.moe.gov.tw/upload/download/jts/04%E6%96%87%E7%AB%A01(%E9%9F%B3%E6%AA%94)/0401-67-03.mp3')">
           <span class="badge badge-num">3</span>
           <span class="part-label">【putting】</span>
-          <span class="play-icon">▶</span>
+          <span class="play-icon" aria-hidden="true"><svg class="ico ico-play" viewBox="0 0 24 24" fill="currentColor"><polygon points="8,5 8,19 18,12"/></svg><svg class="ico ico-pause" viewBox="0 0 24 24" fill="currentColor" hidden><rect x="6" y="5" width="4" height="14"/><rect x="14" y="5" width="4" height="14"/></svg></span>
         </button>
         <button class="part-btn" onclick="playAudio(this, 'https://language.moe.gov.tw/upload/download/jts/04%E6%96%87%E7%AB%A01(%E9%9F%B3%E6%AA%94)/0401-67-04.mp3')">
           <span class="badge badge-num">4</span>
           <span class="part-label">【phú-looh】</span>
-          <span class="play-icon">▶</span>
+          <span class="play-icon" aria-hidden="true"><svg class="ico ico-play" viewBox="0 0 24 24" fill="currentColor"><polygon points="8,5 8,19 18,12"/></svg><svg class="ico ico-pause" viewBox="0 0 24 24" fill="currentColor" hidden><rect x="6" y="5" width="4" height="14"/><rect x="14" y="5" width="4" height="14"/></svg></span>
         </button>
         <button class="part-btn" onclick="playAudio(this, 'https://language.moe.gov.tw/upload/download/jts/04%E6%96%87%E7%AB%A01(%E9%9F%B3%E6%AA%94)/0401-67-05.mp3')">
           <span class="badge badge-num">5</span>
           <span class="part-label">【a-má-tsiah】</span>
-          <span class="play-icon">▶</span>
+          <span class="play-icon" aria-hidden="true"><svg class="ico ico-play" viewBox="0 0 24 24" fill="currentColor"><polygon points="8,5 8,19 18,12"/></svg><svg class="ico ico-pause" viewBox="0 0 24 24" fill="currentColor" hidden><rect x="6" y="5" width="4" height="14"/><rect x="14" y="5" width="4" height="14"/></svg></span>
         </button>
         <button class="part-btn" onclick="playAudio(this, 'https://language.moe.gov.tw/upload/download/jts/04%E6%96%87%E7%AB%A01(%E9%9F%B3%E6%AA%94)/0401-67-06.mp3')">
           <span class="badge badge-num">6</span>
           <span class="part-label">【hàn-tih】</span>
-          <span class="play-icon">▶</span>
+          <span class="play-icon" aria-hidden="true"><svg class="ico ico-play" viewBox="0 0 24 24" fill="currentColor"><polygon points="8,5 8,19 18,12"/></svg><svg class="ico ico-pause" viewBox="0 0 24 24" fill="currentColor" hidden><rect x="6" y="5" width="4" height="14"/><rect x="14" y="5" width="4" height="14"/></svg></span>
         </button>
     </div>
   </div>
@@ -1654,50 +1716,50 @@
       </div>
       <div class="sec-right">
         <span class="sec-parts-count">7 詞</span>
-        <span class="arrow">›</span>
+        <span class="arrow" aria-hidden="true"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="9,6 15,12 9,18"/></svg></span>
       </div>
     </button>
     <div class="parts-container">
       <button class="title-audio-btn" onclick="playAudio(this, 'https://language.moe.gov.tw/upload/download/jts/04%E6%96%87%E7%AB%A01(%E9%9F%B3%E6%AA%94)/0401-68.mp3')">
         <span class="badge badge-title">標</span>
         <span class="part-label">澎湖的大自然</span>
-        <span class="play-icon">▶</span>
+        <span class="play-icon" aria-hidden="true"><svg class="ico ico-play" viewBox="0 0 24 24" fill="currentColor"><polygon points="8,5 8,19 18,12"/></svg><svg class="ico ico-pause" viewBox="0 0 24 24" fill="currentColor" hidden><rect x="6" y="5" width="4" height="14"/><rect x="14" y="5" width="4" height="14"/></svg></span>
       </button>
       
         <button class="part-btn" onclick="playAudio(this, 'https://language.moe.gov.tw/upload/download/jts/04%E6%96%87%E7%AB%A01(%E9%9F%B3%E6%AA%94)/0401-69-01.mp3')">
           <span class="badge badge-num">1</span>
           <span class="part-label">【焦燥】</span>
-          <span class="play-icon">▶</span>
+          <span class="play-icon" aria-hidden="true"><svg class="ico ico-play" viewBox="0 0 24 24" fill="currentColor"><polygon points="8,5 8,19 18,12"/></svg><svg class="ico ico-pause" viewBox="0 0 24 24" fill="currentColor" hidden><rect x="6" y="5" width="4" height="14"/><rect x="14" y="5" width="4" height="14"/></svg></span>
         </button>
         <button class="part-btn" onclick="playAudio(this, 'https://language.moe.gov.tw/upload/download/jts/04%E6%96%87%E7%AB%A01(%E9%9F%B3%E6%AA%94)/0401-69-02.mp3')">
           <span class="badge badge-num">2</span>
           <span class="part-label">【不止仔】</span>
-          <span class="play-icon">▶</span>
+          <span class="play-icon" aria-hidden="true"><svg class="ico ico-play" viewBox="0 0 24 24" fill="currentColor"><polygon points="8,5 8,19 18,12"/></svg><svg class="ico ico-pause" viewBox="0 0 24 24" fill="currentColor" hidden><rect x="6" y="5" width="4" height="14"/><rect x="14" y="5" width="4" height="14"/></svg></span>
         </button>
         <button class="part-btn" onclick="playAudio(this, 'https://language.moe.gov.tw/upload/download/jts/04%E6%96%87%E7%AB%A01(%E9%9F%B3%E6%AA%94)/0401-69-03.mp3')">
           <span class="badge badge-num">3</span>
           <span class="part-label">【四配】</span>
-          <span class="play-icon">▶</span>
+          <span class="play-icon" aria-hidden="true"><svg class="ico ico-play" viewBox="0 0 24 24" fill="currentColor"><polygon points="8,5 8,19 18,12"/></svg><svg class="ico ico-pause" viewBox="0 0 24 24" fill="currentColor" hidden><rect x="6" y="5" width="4" height="14"/><rect x="14" y="5" width="4" height="14"/></svg></span>
         </button>
         <button class="part-btn" onclick="playAudio(this, 'https://language.moe.gov.tw/upload/download/jts/04%E6%96%87%E7%AB%A01(%E9%9F%B3%E6%AA%94)/0401-69-04.mp3')">
           <span class="badge badge-num">4</span>
           <span class="part-label">【麻黃仔】</span>
-          <span class="play-icon">▶</span>
+          <span class="play-icon" aria-hidden="true"><svg class="ico ico-play" viewBox="0 0 24 24" fill="currentColor"><polygon points="8,5 8,19 18,12"/></svg><svg class="ico ico-pause" viewBox="0 0 24 24" fill="currentColor" hidden><rect x="6" y="5" width="4" height="14"/><rect x="14" y="5" width="4" height="14"/></svg></span>
         </button>
         <button class="part-btn" onclick="playAudio(this, 'https://language.moe.gov.tw/upload/download/jts/04%E6%96%87%E7%AB%A01(%E9%9F%B3%E6%AA%94)/0401-69-05.mp3')">
           <span class="badge badge-num">5</span>
           <span class="part-label">【大了袂䆀】</span>
-          <span class="play-icon">▶</span>
+          <span class="play-icon" aria-hidden="true"><svg class="ico ico-play" viewBox="0 0 24 24" fill="currentColor"><polygon points="8,5 8,19 18,12"/></svg><svg class="ico ico-pause" viewBox="0 0 24 24" fill="currentColor" hidden><rect x="6" y="5" width="4" height="14"/><rect x="14" y="5" width="4" height="14"/></svg></span>
         </button>
         <button class="part-btn" onclick="playAudio(this, 'https://language.moe.gov.tw/upload/download/jts/04%E6%96%87%E7%AB%A01(%E9%9F%B3%E6%AA%94)/0401-69-06.mp3')">
           <span class="badge badge-num">6</span>
           <span class="part-label">【妝娗】</span>
-          <span class="play-icon">▶</span>
+          <span class="play-icon" aria-hidden="true"><svg class="ico ico-play" viewBox="0 0 24 24" fill="currentColor"><polygon points="8,5 8,19 18,12"/></svg><svg class="ico ico-pause" viewBox="0 0 24 24" fill="currentColor" hidden><rect x="6" y="5" width="4" height="14"/><rect x="14" y="5" width="4" height="14"/></svg></span>
         </button>
         <button class="part-btn" onclick="playAudio(this, 'https://language.moe.gov.tw/upload/download/jts/04%E6%96%87%E7%AB%A01(%E9%9F%B3%E6%AA%94)/0401-69-A.mp3')">
           <span class="badge badge-gram">文</span>
           <span class="part-label">【恐驚見】</span>
-          <span class="play-icon">▶</span>
+          <span class="play-icon" aria-hidden="true"><svg class="ico ico-play" viewBox="0 0 24 24" fill="currentColor"><polygon points="8,5 8,19 18,12"/></svg><svg class="ico ico-pause" viewBox="0 0 24 24" fill="currentColor" hidden><rect x="6" y="5" width="4" height="14"/><rect x="14" y="5" width="4" height="14"/></svg></span>
         </button>
     </div>
   </div>
@@ -1709,50 +1771,50 @@
       </div>
       <div class="sec-right">
         <span class="sec-parts-count">7 詞</span>
-        <span class="arrow">›</span>
+        <span class="arrow" aria-hidden="true"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="9,6 15,12 9,18"/></svg></span>
       </div>
     </button>
     <div class="parts-container">
       <button class="title-audio-btn" onclick="playAudio(this, 'https://language.moe.gov.tw/upload/download/jts/04%E6%96%87%E7%AB%A01(%E9%9F%B3%E6%AA%94)/0401-70.mp3')">
         <span class="badge badge-title">標</span>
         <span class="part-label">竹仔開花</span>
-        <span class="play-icon">▶</span>
+        <span class="play-icon" aria-hidden="true"><svg class="ico ico-play" viewBox="0 0 24 24" fill="currentColor"><polygon points="8,5 8,19 18,12"/></svg><svg class="ico ico-pause" viewBox="0 0 24 24" fill="currentColor" hidden><rect x="6" y="5" width="4" height="14"/><rect x="14" y="5" width="4" height="14"/></svg></span>
       </button>
       
         <button class="part-btn" onclick="playAudio(this, 'https://language.moe.gov.tw/upload/download/jts/04%E6%96%87%E7%AB%A01(%E9%9F%B3%E6%AA%94)/0401-71-01.mp3')">
           <span class="badge badge-num">1</span>
           <span class="part-label">【見若】</span>
-          <span class="play-icon">▶</span>
+          <span class="play-icon" aria-hidden="true"><svg class="ico ico-play" viewBox="0 0 24 24" fill="currentColor"><polygon points="8,5 8,19 18,12"/></svg><svg class="ico ico-pause" viewBox="0 0 24 24" fill="currentColor" hidden><rect x="6" y="5" width="4" height="14"/><rect x="14" y="5" width="4" height="14"/></svg></span>
         </button>
         <button class="part-btn" onclick="playAudio(this, 'https://language.moe.gov.tw/upload/download/jts/04%E6%96%87%E7%AB%A01(%E9%9F%B3%E6%AA%94)/0401-71-02.mp3')">
           <span class="badge badge-num">2</span>
           <span class="part-label">【洘旱】</span>
-          <span class="play-icon">▶</span>
+          <span class="play-icon" aria-hidden="true"><svg class="ico ico-play" viewBox="0 0 24 24" fill="currentColor"><polygon points="8,5 8,19 18,12"/></svg><svg class="ico ico-pause" viewBox="0 0 24 24" fill="currentColor" hidden><rect x="6" y="5" width="4" height="14"/><rect x="14" y="5" width="4" height="14"/></svg></span>
         </button>
         <button class="part-btn" onclick="playAudio(this, 'https://language.moe.gov.tw/upload/download/jts/04%E6%96%87%E7%AB%A01(%E9%9F%B3%E6%AA%94)/0401-71-03.mp3')">
           <span class="badge badge-num">3</span>
           <span class="part-label">【生湠】</span>
-          <span class="play-icon">▶</span>
+          <span class="play-icon" aria-hidden="true"><svg class="ico ico-play" viewBox="0 0 24 24" fill="currentColor"><polygon points="8,5 8,19 18,12"/></svg><svg class="ico ico-pause" viewBox="0 0 24 24" fill="currentColor" hidden><rect x="6" y="5" width="4" height="14"/><rect x="14" y="5" width="4" height="14"/></svg></span>
         </button>
         <button class="part-btn" onclick="playAudio(this, 'https://language.moe.gov.tw/upload/download/jts/04%E6%96%87%E7%AB%A01(%E9%9F%B3%E6%AA%94)/0401-71-04.mp3')">
           <span class="badge badge-num">4</span>
           <span class="part-label">【出脫】</span>
-          <span class="play-icon">▶</span>
+          <span class="play-icon" aria-hidden="true"><svg class="ico ico-play" viewBox="0 0 24 24" fill="currentColor"><polygon points="8,5 8,19 18,12"/></svg><svg class="ico ico-pause" viewBox="0 0 24 24" fill="currentColor" hidden><rect x="6" y="5" width="4" height="14"/><rect x="14" y="5" width="4" height="14"/></svg></span>
         </button>
         <button class="part-btn" onclick="playAudio(this, 'https://language.moe.gov.tw/upload/download/jts/04%E6%96%87%E7%AB%A01(%E9%9F%B3%E6%AA%94)/0401-71-05.mp3')">
           <span class="badge badge-num">5</span>
           <span class="part-label">【呵咾】</span>
-          <span class="play-icon">▶</span>
+          <span class="play-icon" aria-hidden="true"><svg class="ico ico-play" viewBox="0 0 24 24" fill="currentColor"><polygon points="8,5 8,19 18,12"/></svg><svg class="ico ico-pause" viewBox="0 0 24 24" fill="currentColor" hidden><rect x="6" y="5" width="4" height="14"/><rect x="14" y="5" width="4" height="14"/></svg></span>
         </button>
         <button class="part-btn" onclick="playAudio(this, 'https://language.moe.gov.tw/upload/download/jts/04%E6%96%87%E7%AB%A01(%E9%9F%B3%E6%AA%94)/0401-71-06.mp3')">
           <span class="badge badge-num">6</span>
           <span class="part-label">【教示】</span>
-          <span class="play-icon">▶</span>
+          <span class="play-icon" aria-hidden="true"><svg class="ico ico-play" viewBox="0 0 24 24" fill="currentColor"><polygon points="8,5 8,19 18,12"/></svg><svg class="ico ico-pause" viewBox="0 0 24 24" fill="currentColor" hidden><rect x="6" y="5" width="4" height="14"/><rect x="14" y="5" width="4" height="14"/></svg></span>
         </button>
         <button class="part-btn" onclick="playAudio(this, 'https://language.moe.gov.tw/upload/download/jts/04%E6%96%87%E7%AB%A01(%E9%9F%B3%E6%AA%94)/0401-71-A.mp3')">
           <span class="badge badge-gram">文</span>
           <span class="part-label">【去予……】</span>
-          <span class="play-icon">▶</span>
+          <span class="play-icon" aria-hidden="true"><svg class="ico ico-play" viewBox="0 0 24 24" fill="currentColor"><polygon points="8,5 8,19 18,12"/></svg><svg class="ico ico-pause" viewBox="0 0 24 24" fill="currentColor" hidden><rect x="6" y="5" width="4" height="14"/><rect x="14" y="5" width="4" height="14"/></svg></span>
         </button>
     </div>
   </div>
@@ -1764,75 +1826,75 @@
       </div>
       <div class="sec-right">
         <span class="sec-parts-count">12 詞</span>
-        <span class="arrow">›</span>
+        <span class="arrow" aria-hidden="true"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="9,6 15,12 9,18"/></svg></span>
       </div>
     </button>
     <div class="parts-container">
       <button class="title-audio-btn" onclick="playAudio(this, 'https://language.moe.gov.tw/upload/download/jts/04%E6%96%87%E7%AB%A01(%E9%9F%B3%E6%AA%94)/0401-72.mp3')">
         <span class="badge badge-title">標</span>
         <span class="part-label">咱的大自然環境</span>
-        <span class="play-icon">▶</span>
+        <span class="play-icon" aria-hidden="true"><svg class="ico ico-play" viewBox="0 0 24 24" fill="currentColor"><polygon points="8,5 8,19 18,12"/></svg><svg class="ico ico-pause" viewBox="0 0 24 24" fill="currentColor" hidden><rect x="6" y="5" width="4" height="14"/><rect x="14" y="5" width="4" height="14"/></svg></span>
       </button>
       
         <button class="part-btn" onclick="playAudio(this, 'https://language.moe.gov.tw/upload/download/jts/04%E6%96%87%E7%AB%A01(%E9%9F%B3%E6%AA%94)/0401-73-01.mp3')">
           <span class="badge badge-num">1</span>
           <span class="part-label">【相】</span>
-          <span class="play-icon">▶</span>
+          <span class="play-icon" aria-hidden="true"><svg class="ico ico-play" viewBox="0 0 24 24" fill="currentColor"><polygon points="8,5 8,19 18,12"/></svg><svg class="ico ico-pause" viewBox="0 0 24 24" fill="currentColor" hidden><rect x="6" y="5" width="4" height="14"/><rect x="14" y="5" width="4" height="14"/></svg></span>
         </button>
         <button class="part-btn" onclick="playAudio(this, 'https://language.moe.gov.tw/upload/download/jts/04%E6%96%87%E7%AB%A01(%E9%9F%B3%E6%AA%94)/0401-73-02.mp3')">
           <span class="badge badge-num">2</span>
           <span class="part-label">【大主大意】</span>
-          <span class="play-icon">▶</span>
+          <span class="play-icon" aria-hidden="true"><svg class="ico ico-play" viewBox="0 0 24 24" fill="currentColor"><polygon points="8,5 8,19 18,12"/></svg><svg class="ico ico-pause" viewBox="0 0 24 24" fill="currentColor" hidden><rect x="6" y="5" width="4" height="14"/><rect x="14" y="5" width="4" height="14"/></svg></span>
         </button>
         <button class="part-btn" onclick="playAudio(this, 'https://language.moe.gov.tw/upload/download/jts/04%E6%96%87%E7%AB%A01(%E9%9F%B3%E6%AA%94)/0401-73-03.mp3')">
           <span class="badge badge-num">3</span>
           <span class="part-label">【濫糝】</span>
-          <span class="play-icon">▶</span>
+          <span class="play-icon" aria-hidden="true"><svg class="ico ico-play" viewBox="0 0 24 24" fill="currentColor"><polygon points="8,5 8,19 18,12"/></svg><svg class="ico ico-pause" viewBox="0 0 24 24" fill="currentColor" hidden><rect x="6" y="5" width="4" height="14"/><rect x="14" y="5" width="4" height="14"/></svg></span>
         </button>
         <button class="part-btn" onclick="playAudio(this, 'https://language.moe.gov.tw/upload/download/jts/04%E6%96%87%E7%AB%A01(%E9%9F%B3%E6%AA%94)/0401-73-04.mp3')">
           <span class="badge badge-num">4</span>
           <span class="part-label">【譀】</span>
-          <span class="play-icon">▶</span>
+          <span class="play-icon" aria-hidden="true"><svg class="ico ico-play" viewBox="0 0 24 24" fill="currentColor"><polygon points="8,5 8,19 18,12"/></svg><svg class="ico ico-pause" viewBox="0 0 24 24" fill="currentColor" hidden><rect x="6" y="5" width="4" height="14"/><rect x="14" y="5" width="4" height="14"/></svg></span>
         </button>
         <button class="part-btn" onclick="playAudio(this, 'https://language.moe.gov.tw/upload/download/jts/04%E6%96%87%E7%AB%A01(%E9%9F%B3%E6%AA%94)/0401-73-05.mp3')">
           <span class="badge badge-num">5</span>
           <span class="part-label">【蝕本】</span>
-          <span class="play-icon">▶</span>
+          <span class="play-icon" aria-hidden="true"><svg class="ico ico-play" viewBox="0 0 24 24" fill="currentColor"><polygon points="8,5 8,19 18,12"/></svg><svg class="ico ico-pause" viewBox="0 0 24 24" fill="currentColor" hidden><rect x="6" y="5" width="4" height="14"/><rect x="14" y="5" width="4" height="14"/></svg></span>
         </button>
         <button class="part-btn" onclick="playAudio(this, 'https://language.moe.gov.tw/upload/download/jts/04%E6%96%87%E7%AB%A01(%E9%9F%B3%E6%AA%94)/0401-73-06.mp3')">
           <span class="badge badge-num">6</span>
           <span class="part-label">【損蕩】</span>
-          <span class="play-icon">▶</span>
+          <span class="play-icon" aria-hidden="true"><svg class="ico ico-play" viewBox="0 0 24 24" fill="currentColor"><polygon points="8,5 8,19 18,12"/></svg><svg class="ico ico-pause" viewBox="0 0 24 24" fill="currentColor" hidden><rect x="6" y="5" width="4" height="14"/><rect x="14" y="5" width="4" height="14"/></svg></span>
         </button>
         <button class="part-btn" onclick="playAudio(this, 'https://language.moe.gov.tw/upload/download/jts/04%E6%96%87%E7%AB%A01(%E9%9F%B3%E6%AA%94)/0401-73-07.mp3')">
           <span class="badge badge-num">7</span>
           <span class="part-label">【家伙】</span>
-          <span class="play-icon">▶</span>
+          <span class="play-icon" aria-hidden="true"><svg class="ico ico-play" viewBox="0 0 24 24" fill="currentColor"><polygon points="8,5 8,19 18,12"/></svg><svg class="ico ico-pause" viewBox="0 0 24 24" fill="currentColor" hidden><rect x="6" y="5" width="4" height="14"/><rect x="14" y="5" width="4" height="14"/></svg></span>
         </button>
         <button class="part-btn" onclick="playAudio(this, 'https://language.moe.gov.tw/upload/download/jts/04%E6%96%87%E7%AB%A01(%E9%9F%B3%E6%AA%94)/0401-73-08.mp3')">
           <span class="badge badge-num">8</span>
           <span class="part-label">【翸】</span>
-          <span class="play-icon">▶</span>
+          <span class="play-icon" aria-hidden="true"><svg class="ico ico-play" viewBox="0 0 24 24" fill="currentColor"><polygon points="8,5 8,19 18,12"/></svg><svg class="ico ico-pause" viewBox="0 0 24 24" fill="currentColor" hidden><rect x="6" y="5" width="4" height="14"/><rect x="14" y="5" width="4" height="14"/></svg></span>
         </button>
         <button class="part-btn" onclick="playAudio(this, 'https://language.moe.gov.tw/upload/download/jts/04%E6%96%87%E7%AB%A01(%E9%9F%B3%E6%AA%94)/0401-73-09.mp3')">
           <span class="badge badge-num">9</span>
           <span class="part-label">【無講】</span>
-          <span class="play-icon">▶</span>
+          <span class="play-icon" aria-hidden="true"><svg class="ico ico-play" viewBox="0 0 24 24" fill="currentColor"><polygon points="8,5 8,19 18,12"/></svg><svg class="ico ico-pause" viewBox="0 0 24 24" fill="currentColor" hidden><rect x="6" y="5" width="4" height="14"/><rect x="14" y="5" width="4" height="14"/></svg></span>
         </button>
         <button class="part-btn" onclick="playAudio(this, 'https://language.moe.gov.tw/upload/download/jts/04%E6%96%87%E7%AB%A01(%E9%9F%B3%E6%AA%94)/0401-73-10.mp3')">
           <span class="badge badge-num">10</span>
           <span class="part-label">【食認】</span>
-          <span class="play-icon">▶</span>
+          <span class="play-icon" aria-hidden="true"><svg class="ico ico-play" viewBox="0 0 24 24" fill="currentColor"><polygon points="8,5 8,19 18,12"/></svg><svg class="ico ico-pause" viewBox="0 0 24 24" fill="currentColor" hidden><rect x="6" y="5" width="4" height="14"/><rect x="14" y="5" width="4" height="14"/></svg></span>
         </button>
         <button class="part-btn" onclick="playAudio(this, 'https://language.moe.gov.tw/upload/download/jts/04%E6%96%87%E7%AB%A01(%E9%9F%B3%E6%AA%94)/0401-73-11.mp3')">
           <span class="badge badge-num">11</span>
           <span class="part-label">【緊猛】</span>
-          <span class="play-icon">▶</span>
+          <span class="play-icon" aria-hidden="true"><svg class="ico ico-play" viewBox="0 0 24 24" fill="currentColor"><polygon points="8,5 8,19 18,12"/></svg><svg class="ico ico-pause" viewBox="0 0 24 24" fill="currentColor" hidden><rect x="6" y="5" width="4" height="14"/><rect x="14" y="5" width="4" height="14"/></svg></span>
         </button>
         <button class="part-btn" onclick="playAudio(this, 'https://language.moe.gov.tw/upload/download/jts/04%E6%96%87%E7%AB%A01(%E9%9F%B3%E6%AA%94)/0401-73-12.mp3')">
           <span class="badge badge-num">12</span>
           <span class="part-label">【袂赴市】</span>
-          <span class="play-icon">▶</span>
+          <span class="play-icon" aria-hidden="true"><svg class="ico ico-play" viewBox="0 0 24 24" fill="currentColor"><polygon points="8,5 8,19 18,12"/></svg><svg class="ico ico-pause" viewBox="0 0 24 24" fill="currentColor" hidden><rect x="6" y="5" width="4" height="14"/><rect x="14" y="5" width="4" height="14"/></svg></span>
         </button>
     </div>
   </div>
@@ -1843,14 +1905,34 @@
 <div class="bottom-player" id="bottomPlayer">
   <div class="player-top">
     <div class="player-title" id="playerTitle">音檔</div>
-    <button class="player-stop" type="button" onclick="stopAudio()">■ 停止</button>
+    <button class="icon-btn player-stop" type="button" onclick="stopAudio()" aria-label="停止">
+      <svg class="ico" viewBox="0 0 24 24" fill="currentColor"><rect x="6" y="6" width="12" height="12"/></svg>
+    </button>
   </div>
-  <audio id="mainAudio" controls preload="none"></audio>
+  <div class="progress-wrap">
+    <input type="range" class="progress-bar" id="progressBar" value="0" min="0" max="100" step="0.1" aria-label="播放進度">
+    <div class="progress-time"><span id="timeCur">0:00</span><span class="time-sep">/</span><span id="timeDur">0:00</span></div>
+  </div>
+  <audio id="mainAudio" preload="none"></audio>
   <div class="ctrl-row">
-    <button class="ctrl-btn" type="button" onclick="skipTrack(-1)">⏮</button>
-    <button class="ctrl-btn ctrl-seek" type="button" onclick="seekBy(-3)">⟨⟨ 3s</button>
-    <button class="ctrl-btn ctrl-seek" type="button" onclick="seekBy(3)">3s ⟩⟩</button>
-    <button class="ctrl-btn" type="button" onclick="skipTrack(1)">⏭</button>
+    <button class="icon-btn ctrl-btn" type="button" onclick="skipTrack(-1)" aria-label="上一條">
+      <svg class="ico" viewBox="0 0 24 24" fill="currentColor"><polygon points="4,12 14,18 14,6"/><rect x="16" y="6" width="3" height="12"/></svg>
+    </button>
+    <button class="icon-btn ctrl-btn" type="button" onclick="seekBy(-3)" aria-label="倒退 3 秒">
+      <svg class="ico" viewBox="0 0 24 24" fill="currentColor"><polygon points="13,12 22,18 22,6"/><polygon points="3,12 12,18 12,6"/></svg>
+      <span class="ctrl-label">3</span>
+    </button>
+    <button class="icon-btn ctrl-btn" type="button" onclick="togglePlayPause()" aria-label="播放或暫停" id="playPauseBtn">
+      <svg class="ico ico-play" viewBox="0 0 24 24" fill="currentColor"><polygon points="8,5 8,19 18,12"/></svg>
+      <svg class="ico ico-pause" viewBox="0 0 24 24" fill="currentColor" hidden><rect x="6" y="5" width="4" height="14"/><rect x="14" y="5" width="4" height="14"/></svg>
+    </button>
+    <button class="icon-btn ctrl-btn" type="button" onclick="seekBy(3)" aria-label="前進 3 秒">
+      <svg class="ico" viewBox="0 0 24 24" fill="currentColor"><polygon points="11,12 2,18 2,6"/><polygon points="21,12 12,18 12,6"/></svg>
+      <span class="ctrl-label">3</span>
+    </button>
+    <button class="icon-btn ctrl-btn" type="button" onclick="skipTrack(1)" aria-label="下一條">
+      <svg class="ico" viewBox="0 0 24 24" fill="currentColor"><polygon points="20,12 10,6 10,18"/><rect x="5" y="6" width="3" height="12"/></svg>
+    </button>
   </div>
 </div>
 
@@ -1866,7 +1948,65 @@ const bottomPlayer = document.getElementById('bottomPlayer');
 const playerTitle = document.getElementById('playerTitle');
 const searchInput = document.getElementById('searchInput');
 const searchClear = document.getElementById('searchClear');
+const searchToggle = document.getElementById('searchToggle');
+const searchPanel = document.getElementById('searchPanel');
 const noResult = document.getElementById('noResult');
+const progressBar = document.getElementById('progressBar');
+const timeCur = document.getElementById('timeCur');
+const timeDur = document.getElementById('timeDur');
+const playPauseBtn = document.getElementById('playPauseBtn');
+let isDraggingProgress = false;
+
+function fmtTime(s) {
+  s = Math.max(0, Math.floor(s || 0));
+  return Math.floor(s / 60) + ':' + String(s % 60).padStart(2, '0');
+}
+
+function setPlayIcon(btn, playing) {
+  if (!btn) return;
+  const wrap = btn.querySelector('.play-icon');
+  if (!wrap) return;
+  const play = wrap.querySelector('.ico-play');
+  const pause = wrap.querySelector('.ico-pause');
+  if (play) play.hidden = playing;
+  if (pause) pause.hidden = !playing;
+}
+
+function setMainPlayIcon(playing) {
+  if (!playPauseBtn) return;
+  const play = playPauseBtn.querySelector('.ico-play');
+  const pause = playPauseBtn.querySelector('.ico-pause');
+  if (play) play.hidden = playing;
+  if (pause) pause.hidden = !playing;
+}
+
+function updateProgressUI() {
+  const dur = audio.duration || 0;
+  const cur = audio.currentTime || 0;
+  if (timeCur) timeCur.textContent = fmtTime(cur);
+  if (timeDur) timeDur.textContent = dur ? fmtTime(dur) : '--:--';
+  if (progressBar && dur && !isDraggingProgress) {
+    progressBar.value = (cur / dur) * 100;
+  }
+}
+
+function togglePlayPause() {
+  const btn = currentBtn || lastBtn;
+  if (!btn || !audio.src) return;
+  if (audio.paused) {
+    audio.play().catch(e => console.log('Play error:', e));
+  } else {
+    audio.pause();
+  }
+}
+
+function toggleSearch(open) {
+  const shouldOpen = open ?? !searchPanel.classList.contains('open');
+  searchPanel.classList.toggle('open', shouldOpen);
+  searchToggle.classList.toggle('active', shouldOpen);
+  searchToggle.setAttribute('aria-expanded', shouldOpen);
+  if (shouldOpen) setTimeout(() => searchInput.focus(), 120);
+}
 
 function getAllBtns() {
   return Array.from(document.querySelectorAll('.title-audio-btn, .part-btn'));
@@ -1910,18 +2050,17 @@ function seekBy(sec) {
 
 function setFocus(btn, scroll) {
   document.querySelectorAll('.focused').forEach(el => el.classList.remove('focused', 'playing'));
-  document.querySelectorAll('.play-icon').forEach(icon => { icon.textContent = '▶'; });
+  document.querySelectorAll('.play-icon').forEach(wrap => {
+    const play = wrap.querySelector('.ico-play');
+    const pause = wrap.querySelector('.ico-pause');
+    if (play) play.hidden = false;
+    if (pause) pause.hidden = true;
+  });
   if (!btn) return;
   btn.classList.add('focused');
-  const icon = btn.querySelector('.play-icon');
-  if (icon && !audio.paused) {
-    btn.classList.add('playing');
-    icon.textContent = '⏸';
-  } else if (icon) {
-    icon.textContent = '▶';
-  }
+  setPlayIcon(btn, !audio.paused);
+  if (!audio.paused) btn.classList.add('playing');
   if (scroll) {
-    // center in viewport, accounting for sticky header + bottom player
     const headerH = document.querySelector('header').offsetHeight;
     const playerH = bottomPlayer.classList.contains('visible') ? bottomPlayer.offsetHeight : 0;
     const rect = btn.getBoundingClientRect();
@@ -1989,31 +2128,28 @@ function skipTrack(dir) {
 
 function clearSearchAfterSelect(keepCard) {
   if (!searchInput.value.trim()) {
-    // still strip leftover marks if any
     document.querySelectorAll('.section-card').forEach(clearMarks);
     return;
   }
   searchInput.value = '';
   searchInput.blur();
+  toggleSearch(false);
   if (keepCard) openCard = keepCard;
   doSearch('');
 }
 
 function playAudio(btn, url) {
-  // pause same button if already playing
   if (currentBtn === btn && !audio.paused) {
     audio.pause();
     btn.classList.remove('playing');
-    const icon = btn.querySelector('.play-icon');
-    if (icon) icon.textContent = '▶';
-    // keep focused
+    setPlayIcon(btn, false);
+    setMainPlayIcon(false);
     saveState();
     return;
   }
 
   const card = btn.closest('.section-card');
   if (card) openSection(card, false);
-  // 進入播放後離開搜尋模式：清反白、清空搜尋框，保留本章展開
   clearSearchAfterSelect(card);
 
   currentBtn = btn;
@@ -2031,6 +2167,7 @@ function playAudio(btn, url) {
       restoreTime = 0;
       audio.addEventListener('loadedmetadata', function once() {
         audio.currentTime = Math.min(t, audio.duration || t);
+        updateProgressUI();
         audio.removeEventListener('loadedmetadata', once);
       });
     }
@@ -2038,29 +2175,29 @@ function playAudio(btn, url) {
 
   setFocus(btn, true);
   btn.classList.add('playing', 'focused');
-  const icon = btn.querySelector('.play-icon');
-  if (icon) icon.textContent = '⏸';
+  setPlayIcon(btn, true);
+  setMainPlayIcon(true);
   audio.play().catch(e => console.log('Play error:', e));
   saveState();
 }
 
 audio.addEventListener('play', () => {
-  if (currentBtn || lastBtn) {
-    const btn = currentBtn || lastBtn;
+  const btn = currentBtn || lastBtn;
+  if (btn) {
     btn.classList.add('playing', 'focused');
-    const icon = btn.querySelector('.play-icon');
-    if (icon) icon.textContent = '⏸';
+    setPlayIcon(btn, true);
   }
+  setMainPlayIcon(true);
 });
 
 audio.addEventListener('pause', () => {
   const btn = currentBtn || lastBtn;
   if (btn) {
     btn.classList.remove('playing');
-    const icon = btn.querySelector('.play-icon');
-    if (icon) icon.textContent = '▶';
-    // keep focused
+    btn.classList.add('focused');
+    setPlayIcon(btn, false);
   }
+  setMainPlayIcon(false);
   saveState();
 });
 
@@ -2069,18 +2206,34 @@ audio.addEventListener('ended', () => {
   if (btn) {
     btn.classList.remove('playing');
     btn.classList.add('focused');
-    const icon = btn.querySelector('.play-icon');
-    if (icon) icon.textContent = '▶';
+    setPlayIcon(btn, false);
     lastBtn = btn;
-    currentBtn = btn; // keep for skip prev/next
+    currentBtn = btn;
   }
+  setMainPlayIcon(false);
+  updateProgressUI();
   saveState();
-  // do NOT scroll or clear focus
 });
 
 audio.addEventListener('timeupdate', () => {
+  updateProgressUI();
   if (Math.floor(audio.currentTime) % 2 === 0) saveState();
 });
+
+audio.addEventListener('loadedmetadata', updateProgressUI);
+
+if (progressBar) {
+  progressBar.addEventListener('input', () => {
+    isDraggingProgress = true;
+    const dur = audio.duration || 0;
+    if (dur) audio.currentTime = (progressBar.value / 100) * dur;
+    updateProgressUI();
+  });
+  progressBar.addEventListener('change', () => {
+    isDraggingProgress = false;
+    saveState();
+  });
+}
 
 function stopAudio() {
   audio.pause();
@@ -2089,9 +2242,12 @@ function stopAudio() {
   if (btn) {
     btn.classList.remove('playing');
     btn.classList.add('focused');
-    const icon = btn.querySelector('.play-icon');
-    if (icon) icon.textContent = '▶';
+    setPlayIcon(btn, false);
+    lastBtn = btn;
+    currentBtn = btn;
   }
+  setMainPlayIcon(false);
+  updateProgressUI();
   saveState();
 }
 
@@ -2217,22 +2373,24 @@ function restoreLast() {
     audio.addEventListener('loadedmetadata', function once() {
       audio.currentTime = Math.min(t, audio.duration || t);
       restoreTime = 0;
+      updateProgressUI();
       audio.removeEventListener('loadedmetadata', once);
     });
   }
   setFocus(btn, true);
+  updateProgressUI();
 }
 
 const VOCAB = {"【咱人】": {"roman": "lán-lâng", "meaning": "指農曆"}, "【跤兜】": {"roman": "kha-tau", "meaning": "左右、前後、上下"}, "【揜貼】": {"roman": "iap-thiap", "meaning": "偏僻、偏遠"}, "【聽候】": {"roman": "thìng-hāu", "meaning": "等候、等待"}, "【慣勢】": {"roman": "kuàn-sì", "meaning": "習慣、習性"}, "【誠敨】": {"roman": "tsiânn tháu", "meaning": "聲名遠播"}, "【閹雞趁鳳飛】": {"roman": "iam-ke thàn hong pue", "meaning": "不自量力地模仿別人"}, "【蹛】": {"roman": "tuà", "meaning": "居住"}, "【無偌遠】": {"roman": "bô guā hng", "meaning": "不太遠"}, "【會失禮】": {"roman": "huē sit-lé", "meaning": "道歉"}, "【秮仔米】": {"roman": "tai-á-bí", "meaning": "小米"}, "【見若】": {"roman": "kìnn-nā", "meaning": "凡是"}, "【糖籠】": {"roman": "thng-láng", "meaning": "裝糖的竹簍"}, "【搟】": {"roman": "hián", "meaning": "搖幌"}, "【來去拍】": {"roman": "lâi-khì-phah", "meaning": "一來一往"}, "【輕爽】": {"roman": "khin-sńg", "meaning": "輕盈"}, "【𥴊壺仔】": {"roman": "kám-ôo-á", "meaning": "大而淺的圓形盛物竹筐"}, "【交易】": {"roman": "ka-iah", "meaning": "生意熱絡"}, "【王爺】": {"roman": "ông-iâ", "meaning": "臺灣民間信仰之一，其出身有瘟神、厲鬼、英雄"}, "【服侍】": {"roman": "hok-sai", "meaning": "奉祀"}, "【童乩】": {"roman": "tâng-ki", "meaning": "乩童"}, "【齊行跤到】": {"roman": "tsiâu kiânn-kha-kàu", "meaning": "全員到齊"}, "【佇咧】": {"roman": "tī--leh", "meaning": "存在著"}, "【茶米】": {"roman": "tê-bí", "meaning": "茶葉"}, "【廍動】": {"roman": "phōo-tāng", "meaning": "糖廍開工生產"}, "【剉】": {"roman": "tshò", "meaning": "砍伐、採收"}, "【揜】": {"roman": "iap", "meaning": "藏"}, "【祀】": {"roman": "tshāi", "meaning": "設立神佛、祖先牌位"}, "【寢頭】": {"roman": "tshím-thâu", "meaning": "開始的時候"}, "【烏秫米】": {"roman": "oo-tsut-bí", "meaning": "黑糯米"}, "【品】": {"roman": "phín", "meaning": "約束，約定"}, "【無錢工】": {"roman": "bô-tsînn-kang", "meaning": "無償工作"}, "【偝】": {"roman": "ainn", "meaning": "背（人）"}, "【無品】": {"roman": "bô-phín", "meaning": "品行不佳"}, "【條直】": {"roman": "tiâu-tit", "meaning": "憨直、坦率"}, "【相伨】": {"roman": "sio-thīn", "meaning": "相互支持"}, "【以早】": {"roman": "í-tsá", "meaning": "早先；以前"}, "【揣】": {"roman": "tshuē", "meaning": "找"}, "【lau-lau】": {"roman": "lau-lau", "meaning": "走一走"}, "【檢采】": {"roman": "kiám-tshái", "meaning": "可能、或許"}, "【向時】": {"roman": "hiàng-sî", "meaning": "從前、昔日"}, "【做做】": {"roman": "tsò-tsò", "meaning": "做成"}, "【臨時臨曜】": {"roman": "lîm-sî-lîm-iāu", "meaning": "臨時"}, "【攢物配】": {"roman": "tshuân mih-phuè", "meaning": "準備配飯的菜餚"}, "【煠】": {"roman": "sah", "meaning": "把食物放入滾水中快煮撈出"}, "【竹塹】": {"roman": "tik-tsàm", "meaning": "新竹舊地名，「塹」有多種讀音，此處採用餅店"}, "【健】": {"roman": "kiānn", "meaning": "強健"}, "【偌爾仔】": {"roman": "guā-nī-á", "meaning": "多麼地"}, "【鹹汫】": {"roman": "kiâm-tsiánn", "meaning": "鹹淡"}, "【記持】": {"roman": "kì-tî", "meaning": "記憶"}, "【豉】": {"roman": "sīnn", "meaning": "醃製"}, "【實櫼】": {"roman": "tsat-tsinn", "meaning": "緊密"}, "【閬縫】": {"roman": "làng-phāng", "meaning": "空隙"}, "【生菇】": {"roman": "senn-koo", "meaning": "長霉菌"}, "【三層肉】": {"roman": "sam-tsân-bah", "meaning": "五花肉"}, "【等路】": {"roman": "tán-lōo", "meaning": "禮品，禮物"}, "【滒粉】": {"roman": "kō hún", "meaning": "沾粉"}, "【頭來尾去】": {"roman": "thâu-lâi-bué-khì", "meaning": "來龍去脈"}, "【轉潤落軟】": {"roman": "tńg-lūn loh-nńg", "meaning": "受潮軟化"}, "【這聲】": {"roman": "tsit-siann", "meaning": "這下子"}, "【毋甘搐搐】": {"roman": "m-kam-tiuh-tiuh", "meaning": "萬分不捨"}, "【齊勻】": {"roman": "tsiâu-ûn", "meaning": "均勻"}, "【愛顧】": {"roman": "ài-kòo", "meaning": "厚愛"}, "【交易兼利市】": {"roman": "ka-iah kiam lī-tshī", "meaning": "生意興隆"}, "【厚風颱】": {"roman": "kāu hong-thai", "meaning": "颱風多"}, "【改途】": {"roman": "kái-tôo", "meaning": "改行"}, "【定著】": {"roman": "tiānn-tioh", "meaning": "有一定的份量"}, "【拍損】": {"roman": "phah-sńg", "meaning": "浪費、蹧踏"}, "【幼秀麵】": {"roman": "iù-siù-mī", "meaning": "精緻的麵食"}, "【抐】": {"roman": "lā", "meaning": "攪拌"}, "【寬寬仔】": {"roman": "khuann-khuann-á", "meaning": "慢慢地"}, "【𩚨嗲嗲】": {"roman": "khiū-teh-teh", "meaning": "食物軟而有彈性"}, "【搵料】": {"roman": "ùn-liāu", "meaning": "沾料"}, "【脆喙】": {"roman": "tshè-tshuì", "meaning": "爽口"}, "【插插插】": {"roman": "tshah-tshah-tshah", "meaning": "擁擠的樣子"}, "【拍蜂】": {"roman": "phah-phang", "meaning": "像受攻擊的蜜蜂群集在一起"}, "【節好勢】": {"roman": "tsat hó-sè", "meaning": "控制好"}, "【粟種】": {"roman": "tshik-tsíng", "meaning": "稻種"}, "【精肉】": {"roman": "tsiann-bah", "meaning": "瘦肉"}, "【煙腸】": {"roman": "ian-tshiâng", "meaning": "香腸"}, "【糋】": {"roman": "tsìnn", "meaning": "油炸食物"}, "【袂假得】": {"roman": "bē-ké--tsit", "meaning": "假不了"}, "【摃】": {"roman": "kòng", "meaning": "敲打"}, "【硩】": {"roman": "teh", "meaning": "壓"}, "【鏨】": {"roman": "tsām", "meaning": "切塊"}, "【市草】": {"roman": "tshī-tsháu", "meaning": "市況"}, "【假包】": {"roman": "ké-pâu", "meaning": "冒牌貨、贗品"}, "【一粒一】": {"roman": "it-liap-it", "meaning": "最好的、第一流的"}, "【對同】": {"roman": "tuì-tâng", "meaning": "合適"}, "【合軀】": {"roman": "hah-su", "meaning": "合身，比喻確切"}, "【過謙】": {"roman": "kòo-khiam", "meaning": "謙卑"}, "【食著羹】": {"roman": "tsiah-tioh-kenn", "meaning": "吃到苦頭"}, "【脫箠】": {"roman": "thut-tshuê", "meaning": "出差錯"}, "【海漲】": {"roman": "hái-tiòng", "meaning": "海嘯"}, "【銅管仔】": {"roman": "tâng-kóng-á", "meaning": "馬口鐵皮罐"}, "【賴賴趖】": {"roman": "luā-luā sô", "meaning": "沒事逛來逛去"}, "【jiang-kián】": {"roman": "", "meaning": "日語，划拳"}, "【óo-nih】": {"roman": "", "meaning": "日語，鬼之意"}, "【唌】": {"roman": "siânn", "meaning": "引誘"}, "【蝹】": {"roman": "un", "meaning": "蜷曲蹲坐"}, "【hong】": {"roman": "", "meaning": "「予人」的合音"}, "【衰䆀】": {"roman": "sue-bái", "meaning": "倒楣"}, "【咻】": {"roman": "hiu", "meaning": "大聲喊叫"}, "【撆手䘼】": {"roman": "pih tshiú-ńg", "meaning": "捲起袖子"}, "【探頭】": {"roman": "thàm-thâu", "meaning": "出面"}, "【牽罟】": {"roman": "khan-koo", "meaning": "在海邊拉網捕魚"}, "【一伐】": {"roman": "tsit huah", "meaning": "一步"}, "【囡仔兄】": {"roman": "gín-á-hiann", "meaning": "稱呼陌生小孩子的說法"}, "【鹹草】": {"roman": "kiâm-tsháu", "meaning": "三角藺，早期市場用來綁青菜、魚、肉的繩子。"}, "【拍交落】": {"roman": "phah-ka-lauh", "meaning": "遺失"}, "【大海漲】": {"roman": "tuā-hái-tiòng", "meaning": "大海嘯"}, "【遮爾】": {"roman": "tsiah-nī", "meaning": "這麼……"}, "【刣豬倒羊】": {"roman": "thâi-ti-tó-iûnn", "meaning": "殺豬屠羊"}, "【竹篾仔】": {"roman": "tik-bih-á", "meaning": "薄而狹長的細竹片，可用以編製竹簍、竹籃等"}, "【踅】": {"roman": "seh", "meaning": "旋轉"}, "【司公】": {"roman": "sai-kong", "meaning": "道士"}, "【出世】": {"roman": "tshut-sì", "meaning": "出生"}, "【出業】": {"roman": "tshut-giap", "meaning": "畢業"}, "【紲落來】": {"roman": "suà--loh-lâi", "meaning": "接下來"}, "【無拍算】": {"roman": "bô-phah-sng", "meaning": "不料"}, "【欲暗仔】": {"roman": "beh-àm-á", "meaning": "黃昏"}, "【滬尾】": {"roman": "Hōo-bué", "meaning": "現新北市淡水"}, "【過往】": {"roman": "kuè-óng", "meaning": "過世"}, "【看牛囡仔】": {"roman": "khuànn-gû-gín-á", "meaning": "牧童"}, "【寒熱仔症】": {"roman": "kuânn-jiat-á-tsìng", "meaning": "瘧疾"}, "【白藥水】": {"roman": "peh-ioh-tsuí", "meaning": "奎寧水"}, "【臭跤臁】": {"roman": "tshàu-kha-liâm", "meaning": "腿膿瘡"}, "【接紲】": {"roman": "tsiap-suà", "meaning": "繼續"}, "【捌】": {"roman": "bat/pat", "meaning": "曾經"}, "【同齊】": {"roman": "tâng-tsê", "meaning": "一同、一起"}, "【粟仔】": {"roman": "tshik-á", "meaning": "稻穀"}, "【去倒了】": {"roman": "khì-tò-liáu", "meaning": "倒貼"}, "【有趁的】": {"roman": "ū-thàn--ê", "meaning": "有賺頭"}, "【煞是】": {"roman": "suah-sī", "meaning": "卻是"}, "【透濫】": {"roman": "thàu-lām", "meaning": "混雜"}, "【生湠】": {"roman": "senn-thuànn", "meaning": "繁殖"}, "【香爐耳】": {"roman": "hiunn-lôo-hīnn", "meaning": "此處指後代子孫。「做香爐耳」即為傳"}, "【捀斗】": {"roman": "phâng-táu", "meaning": "喪禮中，由長子或長孫捧著裝神主牌的木斗。"}, "【常在】": {"roman": "tshiâng-tsāi", "meaning": "經常，常常"}, "【Makau】": {"roman": "", "meaning": "泰雅語，山胡椒之意"}, "【較大面】": {"roman": "khah-tuā-bīn", "meaning": "最有可能"}, "【尻川鬥柄】": {"roman": "kha-tshng-tàu-pènn", "meaning": "屁股帶根柄，意為「好攑(hó-"}, "【時行】": {"roman": "sî-kiânn", "meaning": "流行"}, "【逐口灶】": {"roman": "tak kháu-tsàu", "meaning": "每個家庭"}, "【便若】": {"roman": "piān-nā", "meaning": "每次……"}, "【半老老】": {"roman": "puànn-ló-lāu", "meaning": "中老年人"}, "【蛤仔】": {"roman": "kap-á", "meaning": "青蛙"}, "【臭風】": {"roman": "tshàu-hong", "meaning": "腐臭味"}, "【反肚】": {"roman": "píng-tōo", "meaning": "魚翻肚"}, "【相拍雞仔】": {"roman": "sio-phah-ke-á", "meaning": "愛鬧事的人"}, "【弄濁水】": {"roman": "lāng lô-tsuí", "meaning": "把水攪濁"}, "【天狗熱】": {"roman": "thian-káu-jiat", "meaning": "登革熱"}, "【蛆】": {"roman": "tshi/tshu", "meaning": "蚊蠅的幼蟲"}, "【Tee台】": {"roman": "", "meaning": "高爾夫發球台"}, "【gu-lín】": {"roman": "", "meaning": "借自英語green的日語發音，即果嶺"}, "【putting】": {"roman": "", "meaning": "英語，推桿之意"}, "【phú-looh】": {"roman": "", "meaning": "職業的、專業的，借自英語professional"}, "【a-má-tsiah】": {"roman": "", "meaning": "業餘的，借自英語amateur之日語發音"}, "【hàn-tih】": {"roman": "", "meaning": "差點，借自英語handicap的日語發音"}, "【焦燥】": {"roman": "ta-sò", "meaning": "乾燥"}, "【不止仔】": {"roman": "put-tsí-á", "meaning": "相當、非常"}, "【四配】": {"roman": "sù-phuè", "meaning": "匹配、登對"}, "【麻黃仔】": {"roman": "muâ-hông-á", "meaning": "木麻黃"}, "【大了袂䆀】": {"roman": "tua liáu be-bái", "meaning": "生長得不錯"}, "【妝娗】": {"roman": "tsng-thann", "meaning": "裝飾"}, "【洘旱】": {"roman": "khó-huānn", "meaning": "乾旱"}, "【出脫】": {"roman": "tshut-thuat", "meaning": "出人頭地"}, "【呵咾】": {"roman": "o-ló", "meaning": "稱讚"}, "【教示】": {"roman": "kà-sī", "meaning": "教導"}, "【相】": {"roman": "sio-siāng", "meaning": "相同"}, "【大主大意】": {"roman": "tuā-tsú-tuā-ì", "meaning": "擅作主張"}, "【濫糝】": {"roman": "lām-sám", "meaning": "胡亂作為"}, "【譀】": {"roman": "hàm", "meaning": "誇張、浮泛"}, "【蝕本】": {"roman": "sih-pún", "meaning": "虧本"}, "【損蕩】": {"roman": "sńg-tng", "meaning": "破壞、蹧躂"}, "【家伙】": {"roman": "ke-hué", "meaning": "財產"}, "【翸】": {"roman": "phún", "meaning": "揮霍、亂花錢"}, "【無講】": {"roman": "bô-kóng", "meaning": "何況"}, "【食認】": {"roman": "tsiah-jīn", "meaning": "承認、負責"}, "【緊猛】": {"roman": "kín-mé", "meaning": "儘快、趕緊"}, "【袂赴市】": {"roman": "bē-hù-tshī", "meaning": "來不及"}};
 
 document.addEventListener('DOMContentLoaded', () => {
-  // convert inline display:none to class-based
   document.querySelectorAll('.parts-container').forEach(el => {
     el.style.display = '';
     el.classList.remove('open');
   });
   applyVocab();
 
+  searchToggle.addEventListener('click', () => toggleSearch());
   let timer = null;
   searchInput.addEventListener('input', () => {
     clearTimeout(timer);

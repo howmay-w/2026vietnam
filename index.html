@@ -192,11 +192,12 @@
     display: flex; align-items: center; gap: 8px; margin-bottom: 8px;
   }
   .player-title {
-    flex: 1; font-size: 13px; color: var(--black);
+    flex: 1; font-size: 19.5px; color: var(--black);
     white-space:nowrap; overflow:hidden; text-overflow:ellipsis; font-weight:700;
     font-family: var(--font);
   }
-  .player-stop .ico { width: 14px; height: 14px; }
+  #playPauseBtn { background: var(--lime); }
+  #playPauseBtn:active { background: var(--lime-dark); }
   .progress-wrap { margin-bottom: 8px; }
   .progress-bar {
     -webkit-appearance: none; appearance: none;
@@ -1878,9 +1879,6 @@
 <div class="bottom-player" id="bottomPlayer">
   <div class="player-top">
     <div class="player-title" id="playerTitle">音檔</div>
-    <button class="icon-btn player-stop" type="button" onclick="stopAudio()" aria-label="停止">
-      <svg class="ico" viewBox="0 0 24 24" fill="currentColor"><rect x="6" y="6" width="12" height="12"/></svg>
-    </button>
   </div>
   <div class="progress-wrap">
     <input type="range" class="progress-bar" id="progressBar" value="0" min="0" max="100" step="0.1" aria-label="播放進度">
@@ -2194,22 +2192,6 @@ if (progressBar) {
     isDraggingProgress = false;
     saveState();
   });
-}
-
-function stopAudio() {
-  audio.pause();
-  if (audio.src) audio.currentTime = 0;
-  const btn = currentBtn || lastBtn;
-  if (btn) {
-    btn.classList.remove('playing');
-    btn.classList.add('focused');
-    setPlayIcon(btn, false);
-    lastBtn = btn;
-    currentBtn = btn;
-  }
-  setMainPlayIcon(false);
-  updateProgressUI();
-  saveState();
 }
 
 function applyVocab() {

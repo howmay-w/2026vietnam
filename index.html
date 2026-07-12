@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-<title>04 文章1 音檔</title>
+<title>音檔連結整理</title>
 <style>
   * { box-sizing: border-box; margin: 0; padding: 0; touch-action: manipulation; }
   :root {
@@ -157,7 +157,7 @@
 <body>
 
 <header>
-  <h1>04 文章1 音檔</h1>
+  <h1>音檔連結整理</h1>
   <p>共 30 章節 · 233 個音檔</p>
   <div class="now-playing-bar" id="npBar">
     <div class="np-dot"></div>
@@ -1855,19 +1855,12 @@ function playAudio(btn, url) {
 }
 
 audio.addEventListener('ended', () => {
-  const btns = getAllBtns();
-  const idx = currentBtn ? btns.indexOf(currentBtn) : -1;
   if (currentBtn) {
     currentBtn.classList.remove('playing');
     currentBtn.querySelector('.play-icon').textContent = '▶';
     currentBtn = null;
   }
   npBar.classList.remove('active');
-  const next = btns[idx + 1];
-  if (next) {
-    const url = getUrl(next);
-    if (url) playAudio(next, url);
-  }
 });
 
 function stopAudio() {
@@ -1905,7 +1898,6 @@ document.addEventListener('DOMContentLoaded', () => {
       const meaning = v.meaning ? '<span class="part-meaning">' + v.meaning + '</span>' : '';
       el.innerHTML = key + roman + sep + meaning;
     }
-  });
   });
 });
 </script>
